@@ -78,12 +78,22 @@ def main():
         if hits:
             findings["DEVELOPER CONTENT"].append(f"{tag}: {', '.join(hits)}")
 
-        # 3. Stub / placeholder content.
+        # 3. Literal escape sequences. A backslash-n that survived into the text
+        #    renders as the characters "\n" in the exam UI. Textual-similarity and
+        #    stub checks both miss it because the question is otherwise fine.
+        for field in ("scenario", "question"):
+            if re.search(r"\\[nt]", q.get(field, "")):
+                findings["LITERAL ESCAPE"].append(f"{tag}: {field} contains a literal escape sequence")
+        for key, val in q.get("options", {}).items():
+            if re.search(r"\\[nt]", val):
+                findings["LITERAL ESCAPE"].append(f"{tag}: option {key} contains a literal escape sequence")
+
+        # 4. Stub / placeholder content.
         stubs = sorted({m for m in STUB_MARKERS if m in blob})
         if stubs:
             findings["STUB CONTENT"].append(f"{tag}: {', '.join(stubs)}")
 
-        # 4. Circular explanations: the rationale just restates the option.
+        # 5. Circular explanations: the rationale just restates the option.
         for key in exam_lib.correct_keys(q):
             opt, exp = q["options"].get(key, ""), q["explanations"].get(key, "")
             if opt and exp and similarity(opt, exp) > 0.72:
@@ -91,7 +101,7 @@ def main():
                     f"{tag} option {key}: rationale restates the option "
                     f"(similarity {similarity(opt, exp):.2f})")
 
-        # 5. Option-length tell: the longest option being correct is a giveaway
+        # 6. Option-length tell: the longest option being correct is a giveaway
         #    a test-wise candidate can exploit without knowing the content.
         lengths = {k: len(v) for k, v in q["options"].items()}
         longest = max(lengths, key=lengths.get)
@@ -102,9 +112,19 @@ def main():
                     f"{tag}: correct option {longest} is {lengths[longest]} chars vs "
                     f"{second} for the next longest")
 
-        # 6. Answer-position skew is checked in aggregate below.
+        # 7. Answer-position skew is checked in aggregate below.
 
-    # 7. Near-duplicates within the batch and against the committed bank.
+    # 8. Near-duplicates within the batch and against the committed bank.
+    #
+    #    KNOWN BLIND SPOT, measured: this compares scenario *text*, and text
+    #    similarity does not find the duplication that actually matters. On the
+    #    first 95-question batch this check reported nothing (highest
+    #    same-objective similarity 0.15), while an LLM reviewer rejected 38 of 95
+    #    as near-duplicates — questions that swap the persona and the surface
+    #    details but teach one identical lesson with the same distractor skeleton.
+    #    So "NEAR-DUPLICATE: none" here means only "no copied wording". Lesson-level
+    #    convergence needs the judgment screen; do not read a clean run as
+    #    diversity.
     for i, q in enumerate(pending):
         for j in range(i + 1, len(pending)):
             r = pending[j]

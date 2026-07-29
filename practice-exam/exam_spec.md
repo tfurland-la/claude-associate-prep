@@ -159,12 +159,31 @@ over-read later:
 
 - The **3 official samples** from guide §8 were transcribed and checked by hand.
 - The **2 hand-authored multiple-response items** were written by hand.
-- The **first bulk batch (~95 generated questions)** cleared the gate by
-  **two-model consensus, not a human read**: two reviewers on different models
-  judged all candidates independently against the same criteria, questions both
-  accepted were committed, and every disagreement was escalated to the repo owner
-  for a decision. `compare_reviews.py` performs that comparison mechanically and
-  refuses to treat a missing verdict as an acceptance.
+- The **first bulk batch (66 of 95 generated candidates)** cleared the gate by
+  **two-model consensus, not a human read**. Two reviewers on different models
+  judged all 95 independently against the same criteria: they agreed on 73 (77%),
+  and every one of the 43 rejections between them was for near-duplication except
+  a single fabrication catch. `compare_reviews.py` performed the comparison
+  mechanically and refuses to treat a missing verdict as an acceptance.
+
+  How the 29 drops were decided, since the two reviewers cut at very different
+  depths (41% vs 24%):
+  - **20 both rejected** — dropped.
+  - **1 dropped over a reviewer's accept.** The stricter reviewer cited the Help
+    Center stating the Google Drive connector is unavailable for shared projects,
+    so the mechanism the answer turned on did not exist in the configuration
+    described. A citation outranks a reviewer who did not check that item —
+    evidence, not consensus, settled it.
+  - **5 dropped that both reviewers accepted**, because a separate verification
+    pass found their load-bearing claim — that an uploaded Project file is a
+    static copy needing re-upload — has *no published source*, and caught a
+    search summarizer inventing a supporting quote for it. Plausible is not
+    sourced.
+  - **17 disagreements kept**, on the more permissive reviewer's line. All were
+    one model calling a question a duplicate lesson and the other judging it
+    distinct. Coverage was the deciding factor: dropping them would have needed a
+    larger regeneration round, and regeneration is what produced the duplication.
+    The cost is accepted redundancy, disclosed in the README.
 
 Two-model consensus is stronger evidence than a single screener and weaker than a
 careful human pass. It is a deliberate trade, made because ~95 questions is a real

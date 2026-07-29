@@ -51,10 +51,18 @@ guarantee any resource produces a pass.
 
 This is early. Being explicit so a score isn't over-read:
 
-- **The question bank holds 5 questions.** The 3 official samples from the guide,
-  plus 2 hand-authored multiple-response items. That is nowhere near enough to
-  practise against — the desktop app generates fresh questions on demand (see
-  below), which is the usable path today.
+- **The question bank holds 71 questions** — 3 official samples from the guide, 2
+  hand-authored multiple-response items, and 66 generated ones. Enough to practise
+  against in the browser, but **16 of the 30 objectives still have fewer than 3
+  questions**, so coverage is uneven: the adaptive engine cannot yet give you a
+  balanced run across the whole blueprint. 21 more questions would close that.
+- **The generated questions lean redundant.** Both reviewers' main objection to the
+  first batch was that many questions taught the *same lesson* with a different
+  persona — a generator habit, not a one-off. Roughly a quarter of the batch was
+  cut for it, and some redundancy survived by deliberate choice, to avoid
+  sacrificing coverage. Expect to meet the same underlying point more than once,
+  particularly around keeping Project knowledge current and verifying a suspect
+  figure against its source.
 - **Multiple-response items work, but their calibration is inferred.** "Select
   two" items render, gate on a complete selection, and score by exact set match.
   What is *not* documented is how the real exam shapes them: the guide states the
