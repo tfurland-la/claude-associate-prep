@@ -79,10 +79,18 @@ python3 practice-exam/exam_app.py
 ```
 
 That opens the exam in a desktop window and generates fresh questions through
-your own Claude Code login — no API key. To add reviewed questions to the
-committed bank, run the `/exam-refill` skill in Claude Code, which walks the
-generate → screen → human review → merge pipeline. Every committed question must
-be human-reviewed; pytest enforces it.
+your own Claude Code login — no API key. To add questions to the committed bank,
+run the `/exam-refill` skill in Claude Code, which walks the
+generate → normalize → screen → review → merge pipeline.
+
+Every committed question carries `reviewed: true` and pytest enforces it, but be
+precise about what that flag currently means: the official samples and the
+hand-authored items were checked by a person, while the bulk generated batch
+cleared the gate by **two independent model reviewers agreeing**, with every
+disagreement escalated. That is stronger than one screener and weaker than a human
+read — so a question in this bank may never have been read by a person. If you
+hit one that looks wrong, flag it in the app (which stops it affecting your
+weights) and say so. The full reasoning is in the spec's review-gate section.
 
 ```bash
 .venv/bin/python -m pytest -q && node --test practice-exam/adaptive.test.js
@@ -90,6 +98,11 @@ be human-reviewed; pytest enforces it.
 
 Two bank-coverage tests skip until the bank is large enough to satisfy them —
 that's deliberate, so a thin bank never reads as a satisfied coverage guarantee.
+
+Design decisions, the numbers the adaptive engine uses, the question pipeline, and
+what has actually cleared the review gate are all in
+[`practice-exam/exam_spec.md`](practice-exam/exam_spec.md). Read the review-gate
+section before treating a question as vetted.
 
 [exam]: practice-exam/exam.html
 [academy]: https://anthropic-partners.skilljar.com/page/partner-certifications

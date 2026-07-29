@@ -1,6 +1,6 @@
 // Adaptive core for the CCAO-F local practice exam. Pure logic, no DOM and no
 // I/O, so the same file runs in the browser (window.CCAOF_ADAPTIVE) and under
-// `node --test` (module.exports). Numbers mirror practice_exam_spec.md:
+// `node --test` (module.exports). Numbers mirror exam_spec.md:
 // correct x0.7 (floor 0.5), incorrect x1.5 (cap 5.0), domain overlay, and a
 // cooldown on the last 5 task statements in history.
 "use strict";

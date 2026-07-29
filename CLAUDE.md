@@ -83,5 +83,9 @@ instead, with what would close it.
 - `practice-exam/exam_lib.py` — blueprint, bank I/O, validation, generation
 - `practice-exam/questions.js` — machine-written bank; `render_bank()` is the only writer
 - `practice-exam/exam_app.py` — pywebview desktop window, for generating questions
+- `practice-exam/exam_spec.md` — the durable design record: blueprint, adaptive
+  numbers, item types, the question pipeline, the review gate, and known gaps.
+  Update it in the same change as the behaviour it describes.
 - `practice-exam/generation_prompt.md`, `screening_prompt.md` — the generation pipeline's prompts
+- `practice-exam/screen_mechanical.py`, `normalize_pending.py`, `compare_reviews.py` — bank pipeline tooling
 - `test_*.py` at the root — run with `pytest -q`

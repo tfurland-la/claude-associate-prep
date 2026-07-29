@@ -28,6 +28,13 @@ Requirements:
   (The real exam also has multiple-response items. Support for them is not built
   yet, so generate single-answer items only — do not emit an item that expects
   more than one selection.)
+- **Keep the options close in length.** A correct answer noticeably longer than
+  the distractors is a giveaway a candidate can exploit without knowing the
+  subject: the fully-hedged, most-qualified option is usually the right one. Aim
+  for options within roughly 25% of each other in length. If the right answer
+  needs a caveat to be correct, put a comparable caveat on a distractor.
+- **Vary which letter is correct.** Do not default to B. Choose the correct
+  letter as though at random across the set of questions you produce.
 - Provide an explanation of why the correct answer is right and why each
   distractor is wrong.
 {{DIFFICULTY}}- You are NOT to invent specific technical facts — flag names, environment

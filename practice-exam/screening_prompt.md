@@ -36,14 +36,13 @@ For each assigned question:
    exam guide, then against https://docs.claude.com or
    https://code.claude.com/docs. Apply the grounding rule above to decide
    between "fabrication" and "product-docs divergence."
-2. **SINGLE ANSWER** — is the marked-correct option clearly the best answer?
-   Every bank question is single-answer by design. The real exam also has
-   multiple-response items, but with no worked example published there is nothing
-   to calibrate them against, so reject any candidate that expects more than one
-   selection rather than trying to score it. See "Known fidelity gaps" in
-   local_practice_exam_spec.md.
-   Argue *for* each distractor: does any have a defensible case of being
-   equally or more correct given the scenario? If yes, flag it.
+2. **ANSWER KEY** — is the marked-correct option clearly the best answer?
+   Argue *for* each distractor: does any have a defensible case of being equally
+   or more correct given the scenario? If yes, flag it.
+   Multiple-response items are supported by the engine, but the generator is
+   restricted to single-answer, so a *generated* candidate expecting more than
+   one selection is out of contract — flag it. Hand-authored multi items are
+   fine and carry `selectCount`.
 3. **QUALITY** — a realistic workplace scenario for a non-developer using Claude
    as a productivity tool; four parallel, plausible options; non-circular
    explanations. Flag stub/placeholder content. Flag near-duplicates of other
@@ -54,7 +53,7 @@ For each assigned question:
    agentic systems, so a question turning on the Agent SDK, MCP servers, tool
    schemas, CI/CD, JSON-schema validation, or reading code is out of scope no
    matter how well written. The judgment tested must be business judgment.
-4. **PATTERN CURRENCY** — does the marked-correct answer rely on a mechanism
+5. **PATTERN CURRENCY** — does the marked-correct answer rely on a mechanism
    not present in the exam guide's task-statement knowledge/skills inventory?
    A real-but-superseded pattern presented as the recommended answer is the
    failure mode here (e.g., `CLAUDE.local.md`, which functions but is

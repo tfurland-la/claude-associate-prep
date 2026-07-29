@@ -18,3 +18,4 @@ practice-exam/questions_pending.json
 practice-exam/questions_pending_review.md
 practice-exam/build/
 practice-exam/dist/**/.claude/settings.local.json
+REVIEW_DIGEST.md
