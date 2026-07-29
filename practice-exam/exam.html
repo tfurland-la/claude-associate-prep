@@ -748,7 +748,7 @@ function renderQuestion(question) {
 
   const container = el("q-options");
   container.replaceChildren();
-  for (const key of ["A", "B", "C", "D"]) {
+  for (const key of A.item.optionKeys(question)) {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.dataset.key = key;
@@ -1082,7 +1082,7 @@ function renderExamQuestion() {
 
   const container = el("q-options");
   container.replaceChildren();
-  for (const key of ["A", "B", "C", "D"]) {
+  for (const key of A.item.optionKeys(question)) {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.dataset.key = key;
@@ -1227,7 +1227,7 @@ function openExamReview() {
     const ans = document.createElement("span");
     ans.className = "ans";
     const committed = id === null ? undefined : app.exam.answers[id];
-    ans.textContent = "  " + (committed === undefined ? "—" : committed);
+    ans.textContent = "  " + A.item.answerLabel(committed);
     chip.append(qn, ans);
     if (marked.has(i)) {
       const star = document.createElement("span");
@@ -1240,7 +1240,7 @@ function openExamReview() {
     chip.setAttribute(
       "aria-label",
       `Question ${i + 1}, ` +
-        (committed === undefined ? "unanswered" : `answered ${committed}`) +
+        (committed === undefined ? "unanswered" : `answered ${A.item.answerLabel(committed)}`) +
         (marked.has(i) ? ", marked for review" : ""),
     );
     chip.addEventListener("click", () => jumpToExamQuestion(i));
@@ -1535,7 +1535,7 @@ function renderResults(exam) {
     stem.className = "stem";
     stem.textContent = question.question;
     item.append(scenario, stem);
-    for (const key of ["A", "B", "C", "D"]) {
+    for (const key of A.item.optionKeys(question)) {
       const line = document.createElement("div");
       line.className =
         "explanation" +
@@ -1543,7 +1543,7 @@ function renderResults(exam) {
       const keySpan = document.createElement("span");
       keySpan.className = "key";
       const markers =
-        (key === chosen ? " (your answer)" : "");
+        ((chosen || []).includes(key) ? " (your answer)" : "");
       keySpan.textContent = `${key}${markers} — `;
       line.appendChild(keySpan);
       line.appendChild(
@@ -1605,7 +1605,7 @@ async function submitAnswer() {
       : `Incorrect — the right answer is ${A.item.answerLabel(A.item.correctKeys(question))}.`) +
     tierSuffix;
   feedback.appendChild(verdict);
-  for (const key of ["A", "B", "C", "D"]) {
+  for (const key of A.item.optionKeys(question)) {
     const line = document.createElement("div");
     line.className =
       "explanation" +

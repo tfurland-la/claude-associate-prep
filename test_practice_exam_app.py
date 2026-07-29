@@ -614,3 +614,26 @@ def test_only_a_complete_answer_is_committed():
     """A half-made selection would score wrong while counting as answered,
     which reads worse than leaving the question blank."""
     assert "if (q && selectionComplete(q))" in EXAM_HTML
+
+
+def test_option_loops_follow_the_item_not_a_hardcoded_four():
+    """Regression guard. Four loops — practice render, exam render, results
+    review, immediate reveal — originally hard-coded ["A","B","C","D"], so a
+    five-option multiple-response item silently lost option E: never rendered,
+    never selectable, explanation never shown. Invisible while every item has
+    four options, which is exactly why it survived a hand check."""
+    assert '["A", "B", "C", "D"]' not in EXAM_HTML, (
+        "an option loop is hard-coded to four keys; drive it from "
+        "A.item.optionKeys(question) so five-option items render fully"
+    )
+    assert EXAM_HTML.count("A.item.optionKeys(question)") == 4
+
+
+def test_answer_display_never_compares_against_a_bare_string():
+    """Once an answer is an array, `key === chosen` and string concatenation of
+    `committed` break for single-answer items too — a string is never === an
+    array, and `+` prints click order rather than a sorted label."""
+    assert "key === chosen" not in EXAM_HTML
+    assert '"  " + (committed === undefined ? "—" : committed)' not in EXAM_HTML
+    assert "`answered ${committed}`" not in EXAM_HTML
+    assert EXAM_HTML.count("A.item.answerLabel(committed)") == 2
