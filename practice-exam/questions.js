@@ -2482,5 +2482,83 @@ window.CCAOF_BANK = [
       "reviewed": true
     },
     "id": "D4.5-94b40693"
+  },
+  {
+    "taskStatement": "D5.2",
+    "domain": "D5",
+    "scenario": "A programme manager keeps her team's onboarding checklist in a Google Doc that two colleagues revise most weeks. She wants a Claude Project her team can ask about onboarding steps, and she wants answers to reflect the checklist as it stands that day.",
+    "question": "How should she bring the checklist into the Project?",
+    "options": {
+      "A": "Paste the checklist text into the Project's custom instructions, and update that text whenever a colleague revises the Doc.",
+      "B": "Add the Google Doc through the Drive connector, since Google Docs added to a project sync from Drive and reflect later edits.",
+      "C": "Export the checklist to PDF and upload that, then repeat the export each week so the Project keeps a recent copy of it.",
+      "D": "Ask her colleagues to stop editing the shared Doc and send her their changes, so one authoritative version exists to add."
+    },
+    "correct": "B",
+    "explanations": {
+      "A": "Incorrect. Custom instructions are for how Claude should behave, not for holding a document's contents, and this still leaves her hand-copying every revision.",
+      "B": "Correct. Google Docs added to a project sync from Google Drive, so the Project reflects later edits without her re-adding anything — which is what she asked for.",
+      "C": "Incorrect. A weekly export is a manual copy she must remember to repeat, and the answers go stale between exports rather than matching the checklist that day.",
+      "D": "Incorrect. This solves a collaboration problem she does not have, and asking colleagues to change how they work is a heavy answer to a configuration question."
+    },
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D5.2-acf62a07"
+  },
+  {
+    "taskStatement": "D5.2",
+    "domain": "D5",
+    "scenario": "An operations lead is setting up a Claude Project to help her answer supplier queries. The pricing agreements live as documents in the team's shared Drive folder, while the negotiated exceptions were only ever agreed in email threads with each supplier.",
+    "question": "Which connector setup fits what she needs to reach?",
+    "options": {
+      "A": "Connect Drive only, and accept that the negotiated exceptions will not be available to the Project at all.",
+      "B": "Connect Gmail only, on the basis that the email threads are the more authoritative record of what was agreed.",
+      "C": "Connect both Drive and Gmail, since the agreements and the exceptions live in two different places she needs.",
+      "D": "Connect neither, and instead paste the relevant agreements and email threads into each conversation as it comes up."
+    },
+    "correct": "C",
+    "explanations": {
+      "A": "Incorrect. It reaches the agreements but silently drops the exceptions, which is the part most likely to be asked about.",
+      "B": "Incorrect. The exceptions are in email, but the underlying agreements are not, so the Project would answer from half the picture.",
+      "C": "Correct. The material she needs is split across documents and email, so the Project needs both connectors to cover the questions she expects.",
+      "D": "Incorrect. Pasting works once but has to be repeated every conversation, which is the manual effort a Project's knowledge sources exist to remove."
+    },
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D5.2-69e17c26"
+  },
+  {
+    "taskStatement": "D5.2",
+    "domain": "D5",
+    "scenario": "A Claude Project set up two years ago for a service-desk team now holds nineteen uploaded files. Several are superseded process notes, two are drafts that were never adopted, and the team has begun complaining that answers cite guidance nobody follows.",
+    "question": "What is the most appropriate first step?",
+    "options": {
+      "A": "Remove the superseded notes and unadopted drafts from the Project's knowledge, so what remains is guidance the team actually follows.",
+      "B": "Leave the files in place and add a custom instruction telling Claude to prefer the newest document whenever two of them disagree.",
+      "C": "Leave the files in place and ask the team to say in each question which of the nineteen documents they want the answer drawn from.",
+      "D": "Create a second Project for current guidance only, and tell the team to use the old Project when they need historical process notes."
+    },
+    "correct": "A",
+    "explanations": {
+      "A": "Correct. Managing uploaded knowledge includes removing what is no longer current; the answers are poor because the knowledge base contains guidance the team has abandoned.",
+      "B": "Incorrect. It leaves the bad guidance in place and relies on an instruction to sort out a problem better fixed by curating the source material.",
+      "C": "Incorrect. It pushes the curation work onto every person asking a question, and expecting them to know nineteen documents defeats the point.",
+      "D": "Incorrect. A second Project duplicates maintenance and leaves the stale one available; nothing here suggests the historical notes need keeping at all."
+    },
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D5.2-67ca0ca0"
   }
 ];

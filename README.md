@@ -57,10 +57,13 @@ This is early. Being explicit so a score isn't over-read:
   across the whole blueprint.
 - **Covered by count is not the same as covered in substance.** Clearing the
   3-per-objective bar says nothing about whether an objective's questions test its
-  whole scope. A known example: D5.2 is "manage uploaded knowledge and connectors",
-  and its questions concentrate on who can see a Project's knowledge rather than on
-  choosing between connectors or keeping knowledge current. Treat a strong score on
-  one objective as evidence about the slice that got tested.
+  whole scope. D5.2 ("manage uploaded knowledge and connectors") is the worked
+  example: its three generated questions turned out to be one question about who
+  can see a Project's knowledge, wearing three different personas, and none of them
+  tested managing knowledge or connectors at all. Three hand-authored questions now
+  cover connecting a source that keeps changing, choosing which connector reaches
+  which material, and pruning a knowledge base that has gone stale. Treat a strong
+  score on any one objective as evidence about the slice that got tested.
 - **The generated questions lean redundant.** Across both batches the reviewers'
   main objection was questions teaching the *same lesson* with a different persona
   — a generator habit, not a one-off, and one that got worse as the anti-fabrication
@@ -129,8 +132,11 @@ weights) and say so. The full reasoning is in the spec's review-gate section.
 .venv/bin/python -m pytest -q && node --test practice-exam/adaptive.test.js
 ```
 
-Two bank-coverage tests skip until the bank is large enough to satisfy them —
-that's deliberate, so a thin bank never reads as a satisfied coverage guarantee.
+The two bank-coverage tests are now active (they skip while the bank is too thin,
+so a sparse bank never reads as a satisfied coverage guarantee). They check a
+*count* — three questions per objective — which is why the substance caveat above
+matters: the count can pass while an objective's questions all probe the same
+corner of it.
 
 Design decisions, the numbers the adaptive engine uses, the question pipeline, and
 what has actually cleared the review gate are all in
