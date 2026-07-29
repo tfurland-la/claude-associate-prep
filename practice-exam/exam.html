@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCAO-F Adaptive Practice Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   SEED CONFIGURATION — the only thing you need to edit to make this yours.
+
+   Every CCAO-F task statement carries a starting weight that controls how
+   often it is drawn before your own answers take over. Three ways to use it:
+
+   1. AS-IS ............ keep the defaults below (the original author's known
+                         weak areas at build time).
+   2. BLANK SLATE ...... delete every entry so the object is `{}` (or use the
+                         "Blank slate" button in the app) — every statement
+                         starts at 1.0 and the tool discovers your weak areas
+                         purely from your answers.
+   3. CUSTOM SEED ...... set your own trouble spots to 3.0 (known weak) or
+                         2.0 (shaky); anything you leave out defaults to 1.0.
+
+   Weights move x0.7 when you answer correctly (floor 0.5) and x1.5 when you
+   miss (cap 5.0), so the seed matters most for the first couple dozen
+   questions. Nothing else in this file needs to change.
+   ═══════════════════════════════════════════════════════════════════════ */
+/* Starting weights per objective. Deliberately a blank slate: every objective
+   starts at 1.0, so the first questions sample the whole blueprint evenly and
+   your weights are earned from your own answers.
+
+   This differs from a single-author study repo on purpose. A seed encodes one
+   person's known weak areas, which would push everyone else's early questions
+   toward gaps they may not have — actively misleading for a shared tool.
+
+   To bias it for yourself, add entries here: a higher number means "ask me more
+   about this" (1.0 is neutral, the cap is 5.0). Keys must be objective ids from
+   the blueprint in adaptive.js — an unknown id is rejected on import and
+   silently ignored on a fresh start, so check it against TASK_STATEMENTS. */
+const CCAOF_SEED = {};
+</script>
+
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-light: #4a4a6a;
+    --ink-faint: #8888aa;
+    --paper: #f7f6f1;
+    --paper-warm: #eeeade;
+    --card: #fffdf8;
+    --accent: #2E4057;
+    --teal: #048A81;
+    --teal-soft: #e2f2f0;
+    --amber: #c17f24;
+    --coral: #c94f3a;
+    --coral-soft: #f8e9e6;
+    --transition: 0.2s ease;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--accent);
+    color: #fff;
+    padding: 18px 28px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+  }
+  .badge {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.85);
+  }
+  .badge.dynamic { background: var(--teal); color: #fff; }
+  header .session {
+    margin-left: auto;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .layout {
+    display: flex;
+    gap: 28px;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 28px;
+    align-items: flex-start;
+  }
+  main { flex: 1; min-width: 0; }
+  aside { width: 320px; flex-shrink: 0; }
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    aside { width: 100%; }
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--paper-warm);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+
+  #gen-banner {
+    background: var(--coral-soft);
+    border: 1px solid var(--coral);
+    color: var(--coral);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+  }
+
+  .task-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+    background: var(--teal-soft);
+    border-radius: 5px;
+    padding: 2px 10px;
+    margin-bottom: 4px;
+  }
+  .task-label {
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+  }
+  .scenario { color: var(--ink-light); margin-bottom: 16px; white-space: pre-line; }
+  .stem { font-weight: 600; margin-bottom: 18px; }
+
+  .option {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    line-height: 1.55;
+    background: #fff;
+    border: 1.5px solid var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .option:hover:not(:disabled) { border-color: var(--teal); }
+  .option.selected { border-color: var(--accent); background: #f2f4f8; }
+  .option:disabled { cursor: default; }
+  .option .key {
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    color: var(--ink-faint);
+  }
+  .option.reveal-correct { border-color: var(--teal); background: var(--teal-soft); }
+  .option.reveal-wrong { border-color: var(--coral); background: var(--coral-soft); }
+
+  .verdict { font-weight: 600; margin: 14px 0 10px; }
+  .verdict.good { color: var(--teal); }
+  .verdict.bad { color: var(--coral); }
+
+  .explanation {
+    font-size: 14.5px;
+    color: var(--ink-light);
+    border-left: 3px solid var(--paper-warm);
+    padding: 6px 14px;
+    margin-bottom: 8px;
+  }
+  .explanation.correct-line { border-left-color: var(--teal); }
+  .explanation .key { font-family: 'DM Mono', monospace; font-weight: 500; }
+
+  .controls { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; align-items: center; }
+  button.primary, button.ghost {
+    font: inherit;
+    font-size: 14.5px;
+    border-radius: 7px;
+    padding: 9px 20px;
+    cursor: pointer;
+    transition: opacity var(--transition), background var(--transition);
+  }
+  button.primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+  }
+  button.primary:disabled { opacity: 0.4; cursor: default; }
+  button.ghost {
+    background: transparent;
+    color: var(--ink-light);
+    border: 1.5px solid var(--paper-warm);
+  }
+  button.ghost:hover { border-color: var(--ink-faint); }
+  .note { font-size: 13px; color: var(--ink-faint); }
+  .note.alert { color: var(--coral); }
+
+  aside h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 14px;
+  }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 4px 0;
+  }
+  .stat-row .val { font-family: 'DM Mono', monospace; }
+  .domain-bar { margin: 8px 0; font-size: 13px; }
+  .domain-bar .track {
+    height: 6px;
+    background: var(--paper-warm);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 3px;
+  }
+  .domain-bar .fill { height: 100%; background: var(--teal); }
+  .weak-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--paper-warm);
+  }
+  .weak-item .ts { font-family: 'DM Mono', monospace; color: var(--amber); white-space: nowrap; }
+  .weak-item .label { color: var(--ink-light); flex: 1; }
+  .weak-item .w { font-family: 'DM Mono', monospace; color: var(--ink-faint); }
+
+  details.how { font-size: 14px; color: var(--ink-light); }
+  details.how summary { cursor: pointer; font-weight: 500; color: var(--ink); }
+  details.how p { margin: 10px 0; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; }
+  .toolbar button { flex: 1 1 45%; font-size: 13px; padding: 7px 10px; }
+
+  /* ── Timed exam mode ─────────────────────────────────────── */
+  body.exam-active aside { display: none; }
+  body.exam-active .layout { max-width: 780px; }
+  .exam-timer {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 3px 12px;
+  }
+  .exam-timer.low { background: var(--coral); }
+  .review-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+  .review-chip {
+    font: inherit; font-size: 13px; cursor: pointer; text-align: left;
+    background: #fff; border: 1.5px solid var(--paper-warm); border-radius: 7px;
+    padding: 7px 10px;
+  }
+  .review-chip:hover { border-color: var(--teal); }
+  .review-chip .qn { font-family: 'DM Mono', monospace; color: var(--ink-faint); }
+  .review-chip .ans { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
+  /* Skipped questions must be findable at a glance on the review grid — a
+     dashed border reads as "still open" without relying on colour alone. */
+  .review-chip.is-blank { border-style: dashed; border-color: var(--accent); }
+  .review-chip.is-blank .ans { color: var(--ink-faint); font-weight: 400; }
+  .review-chip.is-marked { box-shadow: inset 3px 0 0 var(--teal); }
+  .review-chip .mark { color: var(--teal); font-weight: 600; }
+  .review-summary { font-size: 13px; color: var(--ink-light); margin-bottom: 10px; }
+  .score-secondary {
+    margin-top: 10px; font-size: 14px; color: var(--ink-light);
+    border-top: 1px solid var(--paper-warm); padding-top: 10px;
+  }
+  .score-banner {
+    text-align: center;
+    padding: 18px 0 6px;
+  }
+  .score-banner .scaled {
+    font-family: 'DM Serif Display', serif;
+    font-size: 56px;
+    line-height: 1.1;
+  }
+  .score-banner .verdict-chip {
+    display: inline-block;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 4px 16px;
+    margin-top: 6px;
+    color: #fff;
+  }
+  .score-banner .verdict-chip.pass { background: var(--teal); }
+  .score-banner .verdict-chip.fail { background: var(--coral); }
+  details.review-item {
+    border: 1px solid var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    font-size: 14.5px;
+  }
+  details.review-item summary { cursor: pointer; }
+  details.review-item summary .mark { font-weight: 600; }
+  details.review-item summary .mark.good { color: var(--teal); }
+  details.review-item summary .mark.bad { color: var(--coral); }
+  details.review-item summary .q-time {
+    font-size: 12.5px; color: var(--ink-faint); font-family: 'DM Mono', monospace;
+  }
+  details.review-item .scenario { margin-top: 12px; }
+  .timing-summary .timing-grid {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 4px 24px; margin-top: 6px;
+  }
+  .timing-summary .timing-grid > div { min-width: 150px; }
+  .timing-summary .tv { font-family: 'DM Mono', monospace; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CCAO-F Adaptive Practice Exam</h1>
+  <span class="badge" id="mode-badge">loading…</span>
+  <span class="exam-timer" id="exam-timer" hidden></span>
+  <span class="session" id="session-counter"></span>
+</header>
+
+<div class="layout">
+  <main>
+    <div id="gen-banner" hidden></div>
+    <div class="card" id="question-card">
+      <span class="task-tag" id="q-task"></span>
+      <div class="task-label" id="q-task-label"></div>
+      <div class="scenario" id="q-scenario"></div>
+      <div class="stem" id="q-stem"></div>
+      <div id="q-options"></div>
+      <div id="q-feedback"></div>
+      <div class="controls">
+        <button class="ghost" id="btn-exam-prev" hidden>← Previous</button>
+        <button class="primary" id="btn-submit" disabled>Submit answer</button>
+        <button class="ghost" id="btn-exam-skip" hidden>Skip →</button>
+        <button class="ghost" id="btn-exam-mark" hidden>Mark for review</button>
+        <button class="primary" id="btn-next" hidden>Next question</button>
+        <button class="ghost" id="btn-exam-review" hidden>Review all &amp; submit</button>
+        <button class="ghost" id="btn-flag" hidden>Flag — don't count this question</button>
+        <button class="ghost" id="btn-abandon" hidden>End exam</button>
+        <span class="note" id="status-note"></span>
+      </div>
+    </div>
+
+    <div class="card" id="exam-review-card" hidden>
+      <h2 style="font-family:'DM Serif Display',serif;font-weight:400;font-size:18px;margin-bottom:6px">Review &amp; submit</h2>
+      <p class="note" style="margin-bottom:12px">Tap any question to revisit it — the clock is still running. Skipped questions show a dashed border; ones you marked for review carry a bar. Submit when you're ready, or the exam auto-submits at 0:00.</p>
+      <div class="review-summary" id="exam-review-summary"></div>
+      <div id="exam-review-list"></div>
+      <div class="controls" style="margin-top:14px">
+        <button class="primary" id="btn-exam-submit">Submit exam for scoring</button>
+        <button class="ghost" id="btn-exam-next-blank" hidden>Go to next unanswered</button>
+        <button class="ghost" id="btn-exam-back">Back to last question</button>
+      </div>
+    </div>
+
+    <div class="card" id="setup-card" hidden>
+      <h2 style="font-family:'DM Serif Display',serif;font-weight:400;font-size:18px;margin-bottom:10px">Timed exam</h2>
+      <div id="setup-choice">
+        <p class="note" style="margin-bottom:12px">60 questions · 120 minutes · real domain weighting
+        (14/21/12/16/12/15/10) · standalone items, as on the real exam · skip and return to any
+        question, mark questions for review, change any answer, review before submitting · no
+        feedback until scored. Results update your adaptive weights.</p>
+        <div class="controls">
+          <button class="primary" id="btn-exam-fresh">Fresh questions (readiness gate)</button>
+          <button class="primary" id="btn-exam-bank">From the question bank (instant)</button>
+          <button class="ghost" id="btn-exam-cancel">Cancel</button>
+        </div>
+        <p class="note" style="margin-top:10px">Fresh questions carry the exam's difficulty spread
+        (mostly mid, a quarter harder, a hard tail) — the faithful readiness gate. The bank exam is
+        instant but a standard-difficulty approximation (the bank is single-tier), so it runs easier
+        than the real thing.</p>
+        <p class="note" id="setup-fresh-note" style="margin-top:10px"></p>
+      </div>
+      <div id="setup-progress" hidden>
+        <p id="setup-progress-text" style="margin-bottom:12px"></p>
+        <div class="domain-bar"><div class="track"><div class="fill" id="setup-progress-fill" style="width:0%"></div></div></div>
+        <div class="controls">
+          <button class="primary" id="btn-exam-begin" disabled>Begin exam</button>
+          <button class="ghost" id="btn-exam-abort">Cancel</button>
+        </div>
+        <p class="note" style="margin-top:10px">The exam begins when the first 10 questions are ready;
+        the rest keep generating in the background while you work. If you ever catch up to the
+        generator, the clock pauses until the next question arrives.</p>
+      </div>
+    </div>
+
+    <div class="card" id="results-card" hidden>
+      <div class="score-banner">
+        <div class="scaled" id="r-scaled"></div>
+        <div class="note">approximate scaled score (linear; the real exam uses equating)</div>
+        <div id="r-verdict"></div>
+        <div class="note" id="r-raw" style="margin-top:8px"></div>
+      </div>
+      <div id="r-domains" style="margin:16px 0"></div>
+      <h2 style="font-family:'DM Serif Display',serif;font-weight:400;font-size:18px;margin:18px 0 10px">Review</h2>
+      <div id="r-review"></div>
+      <div class="controls">
+        <button class="primary" id="btn-return">Return to practice</button>
+      </div>
+    </div>
+  </main>
+
+  <aside>
+    <div class="card">
+      <h2>Progress</h2>
+      <div class="stat-row"><span>Overall accuracy</span><span class="val" id="d-accuracy">—</span></div>
+      <div class="stat-row"><span>Questions answered</span><span class="val" id="d-answered">0</span></div>
+      <div class="stat-row"><span>Flagged &amp; discarded</span><span class="val" id="d-flagged">0</span></div>
+      <div id="d-domains" style="margin-top:12px"></div>
+      <h2 style="margin-top:22px">Current weak spots</h2>
+      <div id="d-weak"></div>
+    </div>
+
+    <div class="card">
+      <h2>Data</h2>
+      <div class="toolbar">
+        <button class="ghost" id="btn-exam">Timed exam (60 Q)</button>
+        <button class="ghost" id="btn-export">Export progress</button>
+        <button class="ghost" id="btn-import">Import progress</button>
+        <button class="ghost" id="btn-blank">Blank slate</button>
+        <button class="ghost" id="btn-reset">Reset everything</button>
+      </div>
+      <input type="file" id="import-file" accept="application/json" hidden>
+      <p class="note" id="storage-note" style="margin-top:10px"></p>
+    </div>
+
+    <div class="card">
+      <details class="how">
+        <summary>How this works</summary>
+        <p>Every CCAO-F task statement carries a weight. Miss a question and its
+        statement's weight rises (&times;1.5, capped at 5.0); get it right and the
+        weight falls (&times;0.7, floored at 0.5). The next question is drawn at
+        random, biased by those weights and by the real exam's domain mix — so
+        practice naturally concentrates on your weak spots and backs off as you
+        master them.</p>
+        <p>The five most recently tested statements sit out each draw, so short
+        runs stay varied. Progress persists between sessions; the weak-spots list
+        shows where the tool currently thinks you should work.</p>
+        <p>In the desktop app, fresh questions are generated on demand through
+        your local Claude Code. Opened as a plain page, questions come from the
+        reviewed bank in <code>questions.js</code> instead.</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <details class="how">
+        <summary>When to flag a question</summary>
+        <p>Flag — don't count — a generated question that looks flawed, so it
+        can't skew your weights:</p>
+        <ul>
+          <li><strong>Invented specifics</strong> — the correct answer or an
+          explanation leans on a flag, environment variable, or config
+          behaviour you can't find in the exam guide or course (e.g.
+          <code>--non-interactive</code> when the real flag is <code>-p</code>).</li>
+          <li><strong>Two defensible answers</strong> — another option still
+          looks right and the case against it rests on a preference or an
+          unverifiable caveat, not a real correctness gap.</li>
+          <li><strong>Outdated pattern as the answer</strong> — the "correct"
+          option recommends a superseded mechanism (e.g. <code>CLAUDE.local.md</code>
+          when <code>@~/.claude/</code> imports are current practice).</li>
+        </ul>
+        <p>Flagging fully discards the question — weights, accuracy, and history
+        stay as if it never appeared. When in doubt, flag: a discarded good
+        question costs one question; an absorbed bad one distorts your practice.</p>
+      </details>
+    </div>
+  </aside>
+</div>
+
+<script src="adaptive.js"></script>
+<script src="questions.js"></script>
+<script>
+"use strict";
+
+const A = window.CCAOF_ADAPTIVE;
+const BANK = window.CCAOF_BANK || [];
+/* localStorage key. Bump the version suffix only for a breaking state-shape
+   change — it orphans every earned task-statement weight in the browser. */
+const STORAGE_KEY = "ccaof.state.v1";
+const STATE_VERSION = 1;
+
+const el = (id) => document.getElementById(id);
+
+/* ── Storage backends ──────────────────────────────────────────────────
+   localStorage when available; plain in-memory otherwise. The pywebview
+   desktop app replaces this with file-backed persistence via its bridge. */
+function makeLocalStorageBackend() {
+  const probeKey = "ccaof.probe";
+  localStorage.setItem(probeKey, "1");
+  localStorage.removeItem(probeKey);
+  return {
+    kind: "localStorage",
+    async load() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    },
+    async save(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    },
+  };
+}
+
+function makeMemoryBackend() {
+  let held = null;
+  return {
+    kind: "memory",
+    async load() { return held; },
+    async save(state) { held = state; },
+  };
+}
+
+/* Desktop app: progress persists through the pywebview bridge instead of
+   browser storage. The bridge decides the actual file location (repo checkout
+   vs. packaged app's user-data dir) and reports it via health().progressPath. */
+function makeBridgeStorageBackend(bridge) {
+  return {
+    kind: "file",
+    async load() { return await bridge.load_state(); },
+    async save(state) { await bridge.save_state(JSON.parse(JSON.stringify(state))); },
+  };
+}
+
+/* ── Live generation through the desktop bridge ────────────────────────
+   Keeps at most one question in flight. The draw happens post-grading (at
+   reveal), so the next question targets the freshest weights and cooldown. */
+function makeClaudeGenerator(bridge) {
+  let pending = null;
+  async function generateFor(ts, extraAvoid, difficulty) {
+    const tier = difficulty === "hard" ? "hard" : "standard";
+    const res = await bridge.generate(ts, extraAvoid || [], null, tier);
+    if (res.error) throw new Error(res.detail || res.error);
+    const question = res.question;
+    question.difficulty = tier; // stamp the tier so submitAnswer can log it
+    return question;
+  }
+  async function generateOne() {
+    // Exclude the on-screen statement: prefetch runs before it is graded, so
+    // without this coverage-first could draw the same statement again and show
+    // it twice in a row.
+    const exclude = app.current ? app.current.taskStatement : null;
+    const ts = A.drawTaskStatement(app.state, { exclude });
+    if (!ts) throw new Error("no task statement available to draw");
+    // Coverage-first (drawTaskStatement) chooses the statement; difficultyFor
+    // chooses the tier from the same adaptive state.
+    return generateFor(ts, [], A.difficultyFor(app.state, ts));
+  }
+  return {
+    generateFor, // used by streamed exam-form generation
+    prefetch() {
+      if (!pending) {
+        pending = generateOne();
+        pending.catch(() => {}); // consumed (and reported) on take()
+      }
+    },
+    async take() {
+      const inFlight = pending || generateOne();
+      pending = null;
+      return inFlight;
+    },
+  };
+}
+
+/* ── App state ──────────────────────────────────────────────────────── */
+const app = {
+  storage: null,
+  generator: null,   // set by the desktop bridge; null => bank-only static mode
+  state: null,
+  current: null,     // question currently on screen
+  selected: null,
+  lastAnswer: null,  // {taskStatement, questionId, correct, at, prevWeight}
+  answeredThisSession: 0,
+  firstQuestionServed: false, // session's first question comes from the bank
+  exam: null,        // {form, index, answers, deadline, timerId} while a timed exam runs
+  progressPath: null, // absolute path the desktop bridge writes progress to
+  genFailStreak: 0,  // consecutive drill generator failures; drives #gen-banner
+};
+
+function validateImportedState(candidate) {
+  if (!candidate || typeof candidate !== "object") throw new Error("not an object");
+  if (candidate.version !== STATE_VERSION) {
+    throw new Error(`unsupported state version ${candidate.version}`);
+  }
+  const known = new Set(Object.keys(A.TASK_STATEMENTS));
+  for (const ts of Object.keys(candidate.weights || {})) {
+    if (!known.has(ts)) throw new Error(`unknown task statement ${ts}`);
+  }
+  return {
+    version: STATE_VERSION,
+    weights: A.makeSeedWeights(candidate.weights),
+    stats: {
+      totalAnswered: candidate.stats?.totalAnswered || 0,
+      totalCorrect: candidate.stats?.totalCorrect || 0,
+      totalFlagged: candidate.stats?.totalFlagged || 0,
+      perTask: candidate.stats?.perTask || {},
+    },
+    history: Array.isArray(candidate.history) ? candidate.history.slice(-A.HISTORY_LIMIT) : [],
+    seen: candidate.seen || {},
+    flagged: Array.isArray(candidate.flagged) ? candidate.flagged : [],
+    examHistory: Array.isArray(candidate.examHistory) ? candidate.examHistory : [],
+  };
+}
+
+async function persist() {
+  try {
+    await app.storage.save(app.state);
+  } catch (err) {
+    el("storage-note").textContent = `Could not save progress: ${err.message}`;
+    el("storage-note").classList.add("alert");
+  }
+}
+
+/* ── Question flow ──────────────────────────────────────────────────── */
+function drawNextFromBank() {
+  const availability = A.availabilityFromBank(BANK, app.state.flagged);
+  const ts = A.drawTaskStatement(app.state, { availability });
+  if (!ts) return null;
+  return A.pickBankQuestion(BANK, ts, app.state, {});
+}
+
+async function nextQuestion() {
+  el("btn-next").disabled = true; // debounce: no duplicate generation on double-click
+  try {
+    await advanceToNextQuestion();
+  } finally {
+    el("btn-next").disabled = false;
+  }
+}
+
+async function advanceToNextQuestion() {
+  let question = null;
+  let note = null;
+  // The session's first question comes from the unseen bank so the app starts
+  // instantly; generation covers everything after (prefetched at each reveal).
+  if (app.generator && app.firstQuestionServed) {
+    el("status-note").textContent = "Generating the next question…";
+    try {
+      question = await app.generator.take();
+      app.genFailStreak = 0;
+      el("gen-banner").hidden = true;
+    } catch (err) {
+      note = `Generation failed (${err.message}) — using the question bank instead.`;
+      app.genFailStreak += 1;
+      if (app.genFailStreak >= 2) {
+        el("gen-banner").hidden = false;
+        el("gen-banner").textContent = /limit|rate|usage|overload|429|quota/i.test(err.message)
+          ? "Live generation looks rate-limited — questions are coming from the reviewed bank for now. Try live generation again in a while."
+          : "Live generation is unavailable — questions are coming from the reviewed bank. It'll resume automatically when generation recovers.";
+      }
+    }
+  }
+  if (!question) {
+    question = drawNextFromBank();
+  }
+  if (!question && app.generator) {
+    try {
+      question = await app.generator.take();
+      note = null;
+      app.genFailStreak = 0;
+      el("gen-banner").hidden = true;
+    } catch (err) {
+      note = `Generation failed: ${err.message}`;
+    }
+  }
+  if (!question) {
+    el("q-scenario").textContent =
+      "No questions are available — the bank is empty or fully flagged. " +
+      "Reset progress or add questions via generate_bank.py.";
+    return;
+  }
+  app.firstQuestionServed = true;
+  renderQuestion(question);
+  if (note) el("status-note").textContent = note;
+}
+
+function renderQuestion(question) {
+  app.current = question;
+  app.selected = null;
+  app.lastAnswer = null;
+
+  el("q-task").textContent = question.taskStatement;
+  el("q-task-label").textContent =
+    `${A.DOMAINS[question.domain]} — ${A.TASK_STATEMENTS[question.taskStatement]}`;
+  el("q-scenario").textContent = question.scenario;
+  el("q-stem").textContent = question.question;
+  el("q-feedback").replaceChildren();
+  el("status-note").textContent = question.id ? "" : "Generated question";
+
+  const container = el("q-options");
+  container.replaceChildren();
+  for (const key of ["A", "B", "C", "D"]) {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.dataset.key = key;
+    const keySpan = document.createElement("span");
+    keySpan.className = "key";
+    keySpan.textContent = key;
+    const textSpan = document.createElement("span");
+    textSpan.textContent = question.options[key];
+    btn.append(keySpan, textSpan);
+    btn.addEventListener("click", () => {
+      app.selected = key;
+      container.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      el("btn-submit").disabled = false;
+    });
+    container.appendChild(btn);
+  }
+
+  el("btn-submit").hidden = false;
+  el("btn-submit").disabled = true;
+  el("btn-next").hidden = true;
+  el("btn-flag").hidden = true;
+
+  // Prefetch the NEXT question the moment this one appears, so the time spent
+  // reading the scenario, thinking, and answering is added to the generation
+  // budget — not just the seconds spent reading the explanation afterward.
+  // Tradeoff: the next task statement is drawn from weights as they stand now,
+  // before this question is graded, so its adaptive weighting is one answer
+  // stale. That is a deliberate exchange for hiding ~32s of generation.
+  if (app.generator && !app.exam) app.generator.prefetch();
+}
+
+/* ── Timed exam mode ────────────────────────────────────────────────── */
+const EXAM_READY_GATE = 10; // begin once the first N fresh questions exist
+const EXAM_GEN_WORKERS = 2; // concurrent claude calls; throttle-safe
+
+function startExam() {
+  el("setup-card").hidden = false;
+  el("setup-choice").hidden = false;
+  el("setup-progress").hidden = true;
+  el("question-card").hidden = true;
+  el("results-card").hidden = true;
+  el("gen-banner").hidden = true; // drill-only signal; don't let it bleed into exam mode
+  el("btn-exam-fresh").disabled = !app.bridge;
+  el("setup-fresh-note").textContent = app.bridge
+    ? "Fresh questions make ~60 Claude Code calls; the first ten take a few minutes to prepare."
+    : "Fresh questions need the desktop app with the Claude Code CLI. This page can run the bank exam.";
+}
+
+function closeExamSetup() {
+  if (app.freshPrep) app.freshPrep.cancelled = true;
+  app.freshPrep = null;
+  el("setup-card").hidden = true;
+  el("question-card").hidden = false;
+}
+
+function startBankExam() {
+  const form = A.drawExamForm(BANK, app.state, {});
+  if (!form) {
+    alert("The question bank cannot fill a full 60-question form right now.");
+    closeExamSetup();
+    return;
+  }
+  el("setup-card").hidden = true;
+  beginExam(form, null);
+}
+
+// Mirrors exam_lib.summarize_for_avoid so within-form generations diversify.
+function summarizeForAvoid(question) {
+  return (
+    `correct=${question.correct} | scenario: ${question.scenario.slice(0, 160)} ` +
+    `| correct because: ${question.explanations[question.correct].slice(0, 120)}`
+  );
+}
+
+function startFreshExam() {
+  const plan = A.drawExamStatements({});
+  const difficulties = A.examDifficultyPlan(); // 36 standard / 15 harder / 9 hard, spread
+  // CCAO-F items are standalone — there is no scenario-cluster structure to
+  // mirror — so personas rotate across all 60 slots purely for variety, rather
+  // than being sampled down to a subset the way an exam-structure draw would.
+  const personas = app.personas || [];
+  const assignments = plan.map((ts, i) => ({
+    ts,
+    persona: personas.length ? personas[i % personas.length] : null,
+    difficulty: difficulties[i],
+  }));
+  const prep = {
+    assignments,
+    buffer: new Array(assignments.length).fill(null),
+    failedSlots: new Set(),
+    nextSlot: 0,
+    done: 0,
+    cancelled: false,
+    summariesByTs: {},
+    examStarted: false,
+  };
+  app.freshPrep = prep;
+  el("setup-choice").hidden = true;
+  el("setup-progress").hidden = false;
+  el("btn-exam-begin").disabled = true;
+  updatePrepProgress(prep);
+  for (let w = 0; w < EXAM_GEN_WORKERS; w++) prepWorker(prep);
+}
+
+async function prepWorker(prep) {
+  while (!prep.cancelled && prep.nextSlot < prep.assignments.length) {
+    const slot = prep.nextSlot++;
+    const { ts, persona, difficulty } = prep.assignments[slot];
+    let question = null;
+    if (!prep.cancelled) {
+      try {
+        const extraAvoid = (prep.summariesByTs[ts] || []).slice();
+        const res = await app.bridge.generate(ts, extraAvoid, persona, difficulty);
+        if (res.error) throw new Error(res.detail || res.error);
+        question = res.question;
+      } catch {
+        /* single attempt; failure marks the slot for bank substitution */
+      }
+    }
+    if (prep.cancelled) return;
+    if (question) {
+      question.id = `gen-${slot}`;
+      question.ephemeral = true;
+      question.difficulty = difficulty; // stamp the intended tier for review/verification
+      prep.buffer[slot] = question;
+      (prep.summariesByTs[ts] = prep.summariesByTs[ts] || []).push(
+        summarizeForAvoid(question)
+      );
+    } else {
+      prep.failedSlots.add(slot);
+    }
+    prep.done += 1;
+    onPrepProgress(prep, slot);
+  }
+}
+
+function slotResolved(prep, slot) {
+  return prep.buffer[slot] !== null || prep.failedSlots.has(slot);
+}
+
+function onPrepProgress(prep, slot) {
+  // Case 1: still on the preparing screen.
+  if (!prep.examStarted) {
+    if (prep.failedSlots.size >= EXAM_READY_GATE && prep.done === prep.failedSlots.size) {
+      // Generation is entirely broken — nothing has succeeded yet.
+      prep.cancelled = true;
+      app.freshPrep = null;
+      el("setup-card").hidden = true;
+      el("question-card").hidden = false;
+      alert(
+        "Question generation is failing repeatedly — Claude Code may be " +
+        "unavailable. Try the bank exam instead."
+      );
+      return;
+    }
+    updatePrepProgress(prep);
+    return;
+  }
+  // Case 2: exam in flight. Keep the subtle ready counter fresh, and resume
+  // if the user is parked on the slot that just resolved.
+  const exam = app.exam;
+  if (!exam) return;
+  const generated = prep.buffer.filter(Boolean).length;
+  el("status-note").textContent =
+    prep.done < prep.assignments.length ? `Fresh questions ready: ${generated}/60` : "";
+  if (exam.waitingIndex === slot) {
+    exam.deadline += Date.now() - exam.waitingSince; // the pause costs nothing
+    exam.waitingIndex = null;
+    exam.waitingSince = null;
+    renderExamQuestion();
+  }
+}
+
+function updatePrepProgress(prep) {
+  const generated = prep.buffer.filter(Boolean).length;
+  el("setup-progress-fill").style.width = `${Math.round((100 * prep.done) / prep.assignments.length)}%`;
+  const gateResolved = prep.assignments
+    .slice(0, EXAM_READY_GATE)
+    .every((_, i) => slotResolved(prep, i));
+  el("setup-progress-text").textContent = gateResolved
+    ? `Ready to begin — ${generated} generated so far; the rest keep arriving during the exam.`
+    : `Generating fresh questions… ${generated} of ${prep.assignments.length} ready ` +
+      `(exam begins once the first ${EXAM_READY_GATE} are in).`;
+  el("btn-exam-begin").disabled = !gateResolved;
+}
+
+function beginFreshExam() {
+  const prep = app.freshPrep;
+  if (!prep) return;
+  prep.examStarted = true;
+  app.freshPrep = null;
+  el("setup-card").hidden = true;
+  beginExam(prep.buffer.slice(), prep); // sparse form, materialized on demand
+}
+
+function beginExam(form, prep) {
+  app.exam = {
+    form,
+    prep,
+    index: 0,
+    answers: {},
+    // Mark-for-review is exam-session only and never persisted: it is a
+    // navigation aid, unlike app.state.flagged which permanently discards a
+    // flawed bank question.
+    marked: {},
+    discounted: [],
+    // Timing is a parallel map keyed by question id, deliberately separate from
+    // `answers` (a bare letter per id) so the scoring functions that read
+    // `answers` are untouched. Values are CUMULATIVE DWELL TIME — total time the
+    // question was on screen across every visit, not time-to-first-answer —
+    // because backward navigation and review jumps can revisit any question.
+    elapsed: {},
+    dwellId: null,
+    dwellStart: null,
+    waitingIndex: null,
+    waitingSince: null,
+    recordedAt: null,
+    deadline: Date.now() + A.EXAM_MINUTES * 60 * 1000,
+    timerId: setInterval(renderExamTimer, 1000),
+  };
+  document.body.classList.add("exam-active");
+  el("exam-timer").hidden = false;
+  el("results-card").hidden = true;
+  el("exam-review-card").hidden = true;
+  el("question-card").hidden = false;
+  el("btn-abandon").hidden = false;
+  renderExamTimer();
+  renderExamQuestion();
+}
+
+// A generated slot that failed falls back to a bank question for the
+// same statement (same domain as last resort), never reusing a question
+// already on this form.
+function substituteFromBank(exam, slot) {
+  const ts = exam.prep.assignments[slot].ts;
+  const used = new Set(exam.form.filter(Boolean).map((q) => q.id));
+  const blocked = new Set(app.state.flagged);
+  const pool = BANK.filter((q) => !used.has(q.id) && !blocked.has(q.id));
+  const byStatement = pool.filter((q) => q.taskStatement === ts);
+  const byDomain = pool.filter((q) => q.domain === ts.split(".")[0]);
+  const pickFrom = byStatement.length ? byStatement : byDomain.length ? byDomain : pool;
+  const picked = pickFrom[Math.floor(Math.random() * pickFrom.length)];
+  return { ...picked, substituted: true };
+}
+
+function renderExamTimer() {
+  if (!app.exam) return;
+  // While waiting on generation the clock freezes at the pause moment.
+  const now = app.exam.waitingSince || Date.now();
+  const remaining = Math.max(0, app.exam.deadline - now);
+  const minutes = Math.floor(remaining / 60000);
+  const seconds = Math.floor((remaining % 60000) / 1000);
+  const timer = el("exam-timer");
+  timer.textContent =
+    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}` +
+    ` · Q ${app.exam.index + 1}/${app.exam.form.length}` +
+    (app.exam.waitingSince ? " · paused" : "");
+  timer.classList.toggle("low", remaining < 10 * 60 * 1000);
+  if (remaining <= 0) finishExam();
+}
+
+// ── Per-question dwell timing (diagnostic only) ──────────────────────────
+// Closes the open dwell segment and adds it to the question's cumulative
+// total. Safe to call repeatedly: it is a no-op with nothing open. A timing
+// failure must never block an answer, so everything here is best-effort.
+function accumulateExamDwell() {
+  const exam = app.exam;
+  if (!exam || !exam.dwellId || exam.dwellStart === null) return;
+  const delta = Date.now() - exam.dwellStart;
+  if (delta >= 0) {
+    const prior = exam.elapsed[exam.dwellId];
+    exam.elapsed[exam.dwellId] = (typeof prior === "number" ? prior : 0) + delta;
+  }
+  exam.dwellId = null;
+  exam.dwellStart = null;
+}
+
+// Opens a dwell segment for a question now on screen. Never called on the
+// generation-wait path, so a paused clock accrues no dwell — consistent with
+// the deadline refund in onPrepProgress.
+function startExamDwell(questionId) {
+  const exam = app.exam;
+  if (!exam || !questionId) return;
+  exam.dwellId = questionId;
+  exam.dwellStart = Date.now();
+}
+
+function renderExamQuestion() {
+  const exam = app.exam;
+  // Any question leaving the screen closes its segment first — this single
+  // call covers forward, backward, review-jump, and generation-wait paths.
+  accumulateExamDwell();
+  let question = exam.form[exam.index];
+  if (!question && exam.prep) {
+    if (exam.prep.buffer[exam.index]) {
+      question = exam.form[exam.index] = exam.prep.buffer[exam.index];
+    } else if (exam.prep.failedSlots.has(exam.index)) {
+      question = exam.form[exam.index] = substituteFromBank(exam, exam.index);
+    } else {
+      // The user outpaced the generator: park here with the clock frozen;
+      // onPrepProgress resumes the moment this slot resolves.
+      exam.waitingIndex = exam.index;
+      exam.waitingSince = Date.now();
+      el("q-task").textContent = `Question ${exam.index + 1} of ${exam.form.length}`;
+      el("q-task-label").textContent = "";
+      el("q-scenario").textContent =
+        "Generating this question — the clock is paused…";
+      el("q-stem").textContent = "";
+      el("q-options").replaceChildren();
+      el("btn-submit").hidden = true;
+      // Skip and mark must not survive from the previous question's render.
+      // Skipping from here would outrun the generator and silently convert a
+      // fresh-question exam into bank substitutes, and there is no stable
+      // question id to mark yet. The clock is paused, so waiting costs nothing.
+      el("btn-exam-skip").hidden = true;
+      el("btn-exam-mark").hidden = true;
+      renderExamTimer();
+      return;
+    }
+  }
+  app.current = question;
+  app.selected = null;
+  // No task-statement tag during the exam — the real exam doesn't label questions.
+  el("q-task").textContent = `Question ${app.exam.index + 1} of ${app.exam.form.length}`;
+  el("q-task-label").textContent = "";
+  el("q-scenario").textContent = question.scenario;
+  el("q-stem").textContent = question.question;
+  el("q-feedback").replaceChildren();
+  el("status-note").textContent = "";
+
+  const container = el("q-options");
+  container.replaceChildren();
+  for (const key of ["A", "B", "C", "D"]) {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.dataset.key = key;
+    const keySpan = document.createElement("span");
+    keySpan.className = "key";
+    keySpan.textContent = key;
+    const textSpan = document.createElement("span");
+    textSpan.textContent = question.options[key];
+    btn.append(keySpan, textSpan);
+    btn.addEventListener("click", () => {
+      app.selected = key;
+      container.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      el("btn-submit").disabled = false;
+    });
+    container.appendChild(btn);
+  }
+  // Pre-select the committed answer when revisiting (backward nav / review jump).
+  const committed = app.exam.answers[question.id];
+  if (committed) {
+    app.selected = committed;
+    const btn = container.querySelector(`.option[data-key="${committed}"]`);
+    if (btn) btn.classList.add("selected");
+  }
+  startExamDwell(question.id); // question is now on screen
+  const isLast = app.exam.index + 1 === app.exam.form.length;
+  el("btn-submit").hidden = false;
+  el("btn-submit").disabled = !app.selected; // committing still needs a choice
+  el("btn-submit").textContent = isLast ? "Answer & review" : "Answer & continue";
+  el("btn-exam-prev").hidden = app.exam.index === 0;
+  // Skipping is allowed: the real exam lets a candidate leave a question blank,
+  // move on, and come back. So this is always available, answered or not.
+  el("btn-exam-skip").hidden = false;
+  el("btn-exam-skip").textContent = isLast ? "Skip → review" : "Skip →";
+  // Mark for review is exam-session state, deliberately distinct from the
+  // practice-mode "Flag — don't count this question" button (which discards a
+  // flawed bank question permanently). btn-flag stays hidden during the exam.
+  el("btn-exam-mark").hidden = false;
+  el("btn-exam-mark").textContent = examIsMarked(question.id)
+    ? "✓ Marked for review"
+    : "Mark for review";
+  // Reachable at any time now that blanks are legal — it's how you find them.
+  el("btn-exam-review").hidden = false;
+  el("btn-next").hidden = true;
+  el("btn-flag").hidden = true;
+  el("btn-abandon").hidden = false;
+  renderExamTimer();
+}
+
+// Progress over the current form, tolerant of slots still materializing from
+// prep.buffer. Delegates to the tested pure helpers in adaptive.js.
+function examProgressNow() {
+  return A.nav.examProgress(
+    app.exam.form,
+    app.exam.answers,
+    app.exam.marked,
+    app.exam.prep,
+  );
+}
+
+function examIsMarked(id) {
+  return !!(app.exam && app.exam.marked && app.exam.marked[id]);
+}
+
+function toggleExamMark() {
+  if (!app.exam) return;
+  const q = app.exam.form[app.exam.index];
+  const id = q ? q.id : A.nav.resolveFormIds(app.exam.form, app.exam.prep)[app.exam.index];
+  if (!id) return; // slot still loading — nothing stable to mark yet
+  app.exam.marked = A.nav.toggleMarked(app.exam.marked, id);
+  el("btn-exam-mark").textContent = examIsMarked(id)
+    ? "✓ Marked for review"
+    : "Mark for review";
+}
+
+function commitCurrentExamAnswer() {
+  const q = app.exam.form[app.exam.index];
+  if (q && app.selected) app.exam.answers[q.id] = app.selected;
+}
+
+function examAnswer() {
+  if (!app.selected) return; // committing needs a choice; use Skip to leave blank
+  commitCurrentExamAnswer();
+  examAdvance();
+}
+
+// Move on without committing an answer. The question stays blank and shows up
+// on the review grid so it can be found and answered later.
+function examSkip() {
+  if (!app.exam) return;
+  // Defence in depth for the generation-wait screen: renderExamQuestion hides
+  // this button there, but a keyboard auto-repeat can still land a click. Never
+  // advance off a slot whose question hasn't resolved.
+  if (!A.nav.slotIsResolved(app.exam.form, app.exam.prep, app.exam.index)) return;
+  commitCurrentExamAnswer(); // keep an in-progress change if one was made
+  examAdvance();
+}
+
+function examAdvance() {
+  if (app.exam.index + 1 < app.exam.form.length) {
+    app.exam.index += 1;
+    renderExamQuestion();
+  } else {
+    openExamReview(); // end of the form → review, never immediate scoring
+  }
+}
+
+function examPrevious() {
+  if (app.exam.index === 0) return;
+  commitCurrentExamAnswer(); // don't lose an in-progress change
+  app.exam.index -= 1;
+  renderExamQuestion();
+}
+
+function openExamReview() {
+  commitCurrentExamAnswer();
+  accumulateExamDwell(); // the question leaves the screen for the review grid
+  el("question-card").hidden = true;
+  el("exam-review-card").hidden = false;
+  const list = el("exam-review-list");
+  list.replaceChildren();
+  const progress = examProgressNow();
+  const blanks = new Set(progress.unanswered);
+  const marked = new Set(progress.marked);
+  const parts = [`${progress.answered} of ${progress.total} answered`];
+  if (progress.unanswered.length) parts.push(`${progress.unanswered.length} skipped`);
+  if (progress.marked.length) parts.push(`${progress.marked.length} marked for review`);
+  el("exam-review-summary").textContent = parts.join(" · ");
+  el("btn-exam-next-blank").hidden = progress.complete;
+
+  const grid = document.createElement("div");
+  grid.className = "review-grid";
+  // Iterate resolved ids, not form entries: with skipping allowed the review
+  // screen is reachable while a slot is still materializing, so form[i] can be
+  // undefined here. Reading q.id directly would throw.
+  A.nav.resolveFormIds(app.exam.form, app.exam.prep).forEach((id, i) => {
+    const chip = document.createElement("button");
+    chip.className = "review-chip";
+    if (blanks.has(i)) chip.classList.add("is-blank");
+    if (marked.has(i)) chip.classList.add("is-marked");
+    const qn = document.createElement("span");
+    qn.className = "qn";
+    qn.textContent = `Q${i + 1}`;
+    const ans = document.createElement("span");
+    ans.className = "ans";
+    const committed = id === null ? undefined : app.exam.answers[id];
+    ans.textContent = "  " + (committed === undefined ? "—" : committed);
+    chip.append(qn, ans);
+    if (marked.has(i)) {
+      const star = document.createElement("span");
+      star.className = "mark";
+      star.textContent = " ★";
+      chip.appendChild(star);
+    }
+    // State is conveyed by border style and a star, so it does not depend on
+    // colour alone; the label carries it for screen readers too.
+    chip.setAttribute(
+      "aria-label",
+      `Question ${i + 1}, ` +
+        (committed === undefined ? "unanswered" : `answered ${committed}`) +
+        (marked.has(i) ? ", marked for review" : ""),
+    );
+    chip.addEventListener("click", () => jumpToExamQuestion(i));
+    grid.appendChild(chip);
+  });
+  list.appendChild(grid);
+  renderExamTimer();
+}
+
+function goToNextUnanswered() {
+  if (!app.exam) return;
+  const i = A.nav.nextUnansweredFrom(
+    app.exam.index,
+    app.exam.form,
+    app.exam.answers,
+    app.exam.prep,
+  );
+  if (i === null) return;
+  jumpToExamQuestion(i);
+}
+
+function jumpToExamQuestion(i) {
+  el("exam-review-card").hidden = true;
+  el("question-card").hidden = false;
+  app.exam.index = i;
+  renderExamQuestion();
+}
+
+// Final submit from the review screen — the only path to scoring besides clock
+// expiry. Blanks are legal now that skipping is allowed, so the old "every
+// question is answered by construction" invariant is gone: warn before scoring.
+function submitExam() {
+  if (!app.exam) return;
+  const progress = examProgressNow();
+  if (A.nav.needsSubmitConfirmation(app.exam.form, app.exam.answers, app.exam.prep)) {
+    const n = progress.unanswered.length;
+    const ok = confirm(
+      `${n} question${n === 1 ? "" : "s"} still unanswered. ` +
+        `Unanswered questions are scored as incorrect. Submit anyway?`,
+    );
+    if (!ok) return;
+  }
+  finishExam();
+}
+
+async function finishExam() {
+  const exam = app.exam;
+  if (!exam) return;
+  // Clock expiry can land here with a question still on screen; flush before
+  // app.exam is cleared or that final segment is lost.
+  accumulateExamDwell();
+  clearInterval(exam.timerId);
+  app.exam = null;
+  if (exam.prep) {
+    exam.prep.cancelled = true; // stop background generation
+    for (let i = 0; i < exam.form.length; i++) {
+      // Slots never reached (time expired) still need real questions to
+      // score against — unanswered counts as wrong either way.
+      if (!exam.form[i]) exam.form[i] = exam.prep.buffer[i] || substituteFromBank(exam, i);
+    }
+  }
+  const at = Date.now();
+  exam.recordedAt = at;
+  // Run-level total only (nothing discounted yet at finish time); per-question
+  // times stay in-memory for this results screen.
+  const runTiming = A.summarizeExamTiming(exam.form, exam.answers, exam.elapsed, []);
+  A.applyExamResults(
+    app.state, exam.form, exam.answers, at,
+    runTiming.counted ? runTiming.totalMs : null
+  ); // stores the raw score
+  await persist();
+  renderResults(exam);
+  renderDashboard();
+}
+
+function abandonExam() {
+  if (!app.exam) return;
+  const ok = confirm("End this exam without scoring? The attempt is discarded entirely.");
+  if (!ok) return;
+  clearInterval(app.exam.timerId);
+  if (app.exam.prep) app.exam.prep.cancelled = true;
+  app.exam = null;
+  el("status-note").textContent = "";
+  exitExamLayout();
+  nextQuestion();
+}
+
+// Restores the normal (drill) chrome: sidebar, timer off, button labels.
+// Card visibility is the caller's business — results stay up after a finish.
+function exitExamLayout() {
+  document.body.classList.remove("exam-active");
+  el("exam-timer").hidden = true;
+  el("btn-abandon").hidden = true;
+  el("btn-exam-prev").hidden = true;
+  el("btn-exam-review").hidden = true;
+  el("btn-exam-skip").hidden = true;
+  el("btn-exam-mark").hidden = true;
+  el("exam-review-card").hidden = true;
+  el("btn-submit").textContent = "Submit answer";
+}
+
+// Compact durations for the review rows and timing summary: "1m 12s" / "48s".
+// null/absent timing renders as an em dash, never NaN.
+function formatDuration(ms) {
+  if (typeof ms !== "number" || !isFinite(ms)) return "—";
+  const total = Math.max(0, Math.round(ms / 1000));
+  const minutes = Math.floor(total / 60);
+  const seconds = total % 60;
+  return minutes ? `${minutes}m ${seconds}s` : `${seconds}s`;
+}
+
+function renderResults(exam) {
+  exitExamLayout(); // sidebar returns alongside results — weak spots now reflect the exam
+  el("question-card").hidden = true;
+  el("exam-review-card").hidden = true;
+  el("results-card").hidden = false;
+
+  // Raw is the headline and is never inflated by discounts — it's what persists
+  // to examHistory as the readiness signal. Post-discount is shown beside it
+  // (never instead of it) only when the user has discounted flawed questions.
+  const raw = A.scoreExam(exam.form, exam.answers);
+  const discounted = exam.discounted.length
+    ? A.discountedScore(exam.form, exam.answers, exam.discounted)
+    : null;
+
+  el("r-scaled").textContent = String(raw.scaled);
+  const verdict = document.createElement("span");
+  verdict.className = `verdict-chip ${raw.passed ? "pass" : "fail"}`;
+  verdict.textContent = raw.passed
+    ? `Pass · ${A.PASSING_SCALED_SCORE} needed`
+    : `Below the ${A.PASSING_SCALED_SCORE} passing score`;
+  el("r-verdict").replaceChildren(verdict);
+  el("r-raw").textContent = `raw estimate · ${raw.correct} of ${raw.total} correct (no discounts)`;
+
+  // Secondary, clearly-labeled post-discount estimate — the raw number above
+  // always stays visible so a discount can't quietly inflate the signal.
+  let secondary = el("r-secondary");
+  if (!secondary) {
+    secondary = document.createElement("div");
+    secondary.id = "r-secondary";
+    secondary.className = "score-secondary";
+    el("r-raw").after(secondary);
+  }
+  if (discounted) {
+    secondary.hidden = false;
+    secondary.textContent =
+      `Post-discount estimate: ${discounted.scaled} ` +
+      `(${raw.passed ? "was pass" : "was below"} → ${discounted.passed ? "pass" : "below"}) — ` +
+      `${exam.discounted.length} flawed question(s) removed, scored ` +
+      `${discounted.correct} of ${discounted.total}. The raw estimate above is the ` +
+      `persisted readiness signal and is unchanged.`;
+  } else {
+    secondary.hidden = true;
+  }
+
+  // Disclosure for bank-substituted slots (live generation failed for them) —
+  // distinct from the raw and post-discount lines above.
+  let substituted = el("r-substituted");
+  if (!substituted) {
+    substituted = document.createElement("div");
+    substituted.id = "r-substituted";
+    substituted.className = "score-secondary";
+    secondary.after(substituted);
+  }
+  const subCount = exam.form.filter((q) => q && q.substituted).length;
+  if (subCount > 0) {
+    substituted.hidden = false;
+    substituted.textContent =
+      `${subCount} of ${exam.form.length} questions came from the bank — live generation failed ` +
+      `for those, so their difficulty was standard rather than the exam's harder/hard-tail spread. ` +
+      `This run therefore ran easier than a full live exam; treat the score as a floor on your ` +
+      `readiness, not a clean signal.`;
+  } else {
+    substituted.hidden = true;
+  }
+
+  // Timing summary — diagnostic only, and excluded-question handling matches
+  // discountedScore. Created lazily because renderResults re-runs on every
+  // discount click (same idiom as #r-secondary / #r-substituted above).
+  let timing = el("r-timing");
+  if (!timing) {
+    timing = document.createElement("div");
+    timing.id = "r-timing";
+    timing.className = "score-secondary timing-summary";
+    substituted.after(timing);
+  }
+  const t = A.summarizeExamTiming(exam.form, exam.answers, exam.elapsed, exam.discounted);
+  timing.replaceChildren();
+  if (t.counted) {
+    const grid = document.createElement("div");
+    grid.className = "timing-grid";
+    const rows = [
+      ["Total time", formatDuration(t.totalMs)],
+      ["Mean per question", formatDuration(t.meanMs)],
+      ["Mean when correct", formatDuration(t.meanCorrectMs)],
+      ["Mean when incorrect", formatDuration(t.meanIncorrectMs)],
+      [`Misses under ${Math.round(A.FAST_INCORRECT_MS / 1000)}s`, String(t.fastIncorrect)],
+    ];
+    for (const [label, value] of rows) {
+      const cell = document.createElement("div");
+      cell.appendChild(document.createTextNode(`${label}: `));
+      const val = document.createElement("span");
+      val.className = "tv";
+      val.textContent = value;
+      cell.appendChild(val);
+      grid.appendChild(cell);
+    }
+    const caption = document.createElement("div");
+    caption.className = "note";
+    caption.style.marginTop = "6px";
+    caption.textContent =
+      "Timing is diagnostic only; it does not affect scoring." +
+      (t.untimed ? ` ${t.untimed} question(s) had no timing recorded.` : "");
+    timing.append(grid, caption);
+    timing.hidden = false;
+  } else {
+    timing.hidden = true; // no timing data (e.g. an imported or pre-timing run)
+  }
+
+  const domains = el("r-domains");
+  domains.replaceChildren();
+  for (const [domain, counts] of Object.entries(raw.byDomain)) {
+    const pct = Math.round((100 * counts.correct) / counts.total);
+    const row = document.createElement("div");
+    row.className = "domain-bar";
+    const text = document.createElement("div");
+    text.textContent = `${domain} · ${A.DOMAINS[domain]} — ${counts.correct}/${counts.total}`;
+    const track = document.createElement("div");
+    track.className = "track";
+    const fill = document.createElement("div");
+    fill.className = "fill";
+    fill.style.width = `${pct}%`;
+    track.appendChild(fill);
+    row.append(text, track);
+    domains.appendChild(row);
+  }
+
+  const review = el("r-review");
+  review.replaceChildren();
+  exam.form.forEach((question, i) => {
+    const chosen = exam.answers[question.id];
+    const good = chosen === question.correct;
+    const discounted = exam.discounted.includes(question.id);
+    const item = document.createElement("details");
+    item.className = "review-item";
+    const summary = document.createElement("summary");
+    const mark = document.createElement("span");
+    mark.className = `mark ${good ? "good" : "bad"}`;
+    mark.textContent = good ? "✓" : "✗";
+    const source =
+      (question.ephemeral ? " · generated live" : "") +
+      (question.substituted ? " · bank substitute" : "") +
+      (discounted ? " · DISCOUNTED" : "");
+    summary.append(
+      mark,
+      document.createTextNode(
+        ` Q${i + 1} · ${question.taskStatement}${source} — ` +
+        (good ? `correct (${question.correct})` :
+          `your answer ${chosen || "—"}, correct ${question.correct}`)
+      )
+    );
+    // Cumulative dwell time, visually secondary to the mark and labels above.
+    const qTime = document.createElement("span");
+    qTime.className = "q-time";
+    qTime.textContent = `  · ${formatDuration(exam.elapsed[question.id])}`;
+    summary.appendChild(qTime);
+    item.appendChild(summary);
+    if (!discounted) {
+      const flagBtn = document.createElement("button");
+      flagBtn.className = "ghost";
+      flagBtn.style.margin = "8px 0";
+      flagBtn.textContent = "Flag as flawed — discount from score";
+      flagBtn.addEventListener("click", async () => {
+        exam.discounted.push(question.id);
+        if (!question.ephemeral && !app.state.flagged.includes(question.id)) {
+          app.state.flagged.push(question.id); // flawed bank questions never return
+        }
+        // examHistory keeps the RAW scaled score — discounting is a review-time
+        // view, never a quiet rewrite of the persisted readiness signal.
+        await persist();
+        renderResults(exam);
+        renderDashboard();
+      });
+      item.appendChild(flagBtn);
+    }
+    const scenario = document.createElement("div");
+    scenario.className = "scenario";
+    scenario.textContent = question.scenario;
+    const stem = document.createElement("div");
+    stem.className = "stem";
+    stem.textContent = question.question;
+    item.append(scenario, stem);
+    for (const key of ["A", "B", "C", "D"]) {
+      const line = document.createElement("div");
+      line.className = "explanation" + (key === question.correct ? " correct-line" : "");
+      const keySpan = document.createElement("span");
+      keySpan.className = "key";
+      const markers =
+        (key === chosen ? " (your answer)" : "");
+      keySpan.textContent = `${key}${markers} — `;
+      line.appendChild(keySpan);
+      line.appendChild(
+        document.createTextNode(`${question.options[key]} · ${question.explanations[key]}`)
+      );
+      item.appendChild(line);
+    }
+    review.appendChild(item);
+  });
+}
+
+async function returnToPractice() {
+  el("results-card").hidden = true;
+  el("question-card").hidden = false;
+  await nextQuestion();
+}
+
+async function submitAnswer() {
+  if (app.exam) {
+    examAnswer();
+    return;
+  }
+  if (!app.selected || !app.current) return;
+  const question = app.current;
+  const correct = app.selected === question.correct;
+  const prevWeight = app.state.weights[question.taskStatement];
+  // Bank questions are standard tier; generated ones carry their stamped tier.
+  const difficulty = question.difficulty === "hard" ? "hard" : "standard";
+  const answer = {
+    taskStatement: question.taskStatement,
+    questionId: question.id || null,
+    correct,
+    at: Date.now(),
+    prevWeight,
+    difficulty,
+  };
+  A.applyAnswer(app.state, answer);
+  app.lastAnswer = answer;
+  app.answeredThisSession += 1;
+  await persist();
+
+  // Reveal
+  el("q-options").querySelectorAll(".option").forEach((btn) => {
+    btn.disabled = true;
+    if (btn.dataset.key === question.correct) btn.classList.add("reveal-correct");
+    else if (btn.dataset.key === app.selected) btn.classList.add("reveal-wrong");
+  });
+
+  const feedback = el("q-feedback");
+  feedback.replaceChildren();
+  const verdict = document.createElement("div");
+  verdict.className = `verdict ${correct ? "good" : "bad"}`;
+  const tierSuffix = difficulty === "hard" ? "  ·  HARD variant" : "";
+  verdict.textContent =
+    (correct ? "Correct." : `Incorrect — the right answer is ${question.correct}.`) +
+    tierSuffix;
+  feedback.appendChild(verdict);
+  for (const key of ["A", "B", "C", "D"]) {
+    const line = document.createElement("div");
+    line.className = "explanation" + (key === question.correct ? " correct-line" : "");
+    const keySpan = document.createElement("span");
+    keySpan.className = "key";
+    keySpan.textContent = `${key} — `;
+    line.appendChild(keySpan);
+    line.appendChild(document.createTextNode(question.explanations[key]));
+    feedback.appendChild(line);
+  }
+
+  el("btn-submit").hidden = true;
+  el("btn-next").hidden = false;
+  el("btn-flag").hidden = false;
+  renderDashboard();
+
+  // Safety net: if prefetch was skipped or reset since this question rendered,
+  // (re)start it now so "Next" still has a head start. No-op when one is
+  // already in flight (the generator guards against double-starting).
+  if (app.generator) app.generator.prefetch();
+}
+
+async function flagQuestion() {
+  if (!app.lastAnswer) return;
+  A.applyFlag(app.state, app.lastAnswer);
+  app.lastAnswer = null;
+  app.answeredThisSession -= 1;
+  await persist();
+  el("btn-flag").hidden = true;
+  el("status-note").textContent =
+    "Flagged and discarded. This question didn't affect your weights or accuracy.";
+  renderDashboard();
+}
+
+/* ── Dashboard ──────────────────────────────────────────────────────── */
+function renderDashboard() {
+  const stats = app.state.stats;
+  el("d-accuracy").textContent = stats.totalAnswered
+    ? `${Math.round((100 * stats.totalCorrect) / stats.totalAnswered)}%`
+    : "—";
+  el("d-answered").textContent = String(stats.totalAnswered);
+  el("d-flagged").textContent = String(stats.totalFlagged);
+  el("session-counter").textContent =
+    `${app.answeredThisSession} this session · ${stats.totalAnswered} all time`;
+
+  const domains = el("d-domains");
+  domains.replaceChildren();
+  for (const [domain, label] of Object.entries(A.DOMAINS)) {
+    let seen = 0, right = 0;
+    for (const [ts, counts] of Object.entries(stats.perTask)) {
+      if (ts.startsWith(domain + ".")) { seen += counts.seen; right += counts.correct; }
+    }
+    const pct = seen ? Math.round((100 * right) / seen) : 0;
+    const row = document.createElement("div");
+    row.className = "domain-bar";
+    const text = document.createElement("div");
+    text.textContent = `${domain} · ${label} ${seen ? `— ${pct}% of ${seen}` : "— no data"}`;
+    const track = document.createElement("div");
+    track.className = "track";
+    const fill = document.createElement("div");
+    fill.className = "fill";
+    fill.style.width = `${pct}%`;
+    track.appendChild(fill);
+    row.append(text, track);
+    domains.appendChild(row);
+  }
+
+  const weak = el("d-weak");
+  weak.replaceChildren();
+  const top = Object.entries(app.state.weights)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+  for (const [ts, weight] of top) {
+    const item = document.createElement("div");
+    item.className = "weak-item";
+    const tsSpan = document.createElement("span");
+    tsSpan.className = "ts";
+    tsSpan.textContent = ts;
+    const labelSpan = document.createElement("span");
+    labelSpan.className = "label";
+    labelSpan.textContent = A.TASK_STATEMENTS[ts];
+    const weightSpan = document.createElement("span");
+    weightSpan.className = "w";
+    weightSpan.textContent = weight.toFixed(2);
+    item.append(tsSpan, labelSpan, weightSpan);
+    weak.appendChild(item);
+  }
+}
+
+/* ── Data controls ──────────────────────────────────────────────────── */
+function exportProgress() {
+  if (app.storage.kind === "file") {
+    // Desktop app: the progress file on disk already IS the export. Name the
+    // real path the bridge reported (the packaged app writes to a user-data
+    // directory, not the repo).
+    const path = app.progressPath || "the app's progress file";
+    alert(
+      `Your progress is already a plain file:\n${path}\n\n` +
+      "Copy that file to move or back up your progress."
+    );
+    return;
+  }
+  const payload = JSON.stringify(
+    { app: "ccaof-local", exportedAt: new Date().toISOString(), ...app.state },
+    null,
+    2
+  );
+  const blob = new Blob([payload], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `ccaof-progress-${new Date().toISOString().slice(0, 10)}.json`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+async function importProgress(file) {
+  try {
+    const imported = validateImportedState(JSON.parse(await file.text()));
+    const ok = confirm(
+      "Importing replaces your current progress (weights, history, accuracy). Continue?"
+    );
+    if (!ok) return;
+    app.state = imported;
+    await persist();
+    renderDashboard();
+    await nextQuestion();
+  } catch (err) {
+    alert(`Could not import this file: ${err.message}`);
+  }
+}
+
+async function blankSlate() {
+  const ok = confirm(
+    "Set every task statement's weight back to 1.0? Your accuracy history is kept."
+  );
+  if (!ok) return;
+  app.state.weights = A.makeSeedWeights({});
+  await persist();
+  renderDashboard();
+}
+
+async function resetEverything() {
+  const ok = confirm(
+    "Reset ALL progress — weights, accuracy, history — back to the seed? This cannot be undone."
+  );
+  if (!ok) return;
+  app.state = A.initialState(CCAOF_SEED);
+  app.answeredThisSession = 0;
+  await persist();
+  renderDashboard();
+  await nextQuestion();
+}
+
+/* ── Init ───────────────────────────────────────────────────────────── */
+function renderModeBadge() {
+  const badge = el("mode-badge");
+  badge.classList.remove("dynamic");
+  if (app.generator) {
+    badge.textContent = "Live generation · Claude Code";
+    badge.classList.add("dynamic");
+  } else if (app.storage && app.storage.kind === "file") {
+    badge.textContent = `Desktop · bank of ${BANK.length} (Claude Code CLI not found)`;
+  } else {
+    badge.textContent = `Question bank · ${BANK.length} questions`;
+  }
+}
+
+/* The desktop app loads this page with a #desktop fragment, so init waits
+   for the bridge BEFORE the first draw — state always comes from the
+   progress file first and an early answer can never be clobbered by an
+   in-flight load. Without the fragment (plain page), init proceeds
+   immediately and watchForBridge remains as a defensive upgrade path. */
+async function enableBridge(bridge) {
+  // Ask the bridge where it actually writes progress (differs between the
+  // repo checkout and the packaged app) so the UI can name the real path.
+  let health = null;
+  try {
+    health = await bridge.health();
+  } catch {
+    health = null;
+  }
+  app.progressPath = (health && health.progressPath) || null;
+  const progressLabel = app.progressPath || "the app's progress file";
+
+  // Upgrade-path guard: if the user already answered this session (only
+  // possible via the hash-less fallback), keep the in-memory state — adding
+  // the generator is safe, swapping storage lineages mid-session is not.
+  if (app.answeredThisSession === 0) {
+    app.storage = makeBridgeStorageBackend(bridge);
+    el("storage-note").textContent = `Progress file: ${progressLabel}`;
+    el("storage-note").classList.remove("alert");
+    try {
+      const stored = await app.storage.load();
+      if (stored) {
+        app.state = validateImportedState(stored);
+      } else {
+        app.state = app.state || A.initialState(CCAOF_SEED);
+        await persist(); // adopt the fresh seed state into the progress file
+      }
+    } catch (err) {
+      el("storage-note").textContent = `Could not read the progress file: ${err.message}`;
+      el("storage-note").classList.add("alert");
+    }
+  }
+  try {
+    if (health && health.claude === "available") {
+      app.generator = makeClaudeGenerator(bridge);
+      app.bridge = bridge; // raw bridge: fresh-exam generation calls it directly
+      app.personas = health.personas || [];
+    }
+  } catch {
+    app.generator = null;
+    app.bridge = null;
+  }
+  renderModeBadge();
+  if (app.state) renderDashboard();
+}
+
+function waitForBridge(timeoutMs) {
+  if (window.pywebview && window.pywebview.api) {
+    return Promise.resolve(window.pywebview.api);
+  }
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => resolve(null), timeoutMs);
+    window.addEventListener(
+      "pywebviewready",
+      () => {
+        clearTimeout(timer);
+        resolve(window.pywebview.api);
+      },
+      { once: true }
+    );
+  });
+}
+
+function watchForBridge() {
+  if (window.pywebview && window.pywebview.api) {
+    enableBridge(window.pywebview.api);
+    return;
+  }
+  window.addEventListener(
+    "pywebviewready",
+    () => enableBridge(window.pywebview.api),
+    { once: true }
+  );
+}
+
+async function init() {
+  if (window.location.hash === "#desktop") {
+    // Launched by exam_app.py: block on the bridge (bounded, in case the
+    // file was opened in a plain browser with the fragment by accident).
+    const bridge = await waitForBridge(4000);
+    if (bridge) await enableBridge(bridge);
+  }
+
+  if (!app.storage) {
+    try {
+      app.storage = makeLocalStorageBackend();
+    } catch {
+      app.storage = makeMemoryBackend();
+      el("storage-note").textContent =
+        "Browser storage is unavailable here — progress lasts only for this session. " +
+        "Use Export before closing, or run the desktop app.";
+      el("storage-note").classList.add("alert");
+    }
+
+    let stored = null;
+    try {
+      stored = await app.storage.load();
+    } catch {
+      stored = null;
+    }
+    app.state = stored ? validateImportedState(stored) : A.initialState(CCAOF_SEED);
+
+    renderModeBadge();
+    watchForBridge(); // after app.state exists — enableBridge persists/replaces it
+  }
+
+  el("btn-submit").addEventListener("click", submitAnswer);
+  el("btn-next").addEventListener("click", nextQuestion);
+  el("btn-flag").addEventListener("click", flagQuestion);
+  el("btn-exam").addEventListener("click", startExam);
+  el("btn-exam-fresh").addEventListener("click", startFreshExam);
+  el("btn-exam-bank").addEventListener("click", startBankExam);
+  el("btn-exam-cancel").addEventListener("click", closeExamSetup);
+  el("btn-exam-begin").addEventListener("click", beginFreshExam);
+  el("btn-exam-abort").addEventListener("click", closeExamSetup);
+  el("btn-abandon").addEventListener("click", abandonExam);
+  el("btn-exam-prev").addEventListener("click", examPrevious);
+  el("btn-exam-skip").addEventListener("click", examSkip);
+  el("btn-exam-mark").addEventListener("click", toggleExamMark);
+  el("btn-exam-review").addEventListener("click", openExamReview);
+  el("btn-exam-next-blank").addEventListener("click", goToNextUnanswered);
+  el("btn-exam-submit").addEventListener("click", submitExam);
+  el("btn-exam-back").addEventListener("click", () => jumpToExamQuestion(app.exam ? app.exam.index : 0));
+  el("btn-return").addEventListener("click", returnToPractice);
+  window.addEventListener("beforeunload", (event) => {
+    if (app.exam || app.freshPrep) event.preventDefault(); // attempts and prep are in-memory only
+  });
+  el("btn-export").addEventListener("click", exportProgress);
+  el("btn-import").addEventListener("click", () => el("import-file").click());
+  el("import-file").addEventListener("change", (event) => {
+    if (event.target.files[0]) importProgress(event.target.files[0]);
+    event.target.value = "";
+  });
+  el("btn-blank").addEventListener("click", blankSlate);
+  el("btn-reset").addEventListener("click", resetEverything);
+
+  renderDashboard();
+  await nextQuestion();
+}
+
+init();
+</script>
+</body>
+</html>

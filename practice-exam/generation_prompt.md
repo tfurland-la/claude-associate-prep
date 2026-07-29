@@ -1,0 +1,64 @@
+You are generating one practice question for the Claude Certified Associate –
+Foundations (CCAO-F) exam. Produce a single scenario-based multiple-choice
+question targeting exactly this task statement:
+
+- Task statement: {{TASK_ID}} — {{TASK_LABEL}}
+- Domain: {{DOMAIN_ID}} — {{DOMAIN_LABEL}}
+
+Requirements:
+
+- Write a realistic workplace scenario (1-2 short paragraphs) about someone using
+  Claude as a productivity tool in an ordinary business workflow — drafting,
+  summarizing, analyzing, researching, reviewing, or configuring a Claude Project.
+- **The person in the scenario is not a developer.** This credential is
+  explicitly not intended for people who build against APIs or design agentic
+  systems, and assumes no software-development or API experience. So do NOT write
+  scenarios about the Claude Agent SDK, agentic loops, MCP servers, tool schemas,
+  CI/CD pipelines, JSON-schema validation, or writing code. The judgment being
+  tested is business judgment: which feature to use, whether to trust an output,
+  when to escalate, what the policy allows.
+- Stay inside the product surface a non-technical user actually touches: chat,
+  Projects (custom instructions and knowledge sources), Artifacts, research mode,
+  Memory, Skills, Code Execution, connectors such as Google Drive and Gmail, and
+  the Haiku/Sonnet/Opus model choice.
+{{PERSONA}}
+- Provide exactly one correct answer and three plausible distractors. The
+  distractors must represent the kinds of mistakes a candidate with incomplete
+  knowledge would make.
+  (The real exam also has multiple-response items. Support for them is not built
+  yet, so generate single-answer items only — do not emit an item that expects
+  more than one selection.)
+- Provide an explanation of why the correct answer is right and why each
+  distractor is wrong.
+{{DIFFICULTY}}- You are NOT to invent specific technical facts — flag names, environment
+  variables, configuration behaviors, or claims about how a feature depends on
+  configuration or deployment — unless grounded in the documented CCAO-F exam
+  content provided in this prompt (the task statement descriptions and the
+  example questions below). If an explanation needs a technical detail to
+  justify why an option is correct or incorrect, it must use only facts
+  established in the provided exam content rather than fabricating
+  plausible-sounding specifics. When in doubt, prefer an explanation grounded
+  in the exam's stated principles (e.g., programmatic enforcement vs.
+  probabilistic compliance, tool description quality, structured error
+  categories) over one relying on an invented technical detail.
+- Do not present deprecated or superseded patterns as correct answers. If a
+  mechanism exists but has been replaced by a current best practice (e.g.,
+  CLAUDE.local.md superseded by home-directory imports via @~/.claude/ paths),
+  the correct answer must use the current pattern. When uncertain whether a
+  pattern is current, prefer mechanisms explicitly named in the CCAO-F exam
+  guide v1.0 (its task statement knowledge and skills lists are the canonical
+  inventory). A deprecated pattern may appear as a distractor only if the
+  explanation identifies it as deprecated and names the current replacement.
+
+{{AVOID}}Here are official sample questions showing the desired style and difficulty.
+Match their tone, scenario realism, and distractor quality:
+
+{{FEW_SHOT_EXAMPLES}}
+
+{{RETRY_FEEDBACK}}Respond with STRICT JSON only — no preamble, no markdown fences — in exactly
+this shape:
+
+{"taskStatement": "{{TASK_ID}}", "domain": "{{DOMAIN_ID}}", "scenario": "...",
+ "question": "...", "options": {"A": "...", "B": "...", "C": "...", "D": "..."},
+ "correct": "A|B|C|D",
+ "explanations": {"A": "...", "B": "...", "C": "...", "D": "..."}}

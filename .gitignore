@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+engagement.json
+.DS_Store
+.vscode/
+# .claude/ is local-only except the committed exam-refill skill
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/exam-refill/
+CLAUDE.local.md
+pyproject.toml
+*.code-workspace
+practice-exam/exam_progress.json
+practice-exam/questions_pending.json
+practice-exam/questions_pending_review.md
+practice-exam/build/
+practice-exam/dist/**/.claude/settings.local.json
