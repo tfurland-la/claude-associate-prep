@@ -71,17 +71,37 @@ This is early. Being explicit so a score isn't over-read:
 
 ## Growing the question bank (author side)
 
-This part does need Python and an authenticated Claude Code CLI:
+This part does need Python and an authenticated Claude Code CLI. Set up once:
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install pytest pywebview
-python3 practice-exam/exam_app.py
+```
+
+Then launch with the **venv interpreter**, not a bare `python3` — the app imports
+`pywebview`, which is installed in the venv and almost certainly not in your
+system Python:
+
+```bash
+.venv/bin/python practice-exam/exam_app.py
 ```
 
 That opens the exam in a desktop window and generates fresh questions through
 your own Claude Code login — no API key. To add questions to the committed bank,
-run the `/exam-refill` skill in Claude Code, which walks the
-generate → normalize → screen → review → merge pipeline.
+run the `/exam-refill` skill in Claude Code, which walks the pipeline below.
+
+### The pipeline
+
+`generate_bank.py --merge` is the only writer of `questions.js`; never hand-edit
+the bank.
+
+| Step | Command | What it does |
+|---|---|---|
+| 1. Generate | `generate_bank.py --per-task N` | Writes candidates to the gitignored `questions_pending.json`. `--per-task` counts *pending* only, not what is already committed. |
+| 2. Normalize | `normalize_pending.py` | Permutes option order under a fixed seed. Generators have a positional habit — the first batch put 68% of correct answers on B, which is exploitable without knowing the material. |
+| 3. Screen (script) | `screen_mechanical.py` | Content validity, developer vocabulary, stub content, circular rationales, near-duplicates, position skew, length tells. Reports; never deletes. |
+| 4. Screen (judgment) | `screening_prompt.md` | Fabricated product claims and defensible distractors — what a script can't decide. |
+| 5. Review gate | — | See the caveat above. `compare_reviews.py` compares two reviewers' verdicts if you use the two-model route. |
+| 6. Merge | `generate_bank.py --merge` | Flips `reviewed`, dedupes, rewrites the bank. |
 
 Every committed question carries `reviewed: true` and pytest enforces it, but be
 precise about what that flag currently means: the official samples and the
