@@ -28,9 +28,13 @@ Requirements:
   Center. Specifically avoid asserting, as the basis of the answer: sync or refresh
   behaviour of uploaded files, whether Memory is shared between teammates, any
   file-size or file-count limit, retention periods, or that a named model cannot do
-  something. What IS documented and safe to build on: Google Drive documents added
-  to a project sync from Drive, and members with project access can see its
-  knowledge and instructions. If a question needs one of the unsafe claims to work,
+  something. What IS documented and safe to build on, in these exact terms and no
+  wider: **Google Docs** added to chats and projects sync from Google Drive, and
+  members with project access can see a project's knowledge and instructions. Do
+  not generalise the first one — the documented statement covers Google Docs
+  specifically, not Sheets, Slides, PDFs or "files" in general. A question was
+  discarded for asserting that a weekly-updated Google *Sheet* stays current this
+  way. If a question needs one of the unsafe claims to work,
   write a different question — build the answer on the user's judgment (verify,
   escalate, choose the right feature, check the policy) rather than on a mechanism.
 {{PERSONA}}

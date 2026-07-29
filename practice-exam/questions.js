@@ -1858,5 +1858,629 @@ window.CCAOF_BANK = [
       "reviewed": true
     },
     "id": "D2.2-c4797877"
+  },
+  {
+    "taskStatement": "D1.2",
+    "domain": "D1",
+    "scenario": "A project manager is prepping materials for a quarterly business review. She needs three things from Claude: a theme summary of 500 open-ended customer survey responses stored in a spreadsheet, a set of slide bullet points describing the upcoming product roadmap, and a short competitive comparison of how two rival products price their premium tier. None of these three deliverables depends on the content of either of the others — they draw on different sources and will land on different slides.",
+    "question": "What is the most effective way for her to structure this request to Claude?",
+    "options": {
+      "A": "Ask Claude to complete the survey summary first, then have it use that output as the basis for the roadmap bullets and the pricing comparison in turn.",
+      "B": "Treat the three deliverables as separate, independently scoped tasks, each with its own clear inputs and instructions, since none relies on another's output.",
+      "C": "Combine all three requests into one broad prompt asking Claude to 'pull together the quarterly review materials' and let it infer what is needed for each piece.",
+      "D": "Have Claude produce only the deliverable she considers most important for the review and skip decomposing the other two for now."
+    },
+    "correct": "B",
+    "explanations": {
+      "A": "Incorrect. Imposing a sequential chain on tasks that have no actual dependency wastes time and risks letting an unrelated survey-summary output improperly color the roadmap and pricing content.",
+      "B": "Correct. Effective decomposition means identifying which subtasks are genuinely independent versus which depend on one another, then structuring each independent piece with its own specific inputs and instructions rather than forcing false sequencing or vague bundling.",
+      "C": "Incorrect. Merging unrelated deliverables with different source material into one vague prompt makes it harder for Claude to apply the right data and instructions to each piece, typically producing shallower results than clearly scoped separate requests.",
+      "D": "Incorrect. Dropping deliverables isn't decomposition; the task calls for structuring all three, not narrowing scope to avoid the work of breaking down the request."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D1.2-a098d0c1"
+  },
+  {
+    "taskStatement": "D1.1",
+    "domain": "D1",
+    "scenario": "A project manager sends a weekly status update to senior leadership. Each Friday she collects raw bullet notes from her team leads on progress, blockers, and budget, then reshapes them into a one-page brief leadership can scan in under a minute, with any at-risk items called out first. This week she is short on time and opens a chat with Claude, pastes in the raw team notes, and types: \"Turn these notes into an update for leadership.\" The result reads fine but buries a schedule slip three paragraphs down, follows a generic project-summary structure, and runs to two and a half pages.",
+    "question": "What should the project manager do differently to get a usable draft on the next attempt?",
+    "options": {
+      "C": "Paste each team lead's notes in a separate message so Claude can focus on one item at a time before combining them into an update.",
+      "A": "Rewrite the prompt to state the audience, the one-page length limit, and the rule that at-risk items must be listed first, along with the raw notes.",
+      "D": "Keep the same prompt, then repeatedly tell Claude to \"make it more professional and concise\" until the length and tone happen to work.",
+      "B": "Ask Claude to first guess what senior leadership typically expects from a status update, then apply that guess to the notes."
+    },
+    "correct": "A",
+    "explanations": {
+      "C": "Incorrect. Splitting the notes across separate messages fragments the context Claude needs to compare items and decide which risks matter most, and still never states the format or priority rules the update actually needs.",
+      "A": "Correct. An effective prompt for this task gives Claude the specifics it cannot infer on its own: who the update is for, the required length, and the rule that risks come first, alongside the source notes. This is the standard the prior draft failed on and directly fixes the buried risk and wrong length.",
+      "D": "Incorrect. Vague follow-up nudges like \"more professional\" don't supply the missing specifics (audience, length cap, ordering rule), so results stay inconsistent instead of reliably matching the needed format.",
+      "B": "Incorrect. Having Claude guess the audience's expectations substitutes inference for information the project manager already knows; an effective prompt supplies that context directly rather than asking Claude to speculate about it."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D1.1-41e5049f"
+  },
+  {
+    "taskStatement": "D1.3",
+    "domain": "D1",
+    "scenario": "An HR Business Partner asks Claude to draft talking points for a manager who needs to deliver a layoff notification to a team of five. The first draft is clear and covers severance and next steps, but it opens with \"We've made the difficult decision to eliminate your positions\" and reads as blunt and cold given that two of the affected employees have been with the company for over a decade.",
+    "question": "What is the most effective way to get a revision that actually fixes the problem?",
+    "options": {
+      "C": "Tell Claude the tone is wrong and ask for a version that sounds more empathetic.",
+      "D": "Regenerate the draft from scratch with the same prompt, since a second attempt often reads better.",
+      "A": "Switch to a more capable model and resend the identical prompt, since a stronger model will infer the tenure issue on its own.",
+      "B": "Tell Claude the opening feels abrupt given the employees' long tenure, and ask it to acknowledge each person's years of contribution before stating the decision."
+    },
+    "correct": "B",
+    "explanations": {
+      "C": "Incorrect. This names the problem category (tone) but not what's missing or what a fix should include, leaving Claude with a vague instruction to be nicer rather than concrete direction.",
+      "D": "Incorrect. Re-running the identical prompt without new feedback gives Claude nothing to change and is unlikely to fix a specific, already-identified shortcoming.",
+      "A": "Incorrect. A more capable model is not a substitute for feedback; without being told what's wrong, there's no reason to expect it would infer the tenure consideration unprompted.",
+      "B": "Correct. Effective iteration means giving specific, concrete feedback: identifying exactly what fell short (an abrupt opening that ignores tenure) and what the revision needs to include (acknowledgment of each person's contribution before the decision). This gives Claude a clear target to revise toward."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D1.3-43bf4ca0"
+  },
+  {
+    "taskStatement": "D2.5",
+    "domain": "D2",
+    "scenario": "An HR business partner used Claude to draft detailed talking points for managers on how to deliver a round of compensation adjustments, including guidance on handling pushback and specific policy citations. The talking points worked well in a manager-only briefing. Now the HRBP wants to send a version of the same content directly to all affected employees explaining the changes.",
+    "question": "What is the most effective way to produce the employee-facing version?",
+    "options": {
+      "A": "Send the manager talking points to employees unchanged, since the underlying facts about the compensation changes are the same for both audiences.",
+      "D": "Paste the talking points into a new Artifact and apply a cleaner visual layout, keeping the wording as-is.",
+      "B": "Give Claude the manager talking points along with the new audience, purpose, and tone (a direct, reassuring employee notice rather than internal coaching), and ask it to revise structure, detail level, and language accordingly.",
+      "C": "Ask Claude to shorten the talking points by roughly half without any other instructions, since a shorter document is automatically more appropriate for a general audience."
+    },
+    "correct": "B",
+    "explanations": {
+      "A": "Incorrect. Content built for managers coaching other managers - including pushback-handling guidance and internal policy framing - is not suited to employees reading about their own pay, even though the facts are identical.",
+      "D": "Incorrect. Reformatting visual presentation changes how the content looks, not whether its tone and content are appropriate for employees rather than managers.",
+      "B": "Correct. Effectively adapting an output for a new audience means telling Claude who the new readers are and what the document needs to accomplish for them, then having it revise tone, structure, and level of detail - not just editing surface wording.",
+      "C": "Incorrect. Length is only one dimension of audience fit; trimming word count without addressing tone, framing, or which details belong in front of employees can still leave inappropriate content in place."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D2.5-a1ae0fb2"
+  },
+  {
+    "taskStatement": "D2.6",
+    "domain": "D2",
+    "scenario": "A project manager is running weekly status check-ins for a software rollout. Each Friday she pastes updates from four workstream leads into Claude and asks it to identify blockers and risks. This week she also needs to answer a quick message from her director, who is asking only whether the rollout is still on track for the August 15 launch date.",
+    "question": "For replying to the director's one-line question, which output format should the project manager have Claude produce?",
+    "options": {
+      "A": "A structured table artifact listing every blocker and risk from all four workstreams, so the director has full visibility into the underlying detail",
+      "B": "A downloadable spreadsheet artifact tracking launch-readiness percentages, so the reply can be updated and reused in future weekly check-ins",
+      "D": "A standalone document artifact with a formatted executive summary section, even though the director asked for a one-line status",
+      "C": "A plain inline chat reply, since the answer is a brief statement the director will read once and doesn't need to be saved or edited separately"
+    },
+    "correct": "C",
+    "explanations": {
+      "A": "Incorrect. The director asked a yes/no status question, not for the full blocker-and-risk detail; producing a comprehensive table answers a question that wasn't asked and buries the actual answer.",
+      "B": "Incorrect. A reusable, updatable tracking format fits recurring structured data, not a one-off reply to a single question with no indication it needs to persist or be reused.",
+      "D": "Incorrect. Wrapping a one-line answer in a formatted document artifact adds structure the content doesn't need and makes the director hunt for the answer instead of reading it directly.",
+      "C": "Correct. A short, single-use answer that will be read once in the flow of conversation and doesn't need editing, reuse, or handoff as a standalone document is exactly the case for an inline reply rather than an artifact."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D2.6-5ba4e010"
+  },
+  {
+    "taskStatement": "D3.4",
+    "domain": "D3",
+    "scenario": "A project manager runs a multi-quarter product rollout using a Claude Project. The Project's custom instructions capture the rollout's goals, the stakeholder list, and the current milestone status, and a few knowledge documents hold the detailed rollout plan. Each week she opens a brand-new chat inside the Project to review status updates and draft stakeholder emails, rather than continuing the previous week's chat, which had grown to several hundred messages before she left it alone.\n\nThis week a teammate suggests it would be simpler to just keep reusing that same long-running chat indefinitely going forward, since it already contains every prior discussion and status update.",
+    "question": "Should the project manager adopt the teammate's suggestion of continuing to work in one long-running chat indefinitely?",
+    "options": {
+      "D": "Yes — continuing the same chat indefinitely guarantees Claude retains perfect recall of every past detail without ever needing to be reminded.",
+      "A": "No — she should have Claude output the full raw conversation log each week rather than rely on the Project's knowledge sources.",
+      "C": "No — she should turn off the Project's custom instructions instead, since they just duplicate what already sits in the chat history.",
+      "B": "No — an ever-growing single chat becomes unwieldy to work in, so recurring context like goals, stakeholders, and milestones belongs in the Project's instructions and knowledge, with fresh chats started for each week's work."
+    },
+    "correct": "B",
+    "explanations": {
+      "D": "Incorrect. A conversation that keeps growing runs into practical context limitations, so treating it as a guaranteed, perfect memory store is the wrong mental model — it also gets harder to navigate as it lengthens.",
+      "A": "Incorrect. Dumping raw logs isn't a substitute for structured, reusable knowledge, and it doesn't solve the underlying problem of one chat growing without bound.",
+      "C": "Incorrect. Custom instructions are exactly the right place to persist stable, recurring rollout context so it's automatically available in every new chat within the Project; removing them would eliminate the one mechanism that avoids re-explaining everything each week.",
+      "B": "Correct. Recognizing that a single conversation shouldn't grow indefinitely, and instead persisting recurring facts in the Project's instructions/knowledge while starting new chats for new work, is the right way to manage context limitations and keep each session focused and manageable."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D3.4-51ff15fd"
+  },
+  {
+    "taskStatement": "D4.2",
+    "domain": "D4",
+    "scenario": "An HR generalist is redesigning the company's new-hire onboarding checklist, which has grown into a disorganized 15-page document accumulated over several years of ad hoc edits. She creates a Project, adds the current checklist and last year's exit-interview summary as knowledge sources, and sets custom instructions asking Claude to identify redundant steps and propose a leaner, better-sequenced process.\n\nClaude returns a restructured checklist that consolidates several steps and moves IT-equipment provisioning and badge-access setup earlier in the timeline, with a short rationale for each change.",
+    "question": "Before rolling out the restructured checklist company-wide, what is the most appropriate next step?",
+    "options": {
+      "A": "Discard the restructuring, since a Project should not be used to reorganize an operational process.",
+      "C": "Review the proposed changes against how onboarding actually runs today and confirm the new sequence with IT and facilities before rolling it out.",
+      "B": "Ask Claude to redo the analysis with a more capable model and adopt whichever version reads as more thorough.",
+      "D": "Publish the new checklist immediately, since the Project's custom instructions already scoped the task correctly."
+    },
+    "correct": "C",
+    "explanations": {
+      "A": "Incorrect. Using Claude to draft a reorganization and then validating it with the relevant teams is appropriate use; discarding useful drafting work outright is unwarranted.",
+      "C": "Correct. Claude is well suited to synthesizing a disorganized document into a leaner draft, but a resequencing that touches other teams' workflows, like IT provisioning and facility access, needs confirmation from the people who actually run those steps before it goes live.",
+      "B": "Incorrect. Model choice affects reasoning depth and detail, not whether the plan matches real operational constraints; a more detailed output is not the same as a verified one.",
+      "D": "Incorrect. Well-scoped custom instructions improve the quality of the draft but do not verify it against operational reality; a plausible-sounding reordering can still overlook constraints Claude was never told about."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D4.2-6793a171"
+  },
+  {
+    "taskStatement": "D3.2",
+    "domain": "D3",
+    "scenario": "A project manager is setting up a Claude Project for their team's weekly status reporting workflow. Each week, the Project takes in raw stand-up notes and calendar exports and is expected to produce a polished, multi-section report that reconciles conflicting timeline updates across five workstreams, flags dependency risks, and drafts recommended re-sequencing for the steering committee.",
+    "question": "Which model choice for this Project best fits the task?",
+    "options": {
+      "A": "Opus, because reconciling conflicting information across workstreams and producing a reasoned recommendation calls for the most capable model.",
+      "B": "Sonnet, because it is Anthropic's newest model and is therefore the right default for any Project regardless of task complexity.",
+      "C": "Whichever model is already configured on the team's other Projects, to keep the model choice consistent across the workspace.",
+      "D": "Haiku, because status reports are a routine weekly task and routine tasks should always default to the fastest, lowest-cost model."
+    },
+    "correct": "A",
+    "explanations": {
+      "A": "Correct. Reconciling conflicting inputs, assessing dependency risk, and drafting a substantive recommendation is complex reasoning work, which is what the most capable model, Opus, is suited for.",
+      "B": "Incorrect. Recency is not the basis for model selection; the choice should be driven by the complexity of the task, not which model was released most recently.",
+      "C": "Incorrect. Consistency with other Projects ignores this specific task's requirements; model choice should match what each Project actually needs to do.",
+      "D": "Incorrect. \"Routine\" and \"weekly\" describe frequency, not difficulty; this task involves multi-source reconciliation and judgment, which goes beyond what Haiku is intended for."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D3.2-d2cd9fea"
+  },
+  {
+    "taskStatement": "D5.4",
+    "domain": "D5",
+    "scenario": "A project manager set up a Claude Project that her delivery team uses to draft weekly status reports. The Project's custom instructions describe the old report format: a narrative paragraph followed by a bulleted risk list. Last month, leadership adopted a new template with separate \"Progress,\" \"Blockers,\" and \"Next Steps\" headers, and the whole team is now expected to use it. Claude keeps generating reports in the old narrative-plus-bullets format whenever teammates use the Project.\n\nThe project manager wants every teammate's drafts to follow the new template automatically, without each person having to explain the format in their own chats.",
+    "question": "What is the most effective way to make Claude consistently produce reports in the new template for everyone using the Project?",
+    "options": {
+      "D": "Ask each teammate to paste the new template into the first message of every chat they start in the Project.",
+      "A": "Update the Project's custom instructions so they describe the new \"Progress,\" \"Blockers,\" and \"Next Steps\" template.",
+      "B": "Create a new Project with the same knowledge sources and put the new template in its custom instructions, then have the team switch over.",
+      "C": "Upload a document describing the new template as an additional knowledge source, leaving the existing custom instructions unchanged."
+    },
+    "correct": "A",
+    "explanations": {
+      "D": "Incorrect. This puts the formatting burden on every teammate for every chat rather than fixing the Project itself, so the old format will keep resurfacing whenever someone forgets to paste it in.",
+      "A": "Correct. Custom instructions govern Claude's behavior across all chats in a Project. Since they still describe the outdated format, editing them to describe the new template is the direct update that applies automatically for every teammate going forward, with no per-chat repetition.",
+      "B": "Incorrect. Standing up a duplicate Project is unnecessary extra work and fragments the team's history and access when simply editing the existing Project's custom instructions achieves the same result.",
+      "C": "Incorrect. Adding a knowledge source that describes the new template while the custom instructions still explicitly describe the old one leaves conflicting guidance in place; the outdated instructions are not corrected just because a newer file also exists."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D5.4-f7f4ac93"
+  },
+  {
+    "taskStatement": "D7.1",
+    "domain": "D7",
+    "scenario": "A communications specialist is drafting an all-staff email announcing a new remote-work policy. She's working in a plain Claude chat window, typing the policy details from memory and asking Claude to write the announcement. The drafts come back grammatically fine but generic — they don't sound like the company's usual voice and leave out details the team always includes, like a link to the FAQ and a nod to the pilot group that tested the policy. She keeps sending follow-up messages like \"make it sound more like us\" and \"add more of our usual details,\" but each new draft is still just as generic.",
+    "question": "What is the most effective way to fix the underperforming outputs?",
+    "options": {
+      "A": "Ask Claude to search the web for how other companies phrase remote-work announcements and model the draft on those examples.",
+      "D": "Set up a Claude Project with custom instructions describing the company's tone and required elements, and add past announcements as knowledge sources for Claude to reference.",
+      "B": "Switch the conversation to Opus, assuming a more capable model will infer the company's tone and standard details without being shown any examples.",
+      "C": "Keep rephrasing the same request in the chat, since enough iterations of \"sound more like us\" will eventually converge on the right tone."
+    },
+    "correct": "D",
+    "explanations": {
+      "A": "Incorrect. Other companies' announcements reflect their own voice and policies, not this company's; borrowing external phrasing doesn't supply the missing company-specific reference material the task actually needs.",
+      "D": "Correct. The underperformance traces to missing context, not model capability or wording. A Project lets her set persistent custom instructions capturing the required tone and elements, and add past announcements as knowledge sources so Claude has the company's actual voice and standard details to draw on.",
+      "B": "Incorrect. The generic output isn't a capability limitation — Claude was never given the company's actual voice or required content to draw on, so a more capable model faces the same missing-context problem.",
+      "C": "Incorrect. Vague verbal nudges in chat don't supply the missing reference material; without concrete examples or instructions to work from, repeated rephrasing tends to produce more of the same generic drafts."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D7.1-a6de8f56"
+  },
+  {
+    "taskStatement": "D7.3",
+    "domain": "D7",
+    "scenario": "Jordan, a project manager, is juggling three concurrent initiatives: a vendor contract renewal, a new hire onboarding plan, and a customer escalation review. For months Jordan has done all of this work in a single, ever-growing chat conversation with Claude, pasting in new documents for whichever initiative comes up that day. Lately Claude's responses have started blending details from different initiatives together, and Jordan has to keep reminding it which project a question actually belongs to.\n\nJordan wants a workflow that keeps each initiative's context distinct so Claude's answers stay focused and Jordan spends less time correcting mix-ups.",
+    "question": "What change would most improve the efficiency and effectiveness of Jordan's workflow?",
+    "options": {
+      "C": "Set up a separate Project for each initiative, with its own custom instructions and knowledge sources, and hold conversations about that initiative inside its Project.",
+      "B": "Keep working in the single ongoing chat, but start each message with a one-line reminder of which initiative it concerns.",
+      "D": "Continue the single chat, but switch to a more capable model so it can track all three initiatives without confusion.",
+      "A": "Start a brand-new chat for every question and re-paste all the relevant background documents each time, regardless of initiative."
+    },
+    "correct": "C",
+    "explanations": {
+      "C": "Correct. Separating each initiative into its own Project lets Jordan scope the relevant knowledge sources and standing instructions to that initiative alone, so context stays isolated and Jordan stops having to disambiguate or correct blended answers.",
+      "B": "Incorrect. A reminder line only patches the symptom message by message; the documents and instructions for all three initiatives remain mixed in one long thread, so cross-contamination keeps recurring.",
+      "D": "Incorrect. A more capable model does not resolve the structural problem of unrelated documents and instructions sharing one conversation; the mixing would still occur regardless of model choice.",
+      "A": "Incorrect. Re-pasting the same background documents into a fresh chat every time discards the benefit of reusable standing instructions and knowledge sources, adding manual effort rather than reducing it."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D7.3-b6501029"
+  },
+  {
+    "taskStatement": "D7.3",
+    "domain": "D7",
+    "scenario": "An HR communications specialist is revising a 10-page updated remote-work policy document that has already been reviewed by legal. Each time she wants a change, she pastes the entire draft into a new chat message, asks Claude to rewrite the affected section, then copies the whole revised document back out to send the next request. After a dozen rounds of small wording tweaks, the conversation is long and unwieldy, and she is spending more time managing pasted text than actually reviewing the edits.",
+    "question": "What is the most efficient way for her to manage this iterative editing task going forward?",
+    "options": {
+      "A": "Use the Artifacts feature so the policy document lives as a single editable object that Claude can revise in place, rather than regenerating and re-pasting the full text each round.",
+      "B": "Start a fresh chat for every requested edit so the conversation stays uncluttered and each response is faster.",
+      "D": "Switch the conversation to the Opus model, since a more capable model will produce cleaner rewrites and reduce the number of editing rounds needed.",
+      "C": "Keep editing in the chat window as before, but paste each new version into a separate Word document to track changes manually."
+    },
+    "correct": "A",
+    "explanations": {
+      "A": "Correct. Artifacts keep a document as a persistent, editable object that Claude can update in place, so revisions apply directly to the existing draft instead of resending and regenerating the full text in chat each time - the more effective workflow for iterative document editing.",
+      "B": "Incorrect. Starting a new chat for every edit discards the context of prior revisions, forcing her to re-explain what changed and re-paste the draft again, which adds effort rather than reducing it.",
+      "D": "Incorrect. Model capability affects the quality of a given rewrite, but it does not address the actual inefficiency here, which is re-pasting and regenerating the entire document on every round of edits.",
+      "C": "Incorrect. Manually tracking versions in a separate Word document adds an extra manual step outside Claude and does not solve the underlying inefficiency of regenerating the full text each round."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D7.3-0ce1349f"
+  },
+  {
+    "taskStatement": "D3.1",
+    "domain": "D3",
+    "scenario": "A project manager is preparing a vendor-selection memo comparing three project-management software platforms for her department's upcoming renewal. Before she writes her recommendation, she wants Claude to pull current information from each vendor's public pricing page and recent third-party review sites, since the vendors have all changed their plans in the last few months and she doesn't want to rely on outdated or remembered details.\n\nShe already has a Claude Project set up for this initiative, with her department's evaluation criteria saved as custom instructions and last year's vendor comparison spreadsheet uploaded as a knowledge source.",
+    "question": "Which feature should she use to gather the current, multi-source pricing and review information she needs before drafting her memo?",
+    "options": {
+      "A": "Research mode, which can search and synthesize information from multiple current external sources.",
+      "B": "The existing Project, since its custom instructions and uploaded spreadsheet already define the vendors under review.",
+      "D": "A regular chat conversation, since Claude's training gives it reliable knowledge of current vendor pricing.",
+      "C": "An Artifact, so the pricing comparison can be organized into a clean, structured document."
+    },
+    "correct": "A",
+    "explanations": {
+      "A": "Correct. Research mode is built to search and pull in current information from multiple external sources and synthesize it, which fits the need for up-to-date pricing and review data that isn't reliable from memory alone.",
+      "B": "Incorrect. The Project's custom instructions and uploaded spreadsheet capture her department's fixed criteria and last year's data, but neither one reaches out to current vendor websites or review sites for updated information.",
+      "D": "Incorrect. A model's training data has a cutoff and cannot reflect pricing changes made in the last few months; treating a plain chat answer as current risks using stale or fabricated details in a decision memo.",
+      "C": "Incorrect. Artifacts are for organizing and presenting content Claude already has, not for gathering new external information; she would still need a way to collect the current data first."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D3.1-75b2fe04"
+  },
+  {
+    "taskStatement": "D3.1",
+    "domain": "D3",
+    "scenario": "An HR business partner is preparing a one-time global mobility report comparing parental-leave entitlements in five countries where the company is opening offices. She needs current statutory minimums, recent legal changes, and citable sources she can attach to the report for the legal team to spot-check. She won't need this information again after the report ships, and she has no prior files or standing instructions to reuse.",
+    "question": "Which Claude feature is the best fit for this task?",
+    "options": {
+      "D": "Set up a Project with custom instructions describing the five countries and parental-leave terminology, then ask the question inside the Project.",
+      "B": "Open an artifact and build the comparison table directly, filling in each country's entitlement from general knowledge.",
+      "C": "Use research mode to have Claude search external sources, synthesize the current entitlements, and return citations.",
+      "A": "Ask in a regular chat conversation and rely on Claude's existing training knowledge of each country's leave laws."
+    },
+    "correct": "C",
+    "explanations": {
+      "D": "Incorrect. Projects add lasting value through custom instructions and knowledge sources reused across many related tasks; a single non-recurring report gains nothing from that setup and adds effort with no payoff.",
+      "B": "Incorrect. An artifact is a surface for producing and formatting a document once the underlying facts are known; it doesn't gather or verify external information, so building the table this way skips the sourcing step the report needs.",
+      "C": "Correct. This task needs current, external, citable information rather than reusable context or document formatting - research mode is built to search sources, synthesize findings, and return citations the legal team can verify, which matches exactly what the report requires.",
+      "A": "Incorrect. Statutory leave rules change and vary by jurisdiction, and training knowledge can be outdated with no citations attached; for a fact-sensitive report going to legal for verification, ungrounded recall from chat is the weakest option."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D3.1-432a6219"
+  },
+  {
+    "taskStatement": "D4.4",
+    "domain": "D4",
+    "scenario": "A project manager currently coordinates a cross-functional product launch by manually copying status updates from Slack, email, and a shared doc into a single weekly \"launch health\" report. This takes about two hours every Friday and often lags because updates trickle in throughout the week. The PM wants to redesign this into a Claude Project: the plan is to add the team's status-update exports and the launch plan doc as knowledge sources, and write custom instructions describing the report's structure and what counts as a red/yellow/green flag for each workstream.",
+    "question": "Before rolling this out to replace the manual process, what should the PM do to validate the redesign?",
+    "options": {
+      "C": "Switch the whole team over immediately, since adding the launch plan and status updates as knowledge sources ensures the flags will match reality.",
+      "B": "Run the new Project against a recent week with a known-correct report, compare Claude's flags and summary against what actually happened, and adjust the instructions before relying on it for live use.",
+      "D": "Skip validation and only check the Project's output if a stakeholder later complains that a flag seems wrong.",
+      "A": "Have the Project generate one report, send it directly to stakeholders, and use their reactions to catch any errors in the flagging logic."
+    },
+    "correct": "B",
+    "explanations": {
+      "C": "Incorrect. Adding relevant documents as knowledge sources gives Claude material to reference, but it does not guarantee the flagging logic in the custom instructions is correct; that still needs to be checked against a real case.",
+      "B": "Correct. Redesigning a recurring workflow around Claude means testing it against a known-good baseline before it replaces the trusted manual process, then tuning the custom instructions based on where the output diverges from what actually happened.",
+      "D": "Incorrect. Waiting for a stakeholder complaint means the redesigned workflow is unvalidated in production, risking a wrong red/yellow/green flag reaching decision-makers before anyone reviews it.",
+      "A": "Incorrect. Using live stakeholders as the error-detection mechanism means mistakes reach the audience before anyone catches them, which is the opposite of validating before rollout."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D4.4-2b8816fe"
+  },
+  {
+    "taskStatement": "D4.4",
+    "domain": "D4",
+    "scenario": "An HR Communications Specialist is redesigning how the team handles employee questions during open enrollment. In past years, HR staff manually answered a flood of repetitive emails about deductibles, plan tiers, and enrollment deadlines. She sets up a Claude Project, uploads the benefits handbook and the open-enrollment FAQ as knowledge sources, and writes instructions telling Claude to answer in a friendly tone and cite the relevant handbook section. Employees will be able to ask questions directly through this Project during the enrollment window.\n\nWhile planning the rollout, she recalls that a handful of questions each year don't fit the handbook cleanly — for example, whether a domestic partnership that isn't a legal marriage qualifies an employee for a special enrollment period. These have always been judgment calls that HR staff review individually rather than answer from a policy line.",
+    "question": "As she finalizes the redesigned workflow, how should she handle this edge-case question type?",
+    "options": {
+      "C": "Configure the Project so Claude answers routine, handbook-covered questions directly but directs cases like this one to HR staff for a human decision.",
+      "D": "Leave the edge case out of the redesign since it comes up rarely, and let Claude answer it the same way it answers everything else once asked.",
+      "B": "Add an instruction telling Claude to always grant special enrollment requests so employees aren't delayed during the enrollment window.",
+      "A": "Instruct Claude to answer using its general knowledge of benefits law whenever the handbook doesn't directly address a question."
+    },
+    "correct": "C",
+    "explanations": {
+      "C": "Correct. A well-designed integration matches each part of the workflow to what it's suited for: Claude handles the repetitive, well-documented questions the handbook already answers, while questions that have historically required individual HR judgment are routed to a person. This preserves the redesign's efficiency gains without automating a decision that was never rule-based.",
+      "D": "Incorrect. Omitting the case from the redesign doesn't prevent it from occurring; without a defined path, the same ambiguous question will reach Claude anyway and be answered as if it were routine, silently reintroducing the risk the redesign should address.",
+      "B": "Incorrect. This turns an eligibility judgment call that has always required individual review into an automatic approval, which could grant benefits eligibility incorrectly and removes the human check the case actually needs.",
+      "A": "Incorrect. The organization's own handbook, not general knowledge about benefits law, is the authoritative source for this workflow; answering from outside that source on an already-ambiguous case increases the risk of a wrong answer being delivered with confidence."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D4.4-8a2bb186"
+  },
+  {
+    "taskStatement": "D5.3",
+    "domain": "D5",
+    "scenario": "A Marketing Manager sets up a Claude Project for her team's monthly campaign-performance recaps. Her custom instructions read: \"Analyze the campaign data and write a helpful summary for stakeholders.\" When two teammates each run the same request against the same uploaded spreadsheet, one gets a two-paragraph narrative overview while the other gets a bulleted list heavy on technical metrics like CTR and CPM — neither matching what leadership actually wants to see.",
+    "question": "What is the most likely reason the instructions are producing inconsistent, off-target output, and what should she do?",
+    "options": {
+      "B": "Claude cannot follow instructions consistently across different users, so she should abandon the Project and paste the instructions into chat each time instead.",
+      "A": "The Project's knowledge source is outdated, so she should re-upload the spreadsheet before the next request.",
+      "C": "The instructions are too vague to constrain the response — she should rewrite them to specify the audience, required sections, tone, and which metrics to include or exclude.",
+      "D": "The teammates are on different model tiers, so she should require everyone to switch to Opus for this Project."
+    },
+    "correct": "C",
+    "explanations": {
+      "B": "Incorrect. The inconsistency traces to the instructions themselves being underspecified, not to an inherent limitation of Claude following instructions; rewriting the instructions to be specific solves it without discarding the Project's shared setup.",
+      "A": "Incorrect. Nothing in the scenario points to stale data — both teammates analyzed the same source but framed the output completely differently, which is a hallmark of ambiguous instructions, not a data-currency issue.",
+      "C": "Correct. Vague, general instructions like \"write a helpful summary\" leave format, tone, and content choices unconstrained, so each run fills the gaps differently. Effective system-level instructions are specific: they name the audience, required structure, tone, and which details matter, which narrows the range of acceptable outputs and produces consistent results.",
+      "D": "Incorrect. Model tier affects reasoning depth and cost, not the specific gaps in tone, structure, and metric selection left open by the instructions — that is an instruction-design problem, not a model-selection one."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D5.3-8a838d5b"
+  },
+  {
+    "taskStatement": "D5.3",
+    "domain": "D5",
+    "scenario": "An HR Business Partner sets up a Claude Project so her team can draft candidate rejection emails after final-round interviews. Her custom instructions read: \"Be professional and empathetic when writing rejection emails to candidates.\" After a week of use, a hiring manager on the team pastes in interview notes that include specific criticisms of a candidate's skills, and Claude produces a rejection email that repeats those specific criticisms as the stated reason the candidate wasn't selected. Legal has flagged that giving candidates specific, documentable reasons for rejection increases the company's exposure in discrimination disputes, and company policy is to keep rejection emails generic.",
+    "question": "What change to the Project's custom instructions would most directly prevent this problem going forward?",
+    "options": {
+      "C": "Add more descriptive tone words, such as \"warm, kind, and respectful,\" so the email reads as more considerate to the candidate.",
+      "A": "Instruct Claude to ask the hiring manager clarifying questions about the candidate before drafting each email.",
+      "B": "Add an explicit rule that the stated reason for rejection must always stay generic, even when specific interview feedback or skill criticisms are pasted into the chat.",
+      "D": "Lengthen the instructions with several paragraphs of general guidance on maintaining a positive employer brand."
+    },
+    "correct": "B",
+    "explanations": {
+      "C": "Incorrect. Warmer tone words make the writing sound more considerate but do nothing to stop specific criticisms from the pasted notes appearing as the rejection reason — the failure is a missing content boundary, not a tone problem.",
+      "A": "Incorrect. Asking clarifying questions adds a conversational step but does not constrain what ends up in the final email; Claude could still incorporate specific criticisms once it has the details.",
+      "B": "Correct. Effective system-level instructions are specific and unambiguous about what must and must not appear in the output. Naming the exact behavior to exclude — never restating specific feedback as the rejection reason, even if such notes are supplied — directly closes the gap that vague \"professional and empathetic\" phrasing left open.",
+      "D": "Incorrect. More general, unrelated guidance on employer branding adds length without addressing the specific ambiguity that caused the problem; vague, broad instructions are the root issue, not a shortage of words."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D5.3-b42d5df5"
+  },
+  {
+    "taskStatement": "D3.1",
+    "domain": "D3",
+    "scenario": "A marketing manager is scoping next year's category positioning and wants a broad, well-sourced view of competitor pricing changes, analyst commentary, and trade-press coverage from the last six months. She has no single document to upload — she needs Claude to go find and synthesize current information from many outside sources and hand back a cited summary she can drop into a planning deck.\n\nShe's used to running most of her day-to-day work — subject line drafts, meeting recaps — in her team's shared Project, which holds the brand style guide and campaign calendar as knowledge sources.",
+    "question": "Which approach best fits this task?",
+    "options": {
+      "A": "Generate the summary as an artifact so it can be edited and reused across future planning cycles.",
+      "B": "Add the competitor names to the Project's custom instructions so Claude prioritizes them in every reply.",
+      "C": "Use research mode to have Claude search and synthesize current external sources into a cited summary.",
+      "D": "Ask the question in the existing Project chat, since its knowledge sources already give Claude the needed context."
+    },
+    "correct": "C",
+    "explanations": {
+      "A": "Incorrect. An artifact is a format for holding and reusing content once it exists; it doesn't address how to gather current, cited information from outside sources in the first place.",
+      "B": "Incorrect. Custom instructions shape tone and priorities for a Project's ongoing work; they do not give Claude the ability to search current external sources, which is what this task actually requires.",
+      "C": "Correct. The task requires gathering and synthesizing current information from many outside sources with citations — that is what research mode is designed for, rather than relying on a fixed knowledge base or the model's training data alone.",
+      "D": "Incorrect. The Project's knowledge sources are the brand style guide and campaign calendar — internal reference material, not current competitor pricing or trade-press coverage — so the existing Project setup does not supply what the task needs."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D3.1-4113f1bd"
+  },
+  {
+    "taskStatement": "D5.2",
+    "domain": "D5",
+    "scenario": "Priya is the Operations Lead for a regional logistics company and manages a Claude Project called \"Vendor Contracts\" for her team. She has connected the team's Google Drive so the folder of vendor agreements syncs into the project as a knowledge source, and she has added several teammates as project members so they can use it for contract questions.\n\nA new operations coordinator joins the team and asks Priya whether, just by being added as a project member, they can see the vendor contract details and the custom instructions Priya wrote for the project, without needing any separate file access.",
+    "question": "What should Priya tell the coordinator?",
+    "options": {
+      "A": "Yes — anyone added as a member of the project can see its knowledge sources and custom instructions.",
+      "C": "No — custom instructions are private to the project owner and are never visible to other members.",
+      "B": "Yes, but only after Priya manually shares each vendor document with the coordinator outside of Claude.",
+      "D": "No — each teammate must individually re-upload the Drive files to their own account before they can view them."
+    },
+    "correct": "A",
+    "explanations": {
+      "A": "Correct. Members with access to a project can see its knowledge sources, including connected Drive content, and its custom instructions, so simply being added as a project member is sufficient.",
+      "C": "Incorrect. Custom instructions are part of the project configuration visible to members with project access, not restricted to the owner alone.",
+      "B": "Incorrect. This introduces an unnecessary manual sharing step outside the project; project membership itself governs visibility of the connected knowledge and instructions.",
+      "D": "Incorrect. Project members don't need to individually re-upload or duplicate connected Drive content; the connected Drive folder is already part of the shared project knowledge."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D5.2-cbced3ae"
+  },
+  {
+    "taskStatement": "D5.2",
+    "domain": "D5",
+    "scenario": "A project manager runs a Claude Project for a client rollout. The project's knowledge sources include a requirements document uploaded from a teammate's laptop plus a folder of specs connected directly from Google Drive. The PM notices Claude's answers about the specs reflect edits made in Drive that same morning, but has not separately verified the uploaded requirements document.\n\nA contractor is joining the team to help with testing, and the PM wants to understand what the contractor will be able to see before granting them access to the Project.",
+    "question": "Before adding the contractor to the Project, what should the PM keep in mind about what the contractor will be able to see?",
+    "options": {
+      "B": "Once given access to the Project, the contractor will be able to see all of its knowledge sources and custom instructions, so access should be limited to what the contractor genuinely needs.",
+      "D": "The contractor will see the Project's instructions but not its uploaded knowledge files, since those stay private to whoever originally added them.",
+      "A": "Access can be granted without review, since Claude automatically redacts sensitive content from a project's knowledge for new members.",
+      "C": "The contractor will only see the Google Drive specs, since Drive-connected files carry their own separate permissions that override the Project's access."
+    },
+    "correct": "B",
+    "explanations": {
+      "B": "Correct. Members with access to a Project can see its knowledge sources and instructions, so the PM should scope what the contractor is granted access to, or adjust the Project's contents, before adding them.",
+      "D": "Incorrect. Uploaded knowledge sources are not walled off to only the person who added them; anyone with project access can see them along with the instructions.",
+      "A": "Incorrect. There is no automatic redaction of project knowledge for new members, so granting access without reviewing what is inside the Project is not a safe assumption.",
+      "C": "Incorrect. Project access is not split so that Drive-connected files stay visible while other knowledge sources are hidden; a member with project access sees the project's knowledge as a whole."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D5.2-636f547d"
+  },
+  {
+    "taskStatement": "D5.2",
+    "domain": "D5",
+    "scenario": "Priya, an HR communications specialist, sets up a Claude Project to help draft materials for the upcoming benefits open enrollment period. She connects the team's Google Drive folder, which holds the current policy documents and plan comparison sheets, so Claude can reference them when drafting employee-facing emails and FAQs.\n\nA colleague from the marketing team offers to help polish the tone of the enrollment emails and asks Priya to add them to the Project so they can use Claude with the same context. Before adding the colleague, Priya pauses to think through what that access would actually expose.",
+    "question": "What should Priya consider before adding the marketing colleague to the Project?",
+    "options": {
+      "C": "She should disconnect and reconnect the Google Drive folder each time Project membership changes, to refresh what the new member can see.",
+      "B": "Only she, as the person who added the connector, can view the connected Drive documents; other Project members would not be able to see them.",
+      "D": "Access doesn't matter, since Claude only shares the responses it generates, not the underlying connected files or custom instructions.",
+      "A": "Anyone added to the Project can view its connected knowledge sources and custom instructions, so she should confirm the colleague is authorized to see the policy documents before granting access."
+    },
+    "correct": "A",
+    "explanations": {
+      "C": "Incorrect. There is no basis for a disconnect-and-reconnect step controlling per-member visibility; Project access is governed by membership, not by re-adding a connector.",
+      "B": "Incorrect. This reverses the actual behavior: any member with access to the Project can see its connected knowledge sources, not only the person who originally added the connector.",
+      "D": "Incorrect. Members with access to a Project can see its connected knowledge sources and custom instructions, not just Claude's generated replies, so this understates what the colleague would actually be able to view.",
+      "A": "Correct. Connected knowledge sources and custom instructions are visible to anyone with access to the Project, so Priya's real decision is whether the colleague should be authorized to see that policy content, not a technical question about the connector itself."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D5.2-c80bb7cb"
+  },
+  {
+    "taskStatement": "D4.5",
+    "domain": "D4",
+    "scenario": "An HR business partner has set up a Claude Project to help draft internal policy FAQs, using the employee handbook and past HR announcements as knowledge sources. A department head who has never used Claude asks her to write a short note to the leadership team recommending whether the whole HR function should adopt it, and specifically whether it could replace the HR helpdesk that answers employee questions about individual benefits and leave situations.",
+    "question": "Which recommendation most accurately represents Claude's value and limitations to leadership?",
+    "options": {
+      "C": "Recommend adoption for FAQ and communication drafting, since that speeds up writing, but keep a human HR reviewer confirming any answer to an individual employee's benefits or leave question before it goes out.",
+      "B": "Recommend against adoption anywhere in HR, since a tool that can occasionally produce incorrect wording is not appropriate for a function that handles employee-facing communications at all.",
+      "D": "Recommend replacing the helpdesk outright, since the Project already contains the handbook and a well-configured Project answers individual employee cases with the same reliability as a trained specialist.",
+      "A": "Recommend adoption for the helpdesk first, since employees benefit most from faster answers, and hold off on FAQ drafting until leadership has more experience evaluating its writing quality."
+    },
+    "correct": "C",
+    "explanations": {
+      "C": "Correct. Communicating Claude's value and limitations means naming concretely where it helps (faster FAQ and communications drafting) while flagging where unsupervised use is risky (individual benefit or leave determinations with real consequences for an employee), so human review stays at the point of impact.",
+      "B": "Incorrect. This overcorrects by discarding a demonstrated, lower-stakes drafting benefit because of a risk that only applies to a different, higher-stakes use case; the two should be evaluated separately, not lumped together.",
+      "D": "Incorrect. Having relevant knowledge sources in a Project does not make its output authoritative for case-specific decisions; individual employee circumstances still require a qualified reviewer, which this option removes entirely.",
+      "A": "Incorrect. This reverses the appropriate order of caution: it hands the higher-stakes, employee-facing case work to Claude unsupervised first while delaying the safer, well-supported drafting use, understating where the real limitation lies."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D4.5-b12f776a"
+  },
+  {
+    "taskStatement": "D4.5",
+    "domain": "D4",
+    "scenario": "A corporate trainer has been using Claude to draft practice questions, answer keys, and explanations for a new compliance certification course. The drafts have been well-organized and fast to produce, and the training director now wants to expand Claude's use to every course the team runs. Before approving the expansion, the director asks the trainer to present a short briefing to the leadership team on what Claude actually does well and where it needs oversight.",
+    "question": "Which statement should the trainer include in the leadership briefing?",
+    "options": {
+      "D": "Claude can independently certify that a full course meets the organization's compliance and accuracy standards, so the SME review step can be removed from the workflow.",
+      "B": "Claude's only real limitation is drafting speed compared to a human writer, so its value is mainly for teams that lack time to write content manually.",
+      "C": "Because Claude produced the practice questions with confident, well-formatted language, the team can publish them without an additional SME review pass.",
+      "A": "Claude speeds up drafting of practice questions and explanations, but the answer keys and explanations should still be reviewed by a subject-matter expert, since Claude can generate plausible-sounding but incorrect content."
+    },
+    "correct": "A",
+    "explanations": {
+      "D": "Incorrect. Overstating Claude as a certifier of compliance accuracy misrepresents its limitations; fluent output is not the same as verified correctness, and removing SME review increases the risk of publishing wrong content.",
+      "B": "Incorrect. Framing the limitation as merely \"slower than a human\" understates the real risk, which is that generated content can be factually wrong despite reading well, not just a speed trade-off.",
+      "C": "Incorrect. Confident, polished phrasing is not evidence of accuracy; treating fluency as a signal to skip review is the exact failure mode that communicating limitations honestly is meant to prevent.",
+      "A": "Correct. Communicating Claude's value and limitations means being concrete about what it speeds up (drafting questions and explanations) while naming the specific risk that requires human oversight: it can produce plausible but incorrect content, so SME review of accuracy-critical material remains necessary."
+    },
+    "provenance": {
+      "source": "seed-generated",
+      "model": "claude-sonnet-5",
+      "generatedAt": "2026-07-29",
+      "reviewed": true
+    },
+    "id": "D4.5-94b40693"
   }
 ];

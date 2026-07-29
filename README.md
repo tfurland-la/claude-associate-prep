@@ -51,18 +51,23 @@ guarantee any resource produces a pass.
 
 This is early. Being explicit so a score isn't over-read:
 
-- **The question bank holds 71 questions** — 3 official samples from the guide, 2
-  hand-authored multiple-response items, and 66 generated ones. Enough to practise
-  against in the browser, but **16 of the 30 objectives still have fewer than 3
-  questions**, so coverage is uneven: the adaptive engine cannot yet give you a
-  balanced run across the whole blueprint. 21 more questions would close that.
-- **The generated questions lean redundant.** Both reviewers' main objection to the
-  first batch was that many questions taught the *same lesson* with a different
-  persona — a generator habit, not a one-off. Roughly a quarter of the batch was
-  cut for it, and some redundancy survived by deliberate choice, to avoid
-  sacrificing coverage. Expect to meet the same underlying point more than once,
-  particularly around keeping Project knowledge current and verifying a suspect
-  figure against its source.
+- **The question bank holds 95 questions** — 3 official samples from the guide, 2
+  hand-authored multiple-response items, and 90 generated ones. Every one of the 30
+  objectives now has at least 3, so the adaptive engine can give you a balanced run
+  across the whole blueprint.
+- **Covered by count is not the same as covered in substance.** Clearing the
+  3-per-objective bar says nothing about whether an objective's questions test its
+  whole scope. A known example: D5.2 is "manage uploaded knowledge and connectors",
+  and its questions concentrate on who can see a Project's knowledge rather than on
+  choosing between connectors or keeping knowledge current. Treat a strong score on
+  one objective as evidence about the slice that got tested.
+- **The generated questions lean redundant.** Across both batches the reviewers'
+  main objection was questions teaching the *same lesson* with a different persona
+  — a generator habit, not a one-off, and one that got worse as the anti-fabrication
+  rules narrowed its room. Around a third was cut for it, and some redundancy
+  survived by deliberate choice rather than sacrifice coverage. Expect to meet the
+  same underlying point more than once, particularly around keeping Project
+  knowledge current and verifying a suspect figure against its source.
 - **Multiple-response items work, but their calibration is inferred.** "Select
   two" items render, gate on a complete selection, and score by exact set match.
   What is *not* documented is how the real exam shapes them: the guide states the
