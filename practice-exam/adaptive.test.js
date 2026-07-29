@@ -788,3 +788,75 @@ test("nav.nextUnansweredFrom returns the cursor itself when it is the last blank
   const answers = { q0: ["A"], q2: ["C"] };
   assert.equal(A.nav.nextUnansweredFrom(1, navForm(3), answers, null), 1);
 });
+
+// ── Item shape: single-answer and multiple-response (A.item) ───────────────
+// The real exam mixes multiple-choice with multiple-response items that state
+// how many responses to select. Everything downstream reads answers through
+// these helpers, so no scoring or UI path has to branch on item type.
+
+test("item.correctKeys accepts a bare string (single-answer)", () => {
+  assert.deepEqual(A.item.correctKeys({ correct: "B" }), ["B"]);
+});
+
+test("item.correctKeys accepts an array and sorts it for comparison", () => {
+  assert.deepEqual(A.item.correctKeys({ correct: ["D", "B"] }), ["B", "D"]);
+});
+
+test("item.selectCount is 1 for single-answer, N for multiple-response", () => {
+  assert.equal(A.item.selectCount({ correct: "B" }), 1);
+  assert.equal(A.item.selectCount({ correct: ["B", "D"] }), 2);
+});
+
+test("item.selectCount trusts an explicit selectCount when present", () => {
+  assert.equal(A.item.selectCount({ correct: ["B", "D"], selectCount: 2 }), 2);
+});
+
+test("item.isMulti distinguishes the two item types", () => {
+  assert.equal(A.item.isMulti({ correct: "B" }), false);
+  assert.equal(A.item.isMulti({ correct: ["B"] }), false); // one correct = single
+  assert.equal(A.item.isMulti({ correct: ["B", "D"] }), true);
+});
+
+test("item.isCorrect scores a single-answer item", () => {
+  const q = { correct: "B" };
+  assert.equal(A.item.isCorrect(q, "B"), true);
+  assert.equal(A.item.isCorrect(q, ["B"]), true); // array form of the same answer
+  assert.equal(A.item.isCorrect(q, "C"), false);
+});
+
+test("item.isCorrect requires the exact set on a multiple-response item", () => {
+  const q = { correct: ["B", "D"] };
+  assert.equal(A.item.isCorrect(q, ["B", "D"]), true);
+  assert.equal(A.item.isCorrect(q, ["D", "B"]), true, "order must not matter");
+});
+
+test("item.isCorrect is all-or-nothing: a partial answer is wrong", () => {
+  // ASSUMPTION: no partial credit. The guide does not specify a scoring rule
+  // for multiple-response items; all-or-nothing is the conservative reading.
+  const q = { correct: ["B", "D"] };
+  assert.equal(A.item.isCorrect(q, ["B"]), false, "one of two is not credit");
+  assert.equal(A.item.isCorrect(q, ["B", "D", "A"]), false, "a superset is not credit");
+  assert.equal(A.item.isCorrect(q, ["A", "C"]), false);
+});
+
+test("item.isCorrect treats a blank or missing answer as wrong, never as a crash", () => {
+  const q = { correct: ["B", "D"] };
+  assert.equal(A.item.isCorrect(q, undefined), false);
+  assert.equal(A.item.isCorrect(q, []), false);
+  assert.equal(A.item.isCorrect({ correct: "B" }, undefined), false);
+});
+
+test("item.answerLabel renders one or many selections for display", () => {
+  assert.equal(A.item.answerLabel("B"), "B");
+  assert.equal(A.item.answerLabel(["D", "B"]), "B, D");
+  assert.equal(A.item.answerLabel([]), "—");
+  assert.equal(A.item.answerLabel(undefined), "—");
+});
+
+test("item.optionKeys reports the options an item actually offers", () => {
+  // Multiple-response items carry a fifth option; single-answer items four.
+  assert.deepEqual(A.item.optionKeys({ options: { A: "a", B: "b", C: "c", D: "d" } }),
+    ["A", "B", "C", "D"]);
+  assert.deepEqual(A.item.optionKeys({ options: { A: "a", B: "b", C: "c", D: "d", E: "e" } }),
+    ["A", "B", "C", "D", "E"]);
+});

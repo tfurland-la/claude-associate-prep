@@ -569,3 +569,48 @@ def test_generation_wait_screen_hides_skip_and_mark():
         assert f'el("{element_id}").hidden = true;' in wait_branch, (
             f"{element_id} stays visible on the generation-wait screen"
         )
+
+
+# ── Multiple-response UI contract ──────────────────────────────────────────
+# The scoring rules live in adaptive.js (A.item, covered by adaptive.test.js).
+# These guard the DOM layer, which no JS test reaches.
+
+
+def test_selection_state_is_always_a_list():
+    """Single-answer items included, so no render or commit path branches on
+    item type. A stray `app.selected = null` reintroduces that branching."""
+    assert "app.selected = null" not in EXAM_HTML
+    assert EXAM_HTML.count("app.selected = [];") == 2  # practice + exam render
+
+
+def test_submit_is_gated_on_a_complete_selection():
+    """A 'select 2' item must not be submittable with one option chosen."""
+    assert "function selectionComplete(" in EXAM_HTML
+    assert 'el("btn-submit").disabled = !selectionComplete(question);' in EXAM_HTML
+
+
+def test_extra_clicks_past_the_cap_are_ignored_not_swapped():
+    body = EXAM_HTML.split("function toggleSelection(")[1].split("\nfunction ")[0]
+    assert "current.length < need" in body, "must cap selections at selectCount"
+    assert "return false" in body, "a click past the cap should be refused"
+
+
+def test_stem_states_how_many_responses_to_select():
+    """The real exam states the count on the item, so the stem must too."""
+    assert "function stemWithSelectHint(" in EXAM_HTML
+    assert "(Select ${need}.)" in EXAM_HTML
+    # Both render paths — practice drill and timed exam — must use it.
+    assert EXAM_HTML.count('el("q-stem").textContent = stemWithSelectHint(question);') == 2
+
+
+def test_no_dom_path_compares_against_a_bare_correct_key():
+    """Every scoring and reveal site must route through A.item, which handles
+    both shapes; a bare `question.correct` comparison silently mis-scores a
+    multiple-response item."""
+    assert "question.correct" not in EXAM_HTML
+
+
+def test_only_a_complete_answer_is_committed():
+    """A half-made selection would score wrong while counting as answered,
+    which reads worse than leaving the question blank."""
+    assert "if (q && selectionComplete(q))" in EXAM_HTML

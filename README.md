@@ -51,15 +51,20 @@ guarantee any resource produces a pass.
 
 This is early. Being explicit so a score isn't over-read:
 
-- **The question bank holds only the 3 official sample questions from the guide.**
-  Until it is grown, the static page has almost nothing to draw on. The desktop
-  app generates fresh questions on demand (see below); that is the usable path
-  today.
-- **Multiple-response items are not implemented yet.** The real exam includes
-  "select how many responses" items. Every question here is single-answer, so a
-  score reads as a floor rather than a prediction — multi-select items are
-  generally harder. Support is planned; the one observed calibration puts them at
-  roughly one in six items with five options each.
+- **The question bank holds 5 questions.** The 3 official samples from the guide,
+  plus 2 hand-authored multiple-response items. That is nowhere near enough to
+  practise against — the desktop app generates fresh questions on demand (see
+  below), which is the usable path today.
+- **Multiple-response items work, but their calibration is inferred.** "Select
+  two" items render, gate on a complete selection, and score by exact set match.
+  What is *not* documented is how the real exam shapes them: the guide states the
+  item type exists but publishes no worked example, so the five-option shape and
+  the roughly-one-in-six frequency come from one third-party practice set written
+  by someone who sat the exam. Treat that as the best available evidence, not as
+  fact from Anthropic.
+- **Multiple-response scoring is all-or-nothing here.** The guide does not say
+  whether the real exam awards partial credit. Exact-set-match is the
+  conservative choice — it can understate a score but never flatter it.
 - **The scaled score is a linear approximation.** The real exam equates across
   forms; this maps raw-correct onto 100–1,000 directly.
 - **No study guide or hands-on exercises yet.** Planned.

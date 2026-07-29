@@ -503,6 +503,45 @@ const STATE_VERSION = 1;
 
 const el = (id) => document.getElementById(id);
 
+/* ── Selection state ──────────────────────────────────────────────────────
+   app.selected is ALWAYS an array, single-answer items included, so no render,
+   commit or scoring path has to branch on item type. A.item owns the shape
+   rules (how many selections an item wants, and whether an answer is right). */
+
+function selectionComplete(question) {
+  return (app.selected || []).length === A.item.selectCount(question);
+}
+
+// Returns false when the click was ignored because the cap is already reached —
+// on a "select 2" item a third click must not silently swap an earlier choice.
+function toggleSelection(question, key) {
+  const need = A.item.selectCount(question);
+  const current = app.selected || [];
+  if (current.includes(key)) {
+    app.selected = current.filter((k) => k !== key);
+  } else if (need === 1) {
+    app.selected = [key]; // single-answer: a new click replaces the old one
+  } else if (current.length < need) {
+    app.selected = current.concat(key);
+  } else {
+    return false;
+  }
+  return true;
+}
+
+function paintSelection(container) {
+  const chosen = new Set(app.selected || []);
+  container.querySelectorAll(".option").forEach((btn) => {
+    btn.classList.toggle("selected", chosen.has(btn.dataset.key));
+  });
+}
+
+// The real exam states how many responses to select, so the stem must too.
+function stemWithSelectHint(question) {
+  const need = A.item.selectCount(question);
+  return need > 1 ? `${question.question}  (Select ${need}.)` : question.question;
+}
+
 /* ── Storage backends ──────────────────────────────────────────────────
    localStorage when available; plain in-memory otherwise. The pywebview
    desktop app replaces this with file-backed persistence via its bridge. */
@@ -696,14 +735,14 @@ async function advanceToNextQuestion() {
 
 function renderQuestion(question) {
   app.current = question;
-  app.selected = null;
+  app.selected = [];
   app.lastAnswer = null;
 
   el("q-task").textContent = question.taskStatement;
   el("q-task-label").textContent =
     `${A.DOMAINS[question.domain]} — ${A.TASK_STATEMENTS[question.taskStatement]}`;
   el("q-scenario").textContent = question.scenario;
-  el("q-stem").textContent = question.question;
+  el("q-stem").textContent = stemWithSelectHint(question);
   el("q-feedback").replaceChildren();
   el("status-note").textContent = question.id ? "" : "Generated question";
 
@@ -720,10 +759,9 @@ function renderQuestion(question) {
     textSpan.textContent = question.options[key];
     btn.append(keySpan, textSpan);
     btn.addEventListener("click", () => {
-      app.selected = key;
-      container.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      el("btn-submit").disabled = false;
+      toggleSelection(question, key);
+      paintSelection(container);
+      el("btn-submit").disabled = !selectionComplete(question);
     });
     container.appendChild(btn);
   }
@@ -780,8 +818,9 @@ function startBankExam() {
 // Mirrors exam_lib.summarize_for_avoid so within-form generations diversify.
 function summarizeForAvoid(question) {
   return (
-    `correct=${question.correct} | scenario: ${question.scenario.slice(0, 160)} ` +
-    `| correct because: ${question.explanations[question.correct].slice(0, 120)}`
+    `correct=${A.item.correctKeys(question).join(",")} | scenario: ` +
+    `${question.scenario.slice(0, 160)} | correct because: ` +
+    `${A.item.correctKeys(question).map((k) => question.explanations[k]).join(" ").slice(0, 120)}`
   );
 }
 
@@ -1032,12 +1071,12 @@ function renderExamQuestion() {
     }
   }
   app.current = question;
-  app.selected = null;
+  app.selected = [];
   // No task-statement tag during the exam — the real exam doesn't label questions.
   el("q-task").textContent = `Question ${app.exam.index + 1} of ${app.exam.form.length}`;
   el("q-task-label").textContent = "";
   el("q-scenario").textContent = question.scenario;
-  el("q-stem").textContent = question.question;
+  el("q-stem").textContent = stemWithSelectHint(question);
   el("q-feedback").replaceChildren();
   el("status-note").textContent = "";
 
@@ -1054,24 +1093,22 @@ function renderExamQuestion() {
     textSpan.textContent = question.options[key];
     btn.append(keySpan, textSpan);
     btn.addEventListener("click", () => {
-      app.selected = key;
-      container.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      el("btn-submit").disabled = false;
+      toggleSelection(question, key);
+      paintSelection(container);
+      el("btn-submit").disabled = !selectionComplete(question);
     });
     container.appendChild(btn);
   }
   // Pre-select the committed answer when revisiting (backward nav / review jump).
   const committed = app.exam.answers[question.id];
-  if (committed) {
-    app.selected = committed;
-    const btn = container.querySelector(`.option[data-key="${committed}"]`);
-    if (btn) btn.classList.add("selected");
+  if (committed !== undefined) {
+    app.selected = Array.isArray(committed) ? committed.slice() : [committed];
+    paintSelection(container);
   }
   startExamDwell(question.id); // question is now on screen
   const isLast = app.exam.index + 1 === app.exam.form.length;
   el("btn-submit").hidden = false;
-  el("btn-submit").disabled = !app.selected; // committing still needs a choice
+  el("btn-submit").disabled = !selectionComplete(question); // needs a full answer
   el("btn-submit").textContent = isLast ? "Answer & review" : "Answer & continue";
   el("btn-exam-prev").hidden = app.exam.index === 0;
   // Skipping is allowed: the real exam lets a candidate leave a question blank,
@@ -1121,11 +1158,11 @@ function toggleExamMark() {
 
 function commitCurrentExamAnswer() {
   const q = app.exam.form[app.exam.index];
-  if (q && app.selected) app.exam.answers[q.id] = app.selected;
+  if (q && selectionComplete(q)) app.exam.answers[q.id] = (app.selected || []).slice();
 }
 
 function examAnswer() {
-  if (!app.selected) return; // committing needs a choice; use Skip to leave blank
+  if (!selectionComplete(app.exam.form[app.exam.index] || {})) return; // use Skip to leave blank
   commitCurrentExamAnswer();
   examAdvance();
 }
@@ -1445,7 +1482,7 @@ function renderResults(exam) {
   review.replaceChildren();
   exam.form.forEach((question, i) => {
     const chosen = exam.answers[question.id];
-    const good = chosen === question.correct;
+    const good = A.item.isCorrect(question, chosen);
     const discounted = exam.discounted.includes(question.id);
     const item = document.createElement("details");
     item.className = "review-item";
@@ -1461,8 +1498,10 @@ function renderResults(exam) {
       mark,
       document.createTextNode(
         ` Q${i + 1} · ${question.taskStatement}${source} — ` +
-        (good ? `correct (${question.correct})` :
-          `your answer ${chosen || "—"}, correct ${question.correct}`)
+        (good
+          ? `correct (${A.item.answerLabel(chosen)})`
+          : `your answer ${A.item.answerLabel(chosen)}, correct ` +
+            `${A.item.answerLabel(A.item.correctKeys(question))}`)
       )
     );
     // Cumulative dwell time, visually secondary to the mark and labels above.
@@ -1498,7 +1537,9 @@ function renderResults(exam) {
     item.append(scenario, stem);
     for (const key of ["A", "B", "C", "D"]) {
       const line = document.createElement("div");
-      line.className = "explanation" + (key === question.correct ? " correct-line" : "");
+      line.className =
+        "explanation" +
+        (A.item.correctKeys(question).includes(key) ? " correct-line" : "");
       const keySpan = document.createElement("span");
       keySpan.className = "key";
       const markers =
@@ -1525,9 +1566,9 @@ async function submitAnswer() {
     examAnswer();
     return;
   }
-  if (!app.selected || !app.current) return;
+  if (!app.current || !selectionComplete(app.current)) return;
   const question = app.current;
-  const correct = app.selected === question.correct;
+  const correct = A.item.isCorrect(question, app.selected);
   const prevWeight = app.state.weights[question.taskStatement];
   // Bank questions are standard tier; generated ones carry their stamped tier.
   const difficulty = question.difficulty === "hard" ? "hard" : "standard";
@@ -1545,10 +1586,12 @@ async function submitAnswer() {
   await persist();
 
   // Reveal
+  const correctSet = new Set(A.item.correctKeys(question));
+  const chosenSet = new Set(app.selected || []);
   el("q-options").querySelectorAll(".option").forEach((btn) => {
     btn.disabled = true;
-    if (btn.dataset.key === question.correct) btn.classList.add("reveal-correct");
-    else if (btn.dataset.key === app.selected) btn.classList.add("reveal-wrong");
+    if (correctSet.has(btn.dataset.key)) btn.classList.add("reveal-correct");
+    else if (chosenSet.has(btn.dataset.key)) btn.classList.add("reveal-wrong");
   });
 
   const feedback = el("q-feedback");
@@ -1557,12 +1600,16 @@ async function submitAnswer() {
   verdict.className = `verdict ${correct ? "good" : "bad"}`;
   const tierSuffix = difficulty === "hard" ? "  ·  HARD variant" : "";
   verdict.textContent =
-    (correct ? "Correct." : `Incorrect — the right answer is ${question.correct}.`) +
+    (correct
+      ? "Correct."
+      : `Incorrect — the right answer is ${A.item.answerLabel(A.item.correctKeys(question))}.`) +
     tierSuffix;
   feedback.appendChild(verdict);
   for (const key of ["A", "B", "C", "D"]) {
     const line = document.createElement("div");
-    line.className = "explanation" + (key === question.correct ? " correct-line" : "");
+    line.className =
+      "explanation" +
+      (A.item.correctKeys(question).includes(key) ? " correct-line" : "");
     const keySpan = document.createElement("span");
     keySpan.className = "key";
     keySpan.textContent = `${key} — `;

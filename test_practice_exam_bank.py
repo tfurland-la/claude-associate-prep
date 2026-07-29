@@ -250,3 +250,94 @@ def test_merge_pending_rejects_duplicates_of_bank_content():
     entry = exam_lib.attach_provenance(duplicate, source="seed-generated")
     with pytest.raises(ValueError):
         generate_bank.merge_pending(bank, [entry])
+
+
+# ── Multiple-response items ────────────────────────────────────────────────
+# The exam mixes multiple-choice with multiple-response items. A multi item
+# carries five options and a list of correct keys; a single item keeps four and
+# a bare string. Validation enforces the pairing so a half-formed item — five
+# options but one answer, or two answers but four options — cannot reach the bank.
+
+
+def make_multi_question():
+    q = make_valid_question()
+    q["options"]["E"] = "A fifth option, which only multi-select items carry."
+    q["explanations"]["E"] = "Incorrect. Explained for parity with the other options."
+    q["correct"] = ["B", "D"]
+    q["selectCount"] = 2
+    q["id"] = exam_lib.question_id(q)
+    return q
+
+
+def test_validate_accepts_a_multiple_response_question():
+    exam_lib.validate_question(make_multi_question())
+
+
+def test_multi_response_requires_five_options():
+    q = make_multi_question()
+    del q["options"]["E"]
+    del q["explanations"]["E"]
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="A, B, C, D, E"):
+        exam_lib.validate_question(q)
+
+
+def test_single_answer_must_not_carry_a_fifth_option():
+    q = make_valid_question()
+    q["options"]["E"] = "A fifth option on a single-answer item."
+    q["explanations"]["E"] = "Incorrect."
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="A, B, C, D"):
+        exam_lib.validate_question(q)
+
+
+def test_select_count_must_match_the_answer_key():
+    q = make_multi_question()
+    q["selectCount"] = 3  # claims three, lists two
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="selectCount"):
+        exam_lib.validate_question(q)
+
+
+def test_correct_list_rejects_duplicates():
+    q = make_multi_question()
+    q["correct"] = ["B", "B"]
+    q["selectCount"] = 2
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="duplicate"):
+        exam_lib.validate_question(q)
+
+
+def test_correct_list_rejects_an_unknown_option_key():
+    q = make_multi_question()
+    q["correct"] = ["B", "Z"]
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError):
+        exam_lib.validate_question(q)
+
+
+def test_a_single_element_list_is_a_single_answer_item():
+    """["B"] means one selection, so the item stays four-option."""
+    q = make_valid_question()
+    q["correct"] = ["B"]
+    q["id"] = exam_lib.question_id(q)
+    exam_lib.validate_question(q)
+
+
+def test_summarize_for_avoid_handles_a_multi_response_answer():
+    """It indexes explanations by the correct key, which is a list here."""
+    summary = exam_lib.summarize_for_avoid(make_multi_question())
+    assert "correct=B,D" in summary or "correct=B, D" in summary
+
+
+def test_multi_response_round_trips_through_the_bank_file():
+    entries = exam_lib.load_bank() + [
+        exam_lib.attach_provenance(
+            {k: v for k, v in make_multi_question().items()
+             if k in exam_lib.CONTENT_FIELDS | {"selectCount"}},
+            source="hand-authored",
+        )
+    ]
+    rendered = exam_lib.render_bank(entries)
+    assert '"selectCount": 2' in rendered
+    assert '"correct": [' in rendered

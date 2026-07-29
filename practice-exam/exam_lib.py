@@ -94,12 +94,21 @@ TASK_STATEMENTS = {
     "D7.3": "Optimize workflows for efficiency and effectiveness",
 }
 
-# Single-answer items carry four options. Multiple-response items are expected to
-# carry five (see the persona/observed-calibration note in the spec); adding the
-# fifth key is part of that change, not this one, because validation below
-# compares option blocks against this tuple exactly.
+# Single-answer items carry four options; multiple-response items carry five.
+# validate_question enforces the pairing, so a five-option item with one answer —
+# or a two-answer item with four options — cannot reach the bank.
+#
+# The five-option shape for multi items is calibration, not a published fact: the
+# guide states the item type exists but shows no worked example. It follows the
+# one observed CCAO-F practice set, which is a third party's inference drawn from
+# sitting the exam. Treat it as the best available evidence, not as documented.
 OPTION_KEYS = ("A", "B", "C", "D")
-PROVENANCE_SOURCES = ("official-sample", "seed-generated", "refill")
+MULTI_OPTION_KEYS = ("A", "B", "C", "D", "E")
+PROVENANCE_SOURCES = ("official-sample", "seed-generated", "refill", "hand-authored")
+
+# Optional per-question fields: present on some items, absent on others, so they
+# are excluded from the required set but allowed by the unexpected-field check.
+OPTIONAL_FIELDS = {"selectCount"}
 PROVENANCE_FIELDS = {"source", "model", "generatedAt", "reviewed"}
 CONTENT_FIELDS = {
     "taskStatement",
@@ -142,7 +151,7 @@ def validate_question(question, *, require_provenance=True):
     missing = required - question.keys()
     if missing:
         raise ValueError(f"missing fields: {sorted(missing)}")
-    extra = question.keys() - required
+    extra = question.keys() - required - OPTIONAL_FIELDS
     if extra:
         raise ValueError(f"unexpected fields: {sorted(extra)}")
 
@@ -157,16 +166,45 @@ def validate_question(question, *, require_provenance=True):
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"{field} must be a non-empty string")
 
+    # `correct` is a bare key on a single-answer item and a list on a
+    # multiple-response one. Normalize first so the checks below read the same way
+    # for both, then let the number of correct keys decide the expected shape.
+    raw_correct = question["correct"]
+    if isinstance(raw_correct, list):
+        if len(set(raw_correct)) != len(raw_correct):
+            raise ValueError(f"correct has duplicate keys: {raw_correct!r}")
+        correct_keys = sorted(raw_correct)
+    else:
+        correct_keys = [raw_correct]
+    if not correct_keys:
+        raise ValueError("correct must name at least one option")
+
+    expected_keys = MULTI_OPTION_KEYS if len(correct_keys) > 1 else OPTION_KEYS
     for block_name in ("options", "explanations"):
         block = question[block_name]
-        if not isinstance(block, dict) or tuple(sorted(block)) != OPTION_KEYS:
-            raise ValueError(f"{block_name} must have exactly the keys A, B, C, D")
+        if not isinstance(block, dict) or tuple(sorted(block)) != expected_keys:
+            raise ValueError(
+                f"{block_name} must have exactly the keys {', '.join(expected_keys)} "
+                f"for a {len(correct_keys)}-answer item"
+            )
         for key, value in block.items():
             if not isinstance(value, str) or not value.strip():
                 raise ValueError(f"{block_name}.{key} must be a non-empty string")
 
-    if question["correct"] not in OPTION_KEYS:
-        raise ValueError(f"correct must be one of {OPTION_KEYS}, got {question['correct']!r}")
+    for key in correct_keys:
+        if key not in expected_keys:
+            raise ValueError(f"correct key {key!r} is not one of {expected_keys}")
+
+    # selectCount is optional and purely a rendering aid ("Select 2"), so when it
+    # is present it must agree with the answer key or the stem lies to the reader.
+    if "selectCount" in question:
+        declared = question["selectCount"]
+        if not isinstance(declared, int) or isinstance(declared, bool):
+            raise ValueError(f"selectCount must be an integer, got {declared!r}")
+        if declared != len(correct_keys):
+            raise ValueError(
+                f"selectCount {declared} disagrees with {len(correct_keys)} correct keys"
+            )
 
     if require_provenance:
         if question["id"] != question_id(question):
@@ -335,11 +373,20 @@ def _few_shot_block(bank):
     return "\n\n".join(examples)
 
 
+def correct_keys(question):
+    """`correct` as a sorted list, whether the item stored a key or a list."""
+    raw = question["correct"]
+    return sorted(raw) if isinstance(raw, list) else [raw]
+
+
 def summarize_for_avoid(question):
     """Compact summary of an existing question, for the generation avoid-list."""
-    rationale = question["explanations"][question["correct"]]
+    keys = correct_keys(question)
+    # Join the per-option rationales so a multi-answer item contributes the
+    # reasoning for every correct option, not just the first.
+    rationale = " ".join(question["explanations"][key] for key in keys)
     return (
-        f"correct={question['correct']} | scenario: {question['scenario'][:160]} "
+        f"correct={','.join(keys)} | scenario: {question['scenario'][:160]} "
         f"| correct because: {rationale[:120]}"
     )
 

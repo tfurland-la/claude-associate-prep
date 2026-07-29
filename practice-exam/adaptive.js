@@ -439,7 +439,7 @@ function scoreExam(form, answers) {
       total: 0,
     });
     d.total += 1;
-    if (answers[question.id] === question.correct) {
+    if (ITEM.isCorrect(question, answers[question.id])) {
       correct += 1;
       d.correct += 1;
     }
@@ -493,7 +493,7 @@ function summarizeExamTiming(form, answers, elapsed, excludedIds) {
     }
     totalMs += ms;
     counted += 1;
-    if (answers[question.id] === question.correct) {
+    if (ITEM.isCorrect(question, answers[question.id])) {
       correctMs += ms;
       correctN += 1;
     } else {
@@ -523,7 +523,7 @@ function applyExamResults(state, form, answers, at, totalElapsedMs) {
   const score = scoreExam(form, answers);
   for (const question of form) {
     const ts = question.taskStatement;
-    const isCorrect = answers[question.id] === question.correct;
+    const isCorrect = ITEM.isCorrect(question, answers[question.id]);
     const multiplier = isCorrect ? CORRECT_MULTIPLIER : INCORRECT_MULTIPLIER;
     const updated = state.weights[ts] * multiplier;
     state.weights[ts] = isCorrect
@@ -584,6 +584,65 @@ function applyFlag(state, lastAnswer) {
   state.stats.totalFlagged += 1;
   return state;
 }
+
+/* ── Item shape: single-answer and multiple-response ───────────────────────
+   The exam mixes multiple-choice with multiple-response items that state how
+   many responses to select. Rather than branch on item type at every scoring
+   and rendering site, everything reads answers through these helpers, which
+   accept either a bare option key or an array of them.
+
+   `correct` may therefore be "B" or ["B", "D"]; both normalize to a sorted
+   array here, so nothing downstream cares which form the bank used.
+
+   ASSUMPTION — all-or-nothing scoring. The exam guide states the item type
+   exists but publishes no worked example, so whether real multiple-response
+   items award partial credit is unknown. Exact-set-match is the conservative
+   reading: it can only understate a score, never flatter it. If a sitting shows
+   otherwise, isCorrect is the single place to change. */
+
+function correctKeys(question) {
+  const raw = question && question.correct;
+  const keys = Array.isArray(raw) ? raw : raw == null ? [] : [raw];
+  return [...keys].sort();
+}
+
+function itemOptionKeys(question) {
+  return Object.keys((question && question.options) || {}).sort();
+}
+
+// Explicit selectCount wins so an item can state "select 2" even before its
+// answer key is attached; otherwise it follows from the number of correct keys.
+function itemSelectCount(question) {
+  if (question && Number.isInteger(question.selectCount) && question.selectCount > 0) {
+    return question.selectCount;
+  }
+  return Math.max(1, correctKeys(question).length);
+}
+
+function isMultiSelect(question) {
+  return itemSelectCount(question) > 1;
+}
+
+function isAnswerCorrect(question, answer) {
+  const expected = correctKeys(question);
+  const given = Array.isArray(answer) ? [...answer].sort() : answer == null ? [] : [answer];
+  if (given.length === 0 || given.length !== expected.length) return false;
+  return expected.every((key, i) => key === given[i]);
+}
+
+function answerLabel(answer) {
+  const keys = Array.isArray(answer) ? [...answer].sort() : answer == null ? [] : [answer];
+  return keys.length ? keys.join(", ") : "—";
+}
+
+const ITEM = {
+  correctKeys,
+  optionKeys: itemOptionKeys,
+  selectCount: itemSelectCount,
+  isMulti: isMultiSelect,
+  isCorrect: isAnswerCorrect,
+  answerLabel,
+};
 
 /* ── Exam form navigation ──────────────────────────────────────────────────
    Pure helpers for moving through a fixed exam form. The real exam lets a
@@ -689,6 +748,7 @@ const NAV = {
 
 const CCAOF_ADAPTIVE = {
   nav: NAV,
+  item: ITEM,
   TASK_STATEMENTS,
   DOMAINS,
   DOMAIN_FACTORS,

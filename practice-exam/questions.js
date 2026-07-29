@@ -78,5 +78,69 @@ window.CCAOF_BANK = [
       "reviewed": true
     },
     "id": "D6.2-72d31180"
+  },
+  {
+    "taskStatement": "D5.1",
+    "domain": "D5",
+    "scenario": "An operations lead is setting up a Claude Project so their team can draft consistent supplier-onboarding summaries. Today each person pastes the onboarding policy into a fresh chat, and the summaries come back in different shapes depending on who asked.",
+    "question": "Which two changes to the Project most directly fix the inconsistency?",
+    "options": {
+      "A": "Upload the onboarding policy as a knowledge source in the Project, so every conversation draws on the same document.",
+      "B": "Write Project instructions that state the required summary sections and their order.",
+      "C": "Ask each team member to keep their own chat open for as long as possible so context carries over.",
+      "D": "Tell the team to paste the policy at the start of every message rather than only the first.",
+      "E": "Switch the Project to a more capable model so the summaries come out longer."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "selectCount": 2,
+    "explanations": {
+      "A": "Correct. A knowledge source attached to the Project gives every conversation the same policy text, removing the variation that comes from each person pasting their own copy.",
+      "B": "Correct. Project instructions are where a required output shape belongs, so the structure no longer depends on how each person happens to phrase the request.",
+      "C": "Incorrect. Long-running chats are fragile and personal to one user; they cannot make output consistent across a team.",
+      "D": "Incorrect. This is more of the behaviour causing the problem, and it wastes context on text the Project could hold once.",
+      "E": "Incorrect. Model capability is not the constraint here; length is not consistency, and the inconsistency is a configuration gap."
+    },
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D5.1-d78516a0"
+  },
+  {
+    "taskStatement": "D2.4",
+    "domain": "D2",
+    "scenario": "A communications specialist used Claude to draft an all-staff announcement about a change to the benefits package. The draft reads well, names specific enrolment dates, and quotes a figure for the new employer contribution.",
+    "question": "Which two of these warrant human verification before the announcement goes out?",
+    "options": {
+      "A": "The specific enrolment dates in the draft.",
+      "B": "The figure quoted for the employer contribution.",
+      "C": "The greeting and sign-off wording.",
+      "D": "The paragraph ordering of the announcement.",
+      "E": "The reading level of the final paragraph."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "selectCount": 2,
+    "explanations": {
+      "A": "Correct. Dates are exactly the kind of specific-looking detail a model can fabricate, and a wrong enrolment date in an all-staff message causes real harm.",
+      "B": "Correct. A benefits figure is a verifiable factual claim with financial consequences, so it must be checked against the authoritative source rather than trusted because it reads plausibly.",
+      "C": "Incorrect. Greeting and sign-off are matters of tone. Getting them wrong is embarrassing, not misleading, and they carry no factual claim to verify.",
+      "D": "Incorrect. Paragraph ordering is an editorial preference the author can judge directly; nothing about it can be factually false.",
+      "E": "Incorrect. Reading level is a style judgement, and the author is better placed than a verifier to decide it."
+    },
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D2.4-c0ef40dc"
   }
 ];
