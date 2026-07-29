@@ -21,6 +21,18 @@ Requirements:
   Projects (custom instructions and knowledge sources), Artifacts, research mode,
   Memory, Skills, Code Execution, connectors such as Google Drive and Gmail, and
   the Haiku/Sonnet/Opus model choice.
+- **Do not make the correct answer depend on undocumented product mechanics.** Six
+  questions were discarded from an earlier batch for resting on "an uploaded
+  Project file is a static copy that must be re-uploaded to update" — plausible,
+  widely repeated, and not stated anywhere in Anthropic's documentation or Help
+  Center. Specifically avoid asserting, as the basis of the answer: sync or refresh
+  behaviour of uploaded files, whether Memory is shared between teammates, any
+  file-size or file-count limit, retention periods, or that a named model cannot do
+  something. What IS documented and safe to build on: Google Drive documents added
+  to a project sync from Drive, and members with project access can see its
+  knowledge and instructions. If a question needs one of the unsafe claims to work,
+  write a different question — build the answer on the user's judgment (verify,
+  escalate, choose the right feature, check the policy) rather than on a mechanism.
 {{PERSONA}}
 - Provide exactly one correct answer and three plausible distractors. The
   distractors must represent the kinds of mistakes a candidate with incomplete
@@ -28,11 +40,20 @@ Requirements:
   (The real exam also has multiple-response items. Support for them is not built
   yet, so generate single-answer items only — do not emit an item that expects
   more than one selection.)
-- **Keep the options close in length.** A correct answer noticeably longer than
-  the distractors is a giveaway a candidate can exploit without knowing the
-  subject: the fully-hedged, most-qualified option is usually the right one. Aim
-  for options within roughly 25% of each other in length. If the right answer
-  needs a caveat to be correct, put a comparable caveat on a distractor.
+- **Keep the options close in length — within roughly 25% of each other.** A
+  correct answer noticeably longer than the distractors is a giveaway a candidate
+  exploits without knowing the subject: the fully-hedged, most-qualified option is
+  usually the right one.
+
+  This fails in a specific, predictable way, so guard against it directly. The
+  right answer is often the nuanced one — two clauses joined by "but", or a
+  compound action ("set up X *with* Y *and* Z") — while the wrong answers are each
+  a single flat idea. That alone makes the answer visibly longest. **Do not fix it
+  by trimming the correct answer**, which strips the nuance that makes it correct.
+  Fix it by giving the distractors the same shape: make each a compound or
+  qualified statement too, so a candidate cannot pick out the "careful-sounding"
+  option. Before you finish, compare your four option lengths; if the correct one
+  is the longest by a wide margin, lengthen the distractors.
 - **Vary which letter is correct.** Do not default to B. Choose the correct
   letter as though at random across the set of questions you produce.
 - Provide an explanation of why the correct answer is right and why each

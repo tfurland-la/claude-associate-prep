@@ -34,8 +34,10 @@ DEVELOPER_TERMS = [
     "http request", "rest api", "python script",
 ]
 
-# Shape-valid stub content the generator emits when it gives up.
-STUB_MARKERS = ["test scenario", "lorem", "option a", "placeholder", "tbd", "xxx", "example.com"]
+# Shape-valid stub content the generator emits when it gives up. Matched on word
+# boundaries: plain substring matching fired on "adoption anywhere" (containing
+# "option a") and "tbd" would hit inside ordinary words too.
+STUB_MARKERS = ["test scenario", "lorem ipsum", "option a", "placeholder", "tbd", "xxx", "example.com"]
 
 
 def norm(text):
@@ -74,7 +76,8 @@ def main():
                 findings["STALE ID"].append(f"{tag}: id does not match content hash")
 
         # 2. Audience: developer content the prompt forbids.
-        hits = sorted({t for t in DEVELOPER_TERMS if t in blob})
+        hits = sorted({t for t in DEVELOPER_TERMS
+                       if re.search(r"\b" + re.escape(t) + r"\b", blob)})
         if hits:
             findings["DEVELOPER CONTENT"].append(f"{tag}: {', '.join(hits)}")
 
@@ -89,7 +92,8 @@ def main():
                 findings["LITERAL ESCAPE"].append(f"{tag}: option {key} contains a literal escape sequence")
 
         # 4. Stub / placeholder content.
-        stubs = sorted({m for m in STUB_MARKERS if m in blob})
+        stubs = sorted({m for m in STUB_MARKERS
+                        if re.search(r"\b" + re.escape(m) + r"\b", blob)})
         if stubs:
             findings["STUB CONTENT"].append(f"{tag}: {', '.join(stubs)}")
 
