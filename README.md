@@ -11,13 +11,20 @@ software-development or API experience.
 
 ## Start here
 
-Two things to open, both zero-install:
+Three things to open, all zero-install:
 
 **[`associate_course.html`](associate_course.html)** — the study guide. All 7 domains
 and 30 objectives in blueprint order, with the nine judgments the exam keeps coming
 back to set out first. Tick objectives off as you go; ticks save in your browser.
 Read the nine judgments before the domains — most questions are one of them wearing
 a different job title.
+
+**[`exercises.html`](exercises.html)** — four hands-on exercises covering all seven
+domains. Two are scored against an answer key rather than a rubric: an
+output-evaluation gauntlet with nine planted defects, and a ten-item governance
+triage. Between them that's about a third of the exam you can mark yourself on
+objectively. Start with exercise 3 — output evaluation is 21% of the exam and the
+heaviest domain by some way.
 
 **[`practice-exam/exam.html`][exam]** — the adaptive practice exam. Your progress is
 saved in your browser.
@@ -93,7 +100,7 @@ This is early. Being explicit so a score isn't over-read:
   conservative choice — it can understate a score but never flatter it.
 - **The scaled score is a linear approximation.** The real exam equates across
   forms; this maps raw-correct onto 100–1,000 directly.
-- **No hands-on exercises yet.** The exam guide's "How to Prepare" recommends building a real Project and evaluating outputs for accuracy and bias; none of that is scaffolded here yet.
+- **Two of the four exercises are self-assessed, not scored.** Building a Project and iterating prompts have no checkable artifact, so those two give you a bar to judge yourself against rather than a key. The two that carry the most exam weight — output evaluation and governance triage — do have answer keys.
 
 ## Growing the question bank (author side)
 
