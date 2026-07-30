@@ -11,7 +11,10 @@ software-development or API experience.
 
 ## Start here
 
-Three things to open, all zero-install:
+**Live site: <https://tfurland-la.github.io/claude-associate-prep/>** — nothing to
+install or clone. Send a colleague that link and they can start immediately.
+
+Three things to open:
 
 **[`associate_course.html`](associate_course.html)** — the study guide. All 7 domains
 and 30 objectives in blueprint order, with the nine judgments the exam keeps coming
