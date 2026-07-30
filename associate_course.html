@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CCAO-F Study Guide</title>
+<!-- Machine-written by practice-exam/build_course.py. Do not hand-edit;
+     edit the content data in that script and re-run it. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a2e;--ink-light:#4a4a6a;--ink-faint:#8888aa;--paper:#f7f6f1;
+--paper-warm:#eeeade;--card:#fffdf8;--accent:#2E4057;--teal:#048A81;
+--teal-soft:#e2f2f0;--amber:#c17f24;--coral:#c94f3a;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+font-family:'DM Sans',system-ui,sans-serif;font-weight:300;line-height:1.65;
+font-size:16.5px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+header.top{background:var(--accent);color:#fff;padding:46px 22px 40px;margin-bottom:34px}
+header.top .inner{max-width:860px;margin:0 auto}
+h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:35px;margin:0 0 10px;
+line-height:1.15}
+.sub{color:#c9d4e2;font-size:16px;max-width:640px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.13em;
+text-transform:uppercase;color:#8fa8c4;margin-bottom:14px}
+h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;
+margin:52px 0 6px;line-height:1.2}
+h2 .code{font-family:'DM Mono',monospace;font-size:14px;color:var(--ink-faint);
+letter-spacing:.06em}
+.weight{font-family:'DM Mono',monospace;font-size:12.5px;color:var(--teal);
+margin-bottom:20px}
+h3{font-family:'DM Sans',sans-serif;font-weight:600;font-size:17px;margin:0 0 6px}
+p{margin:0 0 14px}
+a{color:var(--teal)}
+.card{background:var(--card);border:1px solid var(--paper-warm);border-radius:9px;
+padding:19px 21px;margin-bottom:14px}
+.obj{display:flex;gap:14px;align-items:flex-start}
+.obj input{margin-top:5px;width:17px;height:17px;accent-color:var(--teal);
+cursor:pointer;flex:0 0 auto}
+.obj .body{flex:1 1 auto;min-width:0}
+.oid{font-family:'DM Mono',monospace;font-size:12px;color:var(--ink-faint);
+letter-spacing:.05em}
+.tags{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-family:'DM Mono',monospace;font-size:11px;text-decoration:none;
+background:var(--teal-soft);color:#036b64;padding:2.5px 8px;border-radius:20px;
+border:1px solid #c9e6e3}
+.tag:hover{background:#d3ece9}
+.j{background:var(--card);border:1px solid var(--paper-warm);border-left:3px solid var(--teal);
+border-radius:0 9px 9px 0;padding:17px 20px;margin-bottom:12px}
+.j .n{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--teal);
+letter-spacing:.09em;margin-bottom:3px}
+.note{background:#fff8e8;border:1px solid #f0dcae;border-radius:9px;padding:17px 20px;
+margin:22px 0;font-size:15.3px}
+.note strong{color:var(--amber)}
+.toc{background:var(--card);border:1px solid var(--paper-warm);border-radius:9px;
+padding:19px 22px;margin-bottom:12px}
+.toc ol{margin:0;padding-left:20px;columns:2;column-gap:30px}
+.toc li{margin-bottom:5px;break-inside:avoid}
+.bar{position:sticky;top:0;background:rgba(247,246,241,.95);backdrop-filter:blur(7px);
+border-bottom:1px solid var(--paper-warm);padding:9px 22px;z-index:9;
+font-family:'DM Mono',monospace;font-size:12.5px;color:var(--ink-light)}
+.bar .inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;
+gap:12px;align-items:center;flex-wrap:wrap}
+.bar button{font:inherit;background:none;border:1px solid var(--paper-warm);
+border-radius:5px;padding:2px 9px;cursor:pointer;color:var(--ink-light)}
+.bar button:hover{border-color:var(--teal);color:var(--teal)}
+footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--paper-warm);
+font-size:14.5px;color:var(--ink-light)}
+@media(max-width:620px){.toc ol{columns:1}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="inner"><div class="eyebrow">Claude Certified Associate &middot; Foundations</div><h1>Study guide</h1><p class="sub">The seven domains and all thirty objectives of the CCAO-F blueprint, plus the nine judgments the exam keeps coming back to. Built against exam guide v1.0 (July 2026).</p></div></header>
+<div class="bar"><div class="inner"><span id="count"></span><button id="reset" type="button">Clear ticks</button></div></div>
+<div class="wrap">
+<div class="note"><strong>How to use this.</strong> The official guide tells you to self-assess against the blueprint, so tick an objective once you could explain the judgment it asks for to a colleague. Ticks are saved in this browser only. Read the nine judgments first — they are the through-line, and most questions are one of them wearing a different job title. Then work the domains, heaviest first: D2 is 21% of the exam and D7 is 10%.</div>
+<h2>The nine judgments</h2>
+<div class="weight">Derived from the 96 questions in the practice bank, not invented &mdash; these are what the correct answers actually turn on.</div>
+<div class="j" id="J1"><div class="n">J1</div><h3>Verify the specific-looking detail</h3><p>A date, a figure, a citation, a clause number — the more precise a claim looks, the more it needs checking against the source before it leaves your hands. This is the single most-tested judgment on the exam. The trap is always the same: the output reads fluently and confidently, and the wrong answer is to trust that fluency, or to ask Claude how confident it is. Self-reported confidence is not an accuracy signal.</p></div>
+<div class="j" id="J2"><div class="n">J2</div><h3>Claude drafts; a person decides</h3><p>Where an output affects someone's pay, employment, compliance exposure, or a customer relationship, a human owns the decision and the sign-off. Claude can do the organising, the drafting and a preliminary check. The exam repeatedly offers a plausible option that hands the judgment itself to Claude — that option is wrong even when the analysis would be good.</p></div>
+<div class="j" id="J3"><div class="n">J3</div><h3>De-identify before it goes in</h3><p>Strip, mask or aggregate regulated personal data before uploading it, rather than uploading it and instructing Claude not to retain it. An instruction is not a control. Note the exam also punishes over-caution: abandoning a task entirely is usually wrong when anonymising would let it proceed within policy.</p></div>
+<div class="j" id="J4"><div class="n">J4</div><h3>Standing context belongs in a Project</h3><p>If you find yourself re-pasting the same guidance, template or reference document into a fresh chat each week, that is configuration, not conversation. Move it into a Project — instructions for how to behave, knowledge sources for what to draw on. Watch for the distractor that suggests keeping one enormous chat open instead.</p></div>
+<div class="j" id="J5"><div class="n">J5</div><h3>Specific beats vague — everywhere</h3><p>The most repeated lesson in the whole blueprint, and it shows up in three different disguises: as writing a prompt (D1), as writing a Project's custom instructions (D5), and as the diagnosis when a Project's output comes back generic (D7). “Be helpful and thorough” constrains nothing. Name the audience, the length, the tone, the required sections, and the rule that must always hold.</p></div>
+<div class="j" id="J6"><div class="n">J6</div><h3>Keep the configuration current</h3><p>Superseded knowledge is worse than no knowledge: it produces confident answers from guidance nobody follows any more. When something changes, replace the stale source rather than layering an instruction on top of it, and prune what is no longer relevant.</p></div>
+<div class="j" id="J7"><div class="n">J7</div><h3>Match the tool to the task</h3><p>A fast, low-cost model for straightforward high-volume work; the most capable model when the task turns on deep multi-factor reasoning; research mode when you need current external information with citations you can check; an artifact when the output is a substantial standalone thing someone will keep and revise. The wrong answers are always “use the best model for everything” and “switch platforms”.</p></div>
+<div class="j" id="J8"><div class="n">J8</div><h3>Decompose, then iterate</h3><p>Break a multi-part request into ordered steps when later steps depend on earlier ones, or into independent tasks when they do not. Improve a weak draft by naming exactly what was missing and asking for a revision in the same conversation — not by asking for something “better”, and not by starting over.</p></div>
+<div class="j" id="J9"><div class="n">J9</div><h3>Diagnose before you fix</h3><p>When a Project's output is consistently off, look at its instructions and its knowledge sources before you reach for a different model or a longer prompt. The exam's troubleshooting questions almost always resolve to one of those two, and the tempting wrong answer is to escalate the model.</p></div>
+<h2>The blueprint</h2>
+<div class="toc"><ol>
+<li><a href="#D1">Prompting and Task Execution</a> <span class="oid">14%</span></li>
+<li><a href="#D2">Output Evaluation and Validation</a> <span class="oid">21%</span></li>
+<li><a href="#D3">Product and Model Selection</a> <span class="oid">12%</span></li>
+<li><a href="#D4">Workflow Integration and Solution Design</a> <span class="oid">16%</span></li>
+<li><a href="#D5">Configuration and Knowledge Management</a> <span class="oid">12%</span></li>
+<li><a href="#D6">Governance, Risk, and Responsible Use</a> <span class="oid">15%</span></li>
+<li><a href="#D7">Troubleshooting and Optimization</a> <span class="oid">10%</span></li>
+</ol></div>
+<h2 id="D1">Prompting and Task Execution <span class="code">D1</span></h2>
+<div class="weight">14% of the exam &middot; 4 objectives &middot; about 8 of 60 questions</div>
+<div class="card obj"><input type="checkbox" data-oid="D1.1" aria-label="Mark D1.1 understood"><div class="body"><div class="oid">D1.1</div><h3>Create effective prompts for business and technical tasks</h3><p>Write a prompt that carries the context Claude cannot infer: who the audience is, what tone is wanted, the constraints that matter, and any facts only you have. Expect a scenario where a one-line request produced something generic, and the fix is supplying what was missing rather than rephrasing.</p><div class="tags"><a class="tag" href="#J5">J5 Specific beats vague — everywhere</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D1.2" aria-label="Mark D1.2 understood"><div class="body"><div class="oid">D1.2</div><h3>Apply task decomposition techniques to structure complex requests</h3><p>Split a complex request. Use an ordered sequence when a later step needs the output of an earlier one, and independent tasks when they do not. Bundling four deliverables into one message is the failure being tested.</p><div class="tags"><a class="tag" href="#J8">J8 Decompose, then iterate</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D1.3" aria-label="Mark D1.3 understood"><div class="body"><div class="oid">D1.3</div><h3>Iterate prompts to improve output quality</h3><p>Improve an output by naming the specific gap — the three dates it missed, the two features it omitted — and asking for a revision in the same conversation. “Make it better” and starting fresh are the wrong answers.</p><div class="tags"><a class="tag" href="#J8">J8 Decompose, then iterate</a><a class="tag" href="#J5">J5 Specific beats vague — everywhere</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D1.4" aria-label="Mark D1.4 understood"><div class="body"><div class="oid">D1.4</div><h3>Adapt prompting strategies based on task type (analysis, research, drafting, brainstorming)</h3><p>Adapt the approach to the kind of task. Brainstorming wants breadth and deliberately varied options; research wants current sources and citations; drafting wants audience, format and length; analysis wants the criteria stated up front.</p><div class="tags"><a class="tag" href="#J7">J7 Match the tool to the task</a><a class="tag" href="#J8">J8 Decompose, then iterate</a></div></div></div>
+<h2 id="D2">Output Evaluation and Validation <span class="code">D2</span></h2>
+<div class="weight">21% of the exam &middot; 6 objectives &middot; about 13 of 60 questions</div>
+<div class="card obj"><input type="checkbox" data-oid="D2.1" aria-label="Mark D2.1 understood"><div class="body"><div class="oid">D2.1</div><h3>Evaluate Claude-generated outputs for accuracy and completeness</h3><p>Judge an output on accuracy and completeness — including what it left out. A summary that is accurate about what it covers can still be wrong by omission, so check coverage against the source material, not just the claims made.</p><div class="tags"><a class="tag" href="#J1">J1 Verify the specific-looking detail</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D2.2" aria-label="Mark D2.2 understood"><div class="body"><div class="oid">D2.2</div><h3>Identify hallucinations, inconsistencies, and biases in responses</h3><p>Recognise a hallucination by its shape: a specific, confident detail that is not in the source you provided. Also covers internal inconsistency and bias in framing or in whose perspective is represented.</p><div class="tags"><a class="tag" href="#J1">J1 Verify the specific-looking detail</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D2.3" aria-label="Mark D2.3 understood"><div class="body"><div class="oid">D2.3</div><h3>Apply fact-checking and validation techniques</h3><p>Check a claim against an authoritative source: the contract clause, the plan document, the competitor's own pricing page, the original call notes. Sampling the raw data to test whether a stated prevalence holds counts here too.</p><div class="tags"><a class="tag" href="#J1">J1 Verify the specific-looking detail</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D2.4" aria-label="Mark D2.4 understood"><div class="body"><div class="oid">D2.4</div><h3>Determine when human review or additional verification is required</h3><p>Decide when a human must look. Triggers are stakes (pay, employment, legal exposure), a policy that requires review, ambiguity the output cannot resolve, and any claim that carries consequences if wrong.</p><div class="tags"><a class="tag" href="#J2">J2 Claude drafts; a person decides</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D2.5" aria-label="Mark D2.5 understood"><div class="body"><div class="oid">D2.5</div><h3>Edit, adapt, refine, and compare outputs for the intended audience</h3><p>Reshape an output for a different audience by telling Claude the new audience, purpose and tone explicitly — plain language for frontline staff, brevity for an executive — rather than lightly editing what you have.</p><div class="tags"><a class="tag" href="#J5">J5 Specific beats vague — everywhere</a><a class="tag" href="#J8">J8 Decompose, then iterate</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D2.6" aria-label="Mark D2.6 understood"><div class="body"><div class="oid">D2.6</div><h3>Organize and curate information and select appropriate output formats (artifacts, inline, structured data)</h3><p>Choose the output format by how the thing will be used. A substantial standalone document someone will keep and revise belongs in an artifact; a short answer read once belongs inline. Structured comparisons belong in a table.</p><div class="tags"><a class="tag" href="#J7">J7 Match the tool to the task</a></div></div></div>
+<h2 id="D3">Product and Model Selection <span class="code">D3</span></h2>
+<div class="weight">12% of the exam &middot; 4 objectives &middot; about 7 of 60 questions</div>
+<div class="card obj"><input type="checkbox" data-oid="D3.1" aria-label="Mark D3.1 understood"><div class="body"><div class="oid">D3.1</div><h3>Select appropriate Claude product features (Projects, research mode, chat, artifacts)</h3><p>Pick the right product feature: a Project for recurring work with fixed context, research mode for current external information with citations, artifacts for substantial output, plain chat for a one-off question.</p><div class="tags"><a class="tag" href="#J7">J7 Match the tool to the task</a><a class="tag" href="#J4">J4 Standing context belongs in a Project</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D3.2" aria-label="Mark D3.2 understood"><div class="body"><div class="oid">D3.2</div><h3>Differentiate between Claude model types (Haiku, Sonnet, Opus)</h3><p>Know what the model tiers are for. Haiku is the fast, low-cost option for straightforward high-volume work; Opus is for tasks whose value lies in depth of reasoning; Sonnet sits between them.</p><div class="tags"><a class="tag" href="#J7">J7 Match the tool to the task</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D3.3" aria-label="Mark D3.3 understood"><div class="body"><div class="oid">D3.3</div><h3>Align model selection with task requirements (cost, speed, quality)</h3><p>Match the model to the requirement rather than defaulting. Two tasks in one week may warrant two different models. “Always use the most capable” wastes cost and latency; the exam treats that as a real error.</p><div class="tags"><a class="tag" href="#J7">J7 Match the tool to the task</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D3.4" aria-label="Mark D3.4 understood"><div class="body"><div class="oid">D3.4</div><h3>Understand and manage context limitations and memory considerations (when to restart, summarize, or persist)</h3><p>Manage the conversation itself. A long chat degrades and starts contradicting earlier conclusions; the fix is to have Claude summarise the settled decisions and carry that summary into a fresh conversation — or to persist the recurring parts in a Project.</p><div class="tags"><a class="tag" href="#J4">J4 Standing context belongs in a Project</a><a class="tag" href="#J9">J9 Diagnose before you fix</a></div></div></div>
+<h2 id="D4">Workflow Integration and Solution Design <span class="code">D4</span></h2>
+<div class="weight">16% of the exam &middot; 5 objectives &middot; about 10 of 60 questions</div>
+<div class="card obj"><input type="checkbox" data-oid="D4.1" aria-label="Mark D4.1 understood"><div class="body"><div class="oid">D4.1</div><h3>Apply Claude to analyze requirements and use cases</h3><p>Use Claude to sharpen a vague requirement before working on it: ask the clarifying questions that pin down which data, which period, and what the output is actually for.</p><div class="tags"><a class="tag" href="#J8">J8 Decompose, then iterate</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D4.2" aria-label="Mark D4.2 understood"><div class="body"><div class="oid">D4.2</div><h3>Leverage Claude for research, planning, and process optimization</h3><p>Apply Claude to research and planning, using research mode where current external sources matter, and reviewing the citations rather than taking the synthesis on trust.</p><div class="tags"><a class="tag" href="#J7">J7 Match the tool to the task</a><a class="tag" href="#J1">J1 Verify the specific-looking detail</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D4.3" aria-label="Mark D4.3 understood"><div class="body"><div class="oid">D4.3</div><h3>Use Claude to support solution design, development, and iteration</h3><p>Support design and iteration as a dialogue: share the current process and its pain points, have Claude propose options, then refine. Not a single request expecting a finished answer.</p><div class="tags"><a class="tag" href="#J8">J8 Decompose, then iterate</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D4.4" aria-label="Mark D4.4 understood"><div class="body"><div class="oid">D4.4</div><h3>Integrate Claude into existing workflows to augment or redesign them</h3><p>Fit Claude into an existing workflow. Recurring manual assembly — the same weekly report from the same three spreadsheets — is the signal to move the standing parts into a Project.</p><div class="tags"><a class="tag" href="#J4">J4 Standing context belongs in a Project</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D4.5" aria-label="Mark D4.5 understood"><div class="body"><div class="oid">D4.5</div><h3>Communicate Claude's value and limitations to stakeholders</h3><p>Explain to a stakeholder both what Claude gives you and what it does not: pair the concrete value with the review step that stays human. Neither uncritical enthusiasm nor blanket refusal is the answer.</p><div class="tags"><a class="tag" href="#J2">J2 Claude drafts; a person decides</a></div></div></div>
+<h2 id="D5">Configuration and Knowledge Management <span class="code">D5</span></h2>
+<div class="weight">12% of the exam &middot; 4 objectives &middot; about 7 of 60 questions</div>
+<div class="card obj"><input type="checkbox" data-oid="D5.1" aria-label="Mark D5.1 understood"><div class="body"><div class="oid">D5.1</div><h3>Configure Claude Projects with instructions and knowledge sources</h3><p>Set a Project up so it holds the right two things: knowledge sources for the material to draw on, and custom instructions for how to behave. Reference documents do not belong pasted into instructions.</p><div class="tags"><a class="tag" href="#J4">J4 Standing context belongs in a Project</a><a class="tag" href="#J5">J5 Specific beats vague — everywhere</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D5.2" aria-label="Mark D5.2 understood"><div class="body"><div class="oid">D5.2</div><h3>Manage uploaded knowledge and connectors (e.g., Google Drive, Gmail)</h3><p>Manage what a Project reaches. Connect a source that keeps changing rather than pasting a copy; choose the connector that reaches the material you need (documents in Drive, agreements in email); and prune knowledge that has gone stale.</p><div class="tags"><a class="tag" href="#J6">J6 Keep the configuration current</a><a class="tag" href="#J7">J7 Match the tool to the task</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D5.3" aria-label="Mark D5.3 understood"><div class="body"><div class="oid">D5.3</div><h3>Create effective system-level instructions</h3><p>Write instructions that constrain the output. Name the audience, the structure, the tone, and the rules that must always hold. Vague virtue words produce inconsistent results across a team.</p><div class="tags"><a class="tag" href="#J5">J5 Specific beats vague — everywhere</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D5.4" aria-label="Mark D5.4 understood"><div class="body"><div class="oid">D5.4</div><h3>Inform, maintain, and update Claude configurations, knowledge sources, and instructions</h3><p>Maintain a configuration over time. When guidance is superseded, replace the stale knowledge source and update the instructions that describe the old template — do not layer a correction on top.</p><div class="tags"><a class="tag" href="#J6">J6 Keep the configuration current</a></div></div></div>
+<h2 id="D6">Governance, Risk, and Responsible Use <span class="code">D6</span></h2>
+<div class="weight">15% of the exam &middot; 4 objectives &middot; about 9 of 60 questions</div>
+<div class="card obj"><input type="checkbox" data-oid="D6.1" aria-label="Mark D6.1 understood"><div class="body"><div class="oid">D6.1</div><h3>Identify appropriate and inappropriate use cases</h3><p>Separate appropriate uses from inappropriate ones. Drafting, organising, analysing and preliminary checks are fine; final decisions with human consequences, and presenting generated content as genuine, are not.</p><div class="tags"><a class="tag" href="#J2">J2 Claude drafts; a person decides</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D6.2" aria-label="Mark D6.2 understood"><div class="body"><div class="oid">D6.2</div><h3>Apply data sensitivity, regulatory, and privacy considerations</h3><p>Apply data-sensitivity and privacy judgment: anonymise, aggregate or mask regulated data before it goes in, keep genuinely sensitive material out of shared spaces, and confirm that anyone given access is authorised to see what it holds.</p><div class="tags"><a class="tag" href="#J3">J3 De-identify before it goes in</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D6.3" aria-label="Mark D6.3 understood"><div class="body"><div class="oid">D6.3</div><h3>Follow organizational AI policies and governance standards</h3><p>Follow the organisation's own AI policy, including the parts that are inconvenient. If policy requires review before external release, or committee approval for a new automated use, that step is not optional.</p><div class="tags"><a class="tag" href="#J2">J2 Claude drafts; a person decides</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D6.4" aria-label="Mark D6.4 understood"><div class="body"><div class="oid">D6.4</div><h3>Understand the ethical implications of AI usage</h3><p>Think about the ethics rather than only the rules: fabricated testimonials presented as real, performance ratings decided by a draft, a rejection reason exposing detail it should not. The judgment is about consequence, not compliance.</p><div class="tags"><a class="tag" href="#J2">J2 Claude drafts; a person decides</a><a class="tag" href="#J3">J3 De-identify before it goes in</a></div></div></div>
+<h2 id="D7">Troubleshooting and Optimization <span class="code">D7</span></h2>
+<div class="weight">10% of the exam &middot; 3 objectives &middot; about 6 of 60 questions</div>
+<div class="card obj"><input type="checkbox" data-oid="D7.1" aria-label="Mark D7.1 understood"><div class="body"><div class="oid">D7.1</div><h3>Identify, diagnose, and resolve issues with underperforming prompts or poor outputs</h3><p>Diagnose an underperforming Project by inspecting its instructions and its knowledge sources — vague wording, missing definitions, a stale document — before changing anything else.</p><div class="tags"><a class="tag" href="#J9">J9 Diagnose before you fix</a><a class="tag" href="#J5">J5 Specific beats vague — everywhere</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D7.2" aria-label="Mark D7.2 understood"><div class="body"><div class="oid">D7.2</div><h3>Adjust approach based on feedback and results</h3><p>Act on the pattern in the feedback. A systematic mismatch repeating for weeks is an instruction problem: revise the instruction, and add a worked example of what good looks like.</p><div class="tags"><a class="tag" href="#J9">J9 Diagnose before you fix</a><a class="tag" href="#J5">J5 Specific beats vague — everywhere</a></div></div></div>
+<div class="card obj"><input type="checkbox" data-oid="D7.3" aria-label="Mark D7.3 understood"><div class="body"><div class="oid">D7.3</div><h3>Optimize workflows for efficiency and effectiveness</h3><p>Optimise the workflow, not just the prompt. Separate Projects for separate initiatives, an artifact for a document being revised repeatedly, and standing context configured once instead of re-supplied.</p><div class="tags"><a class="tag" href="#J4">J4 Standing context belongs in a Project</a><a class="tag" href="#J7">J7 Match the tool to the task</a></div></div></div>
+<footer><p><strong>This is a supplement, not a replacement.</strong> The authoritative source is the exam guide on the Anthropic Partner Academy; read it in full before scheduling. Anthropic does not guarantee that any resource produces a pass.</p><p>The objective text is quoted verbatim from guide section 6. The <span class="oid">D&lt;n&gt;.&lt;m&gt;</span> numbering is this repo's, not Anthropic's &mdash; the guide lists objectives as unnumbered bullets.</p><p>Practise against these objectives in the <a href="practice-exam/exam.html">adaptive practice exam</a>. Read its known limitations first &mdash; they are listed in the README.</p></footer>
+</div>
+<script>
+// Self-assessment ticks, persisted locally. The official guide tells candidates to
+// self-assess against the blueprint, so the guide it points at should let you.
+var KEY = "ccaof.guide.v1";
+function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+                 catch (e) { return {}; } }
+function save(s){ try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+function paint(){
+  var s = load(), boxes = document.querySelectorAll(".obj input"), done = 0;
+  boxes.forEach(function(b){ if (s[b.dataset.oid]) { b.checked = true; done++; } });
+  document.getElementById("count").textContent =
+    done + " of " + boxes.length + " objectives marked as understood";
+}
+document.addEventListener("change", function(e){
+  if (!e.target.matches(".obj input")) return;
+  var s = load();
+  if (e.target.checked) s[e.target.dataset.oid] = 1; else delete s[e.target.dataset.oid];
+  save(s); paint();
+});
+document.getElementById("reset").addEventListener("click", function(){
+  save({});
+  document.querySelectorAll(".obj input").forEach(function(b){ b.checked = false; });
+  paint();
+});
+paint();
+</script>
+</body>
+</html>

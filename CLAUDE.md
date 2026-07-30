@@ -78,7 +78,12 @@ instead, with what would close it.
 ## Repo map
 
 - `README.md` — how a colleague starts, and the current known gaps
-- `practice-exam/exam.html` — the exam UI, and the only thing a learner opens
+- `associate_course.html` — the study guide. **Machine-written** by
+  `practice-exam/build_course.py`; edit the content data in that script and re-run
+  it, never the HTML. The build asserts its objective list matches
+  `TASK_STATEMENTS`, and two pytest checks guard the committed output.
+- `practice-exam/exam.html` — the exam UI. With the guide, the only two things a
+  learner opens
 - `practice-exam/adaptive.js` — pure adaptive + navigation core (browser + node)
 - `practice-exam/exam_lib.py` — blueprint, bank I/O, validation, generation
 - `practice-exam/questions.js` — machine-written bank; `render_bank()` is the only writer

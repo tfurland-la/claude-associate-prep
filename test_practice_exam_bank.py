@@ -341,3 +341,34 @@ def test_multi_response_round_trips_through_the_bank_file():
     rendered = exam_lib.render_bank(entries)
     assert '"selectCount": 2' in rendered
     assert '"correct": [' in rendered
+
+
+# ── Study guide ────────────────────────────────────────────────────────────
+
+
+def test_study_guide_covers_every_objective_verbatim():
+    """associate_course.html is machine-written by build_course.py, which asserts
+    its objective list matches TASK_STATEMENTS. This checks the *committed* HTML,
+    so a stale guide can't survive a blueprint change unnoticed."""
+    import html as html_mod
+
+    guide = (PRACTICE_EXAM_DIR.parent / "associate_course.html")
+    assert guide.exists(), "run practice-exam/build_course.py"
+    doc = guide.read_text(encoding="utf-8")
+    missing_ids = [o for o in exam_lib.TASK_STATEMENTS if f">{o}</div>" not in doc]
+    assert not missing_ids, f"guide omits objectives: {missing_ids}"
+    not_verbatim = [
+        o for o, text in exam_lib.TASK_STATEMENTS.items()
+        if html_mod.escape(text, quote=False) not in doc
+    ]
+    assert not not_verbatim, (
+        f"objective text is not verbatim from the guide for: {not_verbatim}"
+    )
+
+
+def test_study_guide_states_the_numbering_is_not_anthropics():
+    """The D<n>.<m> ids are this repo's invention; the guide must not imply
+    otherwise, since a colleague could otherwise quote them as official."""
+    doc = (PRACTICE_EXAM_DIR.parent / "associate_course.html").read_text(encoding="utf-8")
+    assert "not" in doc and "Anthropic" in doc
+    assert "unnumbered bullets" in doc

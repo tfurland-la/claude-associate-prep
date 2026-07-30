@@ -11,10 +11,18 @@ software-development or API experience.
 
 ## Start here
 
-Open **[`practice-exam/exam.html`][exam]** — double-click the file, or use the
-hosted copy. Your progress is saved in your browser.
+Two things to open, both zero-install:
 
-Two modes:
+**[`associate_course.html`](associate_course.html)** — the study guide. All 7 domains
+and 30 objectives in blueprint order, with the nine judgments the exam keeps coming
+back to set out first. Tick objectives off as you go; ticks save in your browser.
+Read the nine judgments before the domains — most questions are one of them wearing
+a different job title.
+
+**[`practice-exam/exam.html`][exam]** — the adaptive practice exam. Your progress is
+saved in your browser.
+
+Two exam modes:
 
 - **Practice** — one question at a time with an explanation after each. The exam
   tracks which of the 30 objectives you are weakest on and asks more about those.
@@ -85,7 +93,7 @@ This is early. Being explicit so a score isn't over-read:
   conservative choice — it can understate a score but never flatter it.
 - **The scaled score is a linear approximation.** The real exam equates across
   forms; this maps raw-correct onto 100–1,000 directly.
-- **No study guide or hands-on exercises yet.** Planned.
+- **No hands-on exercises yet.** The exam guide's "How to Prepare" recommends building a real Project and evaluating outputs for accuracy and bias; none of that is scaffolded here yet.
 
 ## Growing the question bank (author side)
 
