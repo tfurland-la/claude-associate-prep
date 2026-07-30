@@ -372,3 +372,30 @@ def test_study_guide_states_the_numbering_is_not_anthropics():
     doc = (PRACTICE_EXAM_DIR.parent / "associate_course.html").read_text(encoding="utf-8")
     assert "not" in doc and "Anthropic" in doc
     assert "unnumbered bullets" in doc
+
+
+def test_exercises_cover_every_domain():
+    """The four exercises must between them touch all seven domains — a gap here
+    means a whole weighting slice has no hands-on practice. build_exercises.py
+    asserts this at build time; this guards the committed HTML."""
+    doc = (PRACTICE_EXAM_DIR.parent / "exercises.html")
+    assert doc.exists(), "run practice-exam/build_exercises.py"
+    text = doc.read_text(encoding="utf-8")
+    for domain, name in exam_lib.DOMAINS.items():
+        assert domain in text, f"{domain} is not referenced in the exercises"
+
+
+def test_exercises_ship_answer_keys():
+    """Two exercises are gated by planted defects with a key rather than a rubric.
+    That is what makes the heaviest domain self-scorable, so the keys must exist."""
+    text = (PRACTICE_EXAM_DIR.parent / "exercises.html").read_text(encoding="utf-8")
+    assert text.count("<details>") >= 6, "answer keys are missing from the exercises"
+    assert "9 planted" in text or "planted" in text
+    assert "Show the answer key" in text
+
+
+def test_exercises_forbid_outsourcing_the_judgment():
+    """The exercises are worthless if a learner asks Claude to find the planted
+    defects or classify the triage items, so the page must say so explicitly."""
+    text = (PRACTICE_EXAM_DIR.parent / "exercises.html").read_text(encoding="utf-8")
+    assert "Do not ask it to find the planted defects" in text

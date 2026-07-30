@@ -82,6 +82,10 @@ instead, with what would close it.
   `practice-exam/build_course.py`; edit the content data in that script and re-run
   it, never the HTML. The build asserts its objective list matches
   `TASK_STATEMENTS`, and two pytest checks guard the committed output.
+- `exercises.html` — the four preparation exercises. **Machine-written** by
+  `practice-exam/build_exercises.py`, same rule. The build asserts the exercises
+  between them cover all seven domains. Exercises 3 and 4B carry answer keys; keep
+  those keys accurate, since they are what makes the heaviest domain self-scorable.
 - `practice-exam/exam.html` — the exam UI. With the guide, the only two things a
   learner opens
 - `practice-exam/adaptive.js` — pure adaptive + navigation core (browser + node)
