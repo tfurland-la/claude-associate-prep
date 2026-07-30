@@ -2354,60 +2354,8 @@ window.CCAOF_BANK = [
     "id": "D3.1-4113f1bd"
   },
   {
-    "taskStatement": "D5.2",
-    "domain": "D5",
-    "scenario": "Priya is the Operations Lead for a regional logistics company and manages a Claude Project called \"Vendor Contracts\" for her team. She has connected the team's Google Drive so the folder of vendor agreements syncs into the project as a knowledge source, and she has added several teammates as project members so they can use it for contract questions.\n\nA new operations coordinator joins the team and asks Priya whether, just by being added as a project member, they can see the vendor contract details and the custom instructions Priya wrote for the project, without needing any separate file access.",
-    "question": "What should Priya tell the coordinator?",
-    "options": {
-      "A": "Yes — anyone added as a member of the project can see its knowledge sources and custom instructions.",
-      "C": "No — custom instructions are private to the project owner and are never visible to other members.",
-      "B": "Yes, but only after Priya manually shares each vendor document with the coordinator outside of Claude.",
-      "D": "No — each teammate must individually re-upload the Drive files to their own account before they can view them."
-    },
-    "correct": "A",
-    "explanations": {
-      "A": "Correct. Members with access to a project can see its knowledge sources, including connected Drive content, and its custom instructions, so simply being added as a project member is sufficient.",
-      "C": "Incorrect. Custom instructions are part of the project configuration visible to members with project access, not restricted to the owner alone.",
-      "B": "Incorrect. This introduces an unnecessary manual sharing step outside the project; project membership itself governs visibility of the connected knowledge and instructions.",
-      "D": "Incorrect. Project members don't need to individually re-upload or duplicate connected Drive content; the connected Drive folder is already part of the shared project knowledge."
-    },
-    "provenance": {
-      "source": "seed-generated",
-      "model": "claude-sonnet-5",
-      "generatedAt": "2026-07-29",
-      "reviewed": true
-    },
-    "id": "D5.2-cbced3ae"
-  },
-  {
-    "taskStatement": "D5.2",
-    "domain": "D5",
-    "scenario": "A project manager runs a Claude Project for a client rollout. The project's knowledge sources include a requirements document uploaded from a teammate's laptop plus a folder of specs connected directly from Google Drive. The PM notices Claude's answers about the specs reflect edits made in Drive that same morning, but has not separately verified the uploaded requirements document.\n\nA contractor is joining the team to help with testing, and the PM wants to understand what the contractor will be able to see before granting them access to the Project.",
-    "question": "Before adding the contractor to the Project, what should the PM keep in mind about what the contractor will be able to see?",
-    "options": {
-      "B": "Once given access to the Project, the contractor will be able to see all of its knowledge sources and custom instructions, so access should be limited to what the contractor genuinely needs.",
-      "D": "The contractor will see the Project's instructions but not its uploaded knowledge files, since those stay private to whoever originally added them.",
-      "A": "Access can be granted without review, since Claude automatically redacts sensitive content from a project's knowledge for new members.",
-      "C": "The contractor will only see the Google Drive specs, since Drive-connected files carry their own separate permissions that override the Project's access."
-    },
-    "correct": "B",
-    "explanations": {
-      "B": "Correct. Members with access to a Project can see its knowledge sources and instructions, so the PM should scope what the contractor is granted access to, or adjust the Project's contents, before adding them.",
-      "D": "Incorrect. Uploaded knowledge sources are not walled off to only the person who added them; anyone with project access can see them along with the instructions.",
-      "A": "Incorrect. There is no automatic redaction of project knowledge for new members, so granting access without reviewing what is inside the Project is not a safe assumption.",
-      "C": "Incorrect. Project access is not split so that Drive-connected files stay visible while other knowledge sources are hidden; a member with project access sees the project's knowledge as a whole."
-    },
-    "provenance": {
-      "source": "seed-generated",
-      "model": "claude-sonnet-5",
-      "generatedAt": "2026-07-29",
-      "reviewed": true
-    },
-    "id": "D5.2-636f547d"
-  },
-  {
-    "taskStatement": "D5.2",
-    "domain": "D5",
+    "taskStatement": "D6.2",
+    "domain": "D6",
     "scenario": "Priya, an HR communications specialist, sets up a Claude Project to help draft materials for the upcoming benefits open enrollment period. She connects the team's Google Drive folder, which holds the current policy documents and plan comparison sheets, so Claude can reference them when drafting employee-facing emails and FAQs.\n\nA colleague from the marketing team offers to help polish the tone of the enrollment emails and asks Priya to add them to the Project so they can use Claude with the same context. Before adding the colleague, Priya pauses to think through what that access would actually expose.",
     "question": "What should Priya consider before adding the marketing colleague to the Project?",
     "options": {
@@ -2429,7 +2377,7 @@ window.CCAOF_BANK = [
       "generatedAt": "2026-07-29",
       "reviewed": true
     },
-    "id": "D5.2-c80bb7cb"
+    "id": "D6.2-c80bb7cb"
   },
   {
     "taskStatement": "D4.5",

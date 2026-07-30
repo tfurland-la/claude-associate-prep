@@ -51,19 +51,21 @@ guarantee any resource produces a pass.
 
 This is early. Being explicit so a score isn't over-read:
 
-- **The question bank holds 95 questions** — 3 official samples from the guide, 2
-  hand-authored multiple-response items, and 90 generated ones. Every one of the 30
-  objectives now has at least 3, so the adaptive engine can give you a balanced run
-  across the whole blueprint.
+- **The question bank holds 96 questions** — 3 official samples from the guide, 5
+  hand-authored, and 88 generated. Every one of the 30 objectives has at least 3, so
+  the adaptive engine can give you a balanced run across the whole blueprint.
 - **Covered by count is not the same as covered in substance.** Clearing the
   3-per-objective bar says nothing about whether an objective's questions test its
   whole scope. D5.2 ("manage uploaded knowledge and connectors") is the worked
   example: its three generated questions turned out to be one question about who
   can see a Project's knowledge, wearing three different personas, and none of them
-  tested managing knowledge or connectors at all. Three hand-authored questions now
-  cover connecting a source that keeps changing, choosing which connector reaches
-  which material, and pruning a knowledge base that has gone stale. Treat a strong
-  score on any one objective as evidence about the slice that got tested.
+  tested managing knowledge or connectors at all. That has been fixed — D5.2's three
+  questions are now hand-authored and cover connecting a source that keeps changing,
+  choosing which connector reaches which material, and pruning a knowledge base that
+  has gone stale. The clearest of the three displaced questions moved to D6.2, where
+  its actual judgment (is this colleague authorised to see HR policy data?) belongs.
+  The general point stands though: treat a strong score on any one objective as
+  evidence about the slice that got tested, not the whole of it.
 - **The generated questions lean redundant.** Across both batches the reviewers'
   main objection was questions teaching the *same lesson* with a different persona
   — a generator habit, not a one-off, and one that got worse as the anti-fabrication
