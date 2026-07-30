@@ -1,12 +1,13 @@
 # Claude Certified Associate – Foundations (CCAO-F) prep
 
-An adaptive practice exam for the **Claude Certified Associate – Foundations**
-credential, built against the official exam guide (v1.0, effective July 2026).
+A study guide, four hands-on exercises and an adaptive practice exam for the
+**Claude Certified Associate – Foundations** credential, built against the official
+exam guide (v1.0, effective July 2026).
 
 **You do not need to be a developer to use this.** No Python, no API key, no
-install — open the practice exam in a browser and start. That matches the
-credential itself, which is aimed at operations, marketing, project management,
-education, communications and general knowledge work, and which assumes no
+install — open a link in a browser and start. That matches the credential itself,
+which is aimed at operations, marketing, project management, education,
+communications and general knowledge work, and which assumes no
 software-development or API experience.
 
 ## Start here
