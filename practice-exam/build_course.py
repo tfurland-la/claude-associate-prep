@@ -7,7 +7,7 @@ discipline as questions.js — the HTML is machine-written, this is the source.
 
     python3 practice-exam/build_course.py
 
-The nine judgments below were derived from the committed question bank, not
+The ten judgments below were derived from the committed question bank, not
 invented: they are the lessons the 96 questions' correct answers actually turn on.
 """
 
@@ -75,6 +75,17 @@ JUDGMENTS = [
      "knowledge sources before you reach for a different model or a longer prompt. The "
      "exam's troubleshooting questions almost always resolve to one of those two, and "
      "the tempting wrong answer is to escalate the model."),
+    ("J10", "On a sequencing item, eliminate on first and last",
+     "Roughly four or five of the sixty items give you five numbered steps and five "
+     "candidate orderings. They share a shape: three of the five can be discarded on "
+     "their first or last step alone, leaving two that begin and end identically. The "
+     "entire question is which of those two orders the middle correctly. So do not "
+     "read five orderings in full — read the first and last step of each, discard the "
+     "three that start or finish wrongly, then spend your time on the one real "
+     "comparison. The middle almost always turns on a dependency: something that "
+     "cannot happen until something else has. You cannot refine an instruction before "
+     "running the thing once, or write instructions referencing a document you have "
+     "not added yet, or re-measure a process you have not changed."),
 ]
 
 # ── Per-objective content. Keys are checked against exam_lib.TASK_STATEMENTS. ──
@@ -86,7 +97,8 @@ OBJECTIVES = {
              "and the fix is supplying what was missing rather than rephrasing.", ["J5"]),
     "D1.2": ("Split a complex request. Use an ordered sequence when a later step needs the "
              "output of an earlier one, and independent tasks when they do not. Bundling four "
-             "deliverables into one message is the failure being tested.", ["J8"]),
+             "deliverables into one message is the failure being tested. This is also the "
+             "objective where an ordering question is most likely to turn up.", ["J8", "J10"]),
     "D1.3": ("Improve an output by naming the specific gap — the three dates it missed, the "
              "two features it omitted — and asking for a revision in the same conversation. "
              "“Make it better” and starting fresh are the wrong answers.", ["J8", "J5"]),
@@ -168,13 +180,13 @@ OBJECTIVES = {
              ["J2", "J3"]),
     "D7.1": ("Diagnose an underperforming Project by inspecting its instructions and its "
              "knowledge sources — vague wording, missing definitions, a stale document — before "
-             "changing anything else.", ["J9", "J5"]),
+             "changing anything else.", ["J9", "J5", "J10"]),
     "D7.2": ("Act on the pattern in the feedback. A systematic mismatch repeating for weeks is an "
              "instruction problem: revise the instruction, and add a worked example of what good "
              "looks like.", ["J9", "J5"]),
     "D7.3": ("Optimise the workflow, not just the prompt. Separate Projects for separate "
              "initiatives, an artifact for a document being revised repeatedly, and standing "
-             "context configured once instead of re-supplied.", ["J4", "J7"]),
+             "context configured once instead of re-supplied.", ["J4", "J7", "J10"]),
 }
 
 CSS = """
@@ -293,7 +305,7 @@ def build():
              '<div class="eyebrow">Claude Certified Associate &middot; Foundations</div>'
              '<h1>Study guide</h1>'
              '<p class="sub">The seven domains and all thirty objectives of the CCAO-F '
-             'blueprint, plus the nine judgments the exam keeps coming back to. Built '
+             'blueprint, plus the ten judgments the exam keeps coming back to. Built '
              'against exam guide v1.0 (July 2026).</p></div></header>')
     p.append('<div class="bar"><div class="inner"><span id="count"></span>'
              '<button id="reset" type="button">Clear ticks</button></div></div>')
@@ -302,14 +314,14 @@ def build():
     p.append('<div class="note"><strong>How to use this.</strong> The official guide '
              'tells you to self-assess against the blueprint, so tick an objective once '
              'you could explain the judgment it asks for to a colleague. Ticks are saved '
-             'in this browser only. Read the nine judgments first — they are the '
+             'in this browser only. Read the ten judgments first — they are the '
              'through-line, and most questions are one of them wearing a different '
              'job title. Then work the domains, heaviest first: D2 is 21% of the exam '
              'and D7 is 10%.</div>')
 
-    p.append('<h2>The nine judgments</h2>')
-    p.append('<div class="weight">Derived from the 96 questions in the practice bank, '
-             'not invented &mdash; these are what the correct answers actually turn on.</div>')
+    p.append('<h2>The ten judgments</h2>')
+    p.append('<div class="weight">Derived from the questions in the practice bank, '
+             'not invented &mdash; these are what the correct answers actually turn on. The last is a technique rather than a principle: it is how to attack the sequencing items, which a real sitting confirmed are 4-5 of the 60.</div>')
     for jid, title, body in JUDGMENTS:
         p.append(f'<div class="j" id="{jid}"><div class="n">{jid}</div>'
                  f'<h3>{esc(title)}</h3><p>{esc(body)}</p></div>')

@@ -210,6 +210,68 @@ TRIAGE = [
      "one described."),
 ]
 
+# ── Exercise 2 part B: sequencing drill (keyed) ────────────────────────────
+# Reported from a real sitting: 4-5 of the 60 items give five numbered steps and
+# five candidate orderings, and three of the five are always eliminable on their
+# first or last step alone. The drill is the technique, not the content.
+SEQUENCING_DRILL = [
+    {
+        "steps": [
+            "Write custom instructions describing the report's sections",
+            "Run the report once and read what comes back",
+            "Create the Project",
+            "Add the source spreadsheets as knowledge",
+            "Refine the instructions to fix what the run got wrong",
+        ],
+        "options": ["1 → 3 → 4 → 2 → 5", "3 → 4 → 1 → 5 → 2", "3 → 4 → 2 → 1 → 5",
+                    "4 → 3 → 1 → 2 → 5", "3 → 4 → 1 → 2 → 5"],
+        "answer": "E",
+        "eliminate": "A starts with step 1 and D with step 4, but neither the "
+                     "instructions nor the knowledge can exist before the Project "
+                     "does. B ends on step 2, running the report, when the last "
+                     "thing you do is refine.",
+        "contest": "C and E both run 3 … 5. C runs the report before the "
+                   "instructions exist, so the run tests nothing and cannot tell "
+                   "you what to refine. E is the answer.",
+    },
+    {
+        "steps": [
+            "Identify which specific claims are checkable",
+            "Send the briefing",
+            "Locate the authoritative source for each claim",
+            "Compare each claim against its source",
+            "Correct or remove the claims that fail",
+        ],
+        "options": ["2 → 1 → 3 → 4 → 5", "1 → 4 → 3 → 5 → 2", "3 → 1 → 4 → 5 → 2",
+                    "1 → 3 → 4 → 2 → 5", "1 → 3 → 4 → 5 → 2"],
+        "answer": "E",
+        "eliminate": "A sends first, which defeats the exercise. C hunts for "
+                     "sources before deciding what needs checking. D ends on step "
+                     "5, correcting, after it has already sent.",
+        "contest": "B and E both run 1 … 2. B compares each claim against a source "
+                   "before locating the source — not something you can do in that "
+                   "order. E is the answer.",
+    },
+    {
+        "steps": [
+            "Map the current process step by step",
+            "Roll the change out to the team",
+            "Identify which steps Claude could take on",
+            "Run one cycle yourself with the change in place",
+            "Agree which steps must stay a human decision",
+        ],
+        "options": ["3 → 1 → 5 → 4 → 2", "1 → 3 → 4 → 5 → 2", "2 → 1 → 3 → 5 → 4",
+                    "1 → 3 → 5 → 2 → 4", "1 → 3 → 5 → 4 → 2"],
+        "answer": "E",
+        "eliminate": "A judges which steps Claude could take before they are "
+                     "written down. C rolls out first. D ends on step 4, piloting, "
+                     "after the team already has it.",
+        "contest": "B and E both run 1 … 2. B pilots before agreeing what stays "
+                   "human, so the pilot can quietly automate a decision nobody "
+                   "meant to give away. E is the answer.",
+    },
+]
+
 # ── Exercises 1, 2 and 4A: rubric-based ────────────────────────────────────
 RUBRIC_EXERCISES = [
     {
@@ -372,6 +434,18 @@ def build():
     assert doms == set(exam_lib.DOMAINS), (
         f"exercises miss domains: {sorted(set(exam_lib.DOMAINS) - doms)}")
     assert len({t[0] for t in TRIAGE_CATEGORIES}) == 4
+    for item in SEQUENCING_DRILL:
+        assert len(item["steps"]) == 5 and len(item["options"]) == 5
+        ends = {}
+        for i, o in enumerate(item["options"]):
+            nums = [int(c) for c in o if c.isdigit()]
+            assert sorted(nums) == [1, 2, 3, 4, 5], f"drill option {o} is not a permutation"
+            ends.setdefault((nums[0], nums[-1]), []).append(chr(65 + i))
+        pair = [ks for ks in ends.values() if len(ks) > 1]
+        assert len(pair) == 1 and len(pair[0]) == 2, (
+            f"a drill must have exactly one contested pair, got {list(ends.values())}")
+        assert item["answer"] in pair[0], (
+            f"drill answer {item['answer']} must be in the contested pair {pair[0]}")
     for _, cat, _ in TRIAGE:
         assert cat in {c[0] for c in TRIAGE_CATEGORIES}, f"unknown triage category {cat}"
 
@@ -440,7 +514,7 @@ def build():
 
     p.append('<div class="note"><strong>Scoring yourself.</strong> Nine defects. Seven or '
              'more found, and your evaluation instinct is in reasonable shape. Below five, '
-             'reread the nine judgments in the study guide and come back &mdash; this is '
+             'reread the ten judgments in the study guide and come back &mdash; this is '
              'the heaviest domain on the exam and the one most worth the second pass. '
              'Count a defect found only if you named what was wrong, not just that '
              'something felt off.</div>')
@@ -516,6 +590,46 @@ def build():
         p.append('<div class="card"><h4>Done when</h4><ul class="done">'
                  + "".join(f'<li>{esc(d)}</li>' for d in ex["done_when"])
                  + '</ul></div>')
+
+    # ── Exercise 2 part B ─────────────────────────────────────────────────
+    p.append('<h3>2B &middot; Sequencing drill</h3>')
+    p.append('<div class="meta">D1.2 &middot; scored against an answer key</div>')
+    p.append('<p>Four or five items on the real exam give you five numbered steps and '
+             'five candidate orderings. They have a consistent shape, and knowing it '
+             'turns a slow read of five sequences into one comparison: <strong>three of '
+             'the five can be discarded on their first or last step alone</strong>, '
+             'leaving two that begin and end identically. That pair is the whole '
+             'question.</p>')
+    p.append('<p>So for each item below: read only the first and last step of each '
+             'ordering, strike the three that start or finish wrongly, then decide '
+             'between the two that remain. The middle almost always turns on a '
+             'dependency &mdash; something that cannot happen until something else '
+             'has.</p>')
+    for n, item in enumerate(SEQUENCING_DRILL, 1):
+        p.append('<div class="card">')
+        p.append(f'<h4>Drill {n}</h4>')
+        p.append('<div class="src"><ol>'
+                 + "".join(f'<li>{esc(t)}</li>' for t in item["steps"])
+                 + '</ol></div>')
+        p.append('<div class="out">'
+                 + " &nbsp;&nbsp; ".join(
+                     f'<strong>{chr(65+i)}.</strong> {esc(o)}'
+                     for i, o in enumerate(item["options"]))
+                 + '</div>')
+        p.append('<details><summary>Show the answer key</summary><div class="inner">'
+                 f'<div class="defect"><div class="label">Eliminate on first and last</div>'
+                 f'<div>{esc(item["eliminate"])}</div></div>'
+                 f'<div class="defect"><div class="label">The contest</div>'
+                 f'<div>{esc(item["contest"])}</div></div>'
+                 f'<p><strong>Answer: {item["answer"]}</strong></p>'
+                 '</div></details>')
+        p.append('</div>')
+    p.append('<div class="note"><strong>What to take from it.</strong> If you found '
+             'yourself reading all five orderings in full, you are doing the slow '
+             'version. The first-and-last pass costs seconds and removes three '
+             'options; everything after that is one dependency question. Practise '
+             'until the elimination is automatic, because on the day the saving is '
+             'four or five items\' worth of time.</div>')
 
     # ── Debrief ───────────────────────────────────────────────────────────
     p.append('<h2>After each exercise</h2>')

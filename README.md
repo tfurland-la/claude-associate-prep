@@ -18,15 +18,15 @@ install or clone. Send a colleague that link and they can start immediately.
 Three things to open:
 
 **[`associate_course.html`](associate_course.html)** — the study guide. All 7 domains
-and 30 objectives in blueprint order, with the nine judgments the exam keeps coming
+and 30 objectives in blueprint order, with the ten judgments the exam keeps coming
 back to set out first. Tick objectives off as you go; ticks save in your browser.
-Read the nine judgments before the domains — most questions are one of them wearing
+Read the ten judgments before the domains — most questions are one of them wearing
 a different job title.
 
 **[`exercises.html`](exercises.html)** — four hands-on exercises covering all seven
-domains. Two are scored against an answer key rather than a rubric: an
-output-evaluation gauntlet with nine planted defects, and a ten-item governance
-triage. Between them that's about a third of the exam you can mark yourself on
+domains, with three answer-keyed parts rather than rubrics: an output-evaluation
+gauntlet with nine planted defects, a ten-item governance triage, and a sequencing
+drill. Between them that's about a third of the exam you can mark yourself on
 objectively. Start with exercise 3 — output evaluation is 21% of the exam and the
 heaviest domain by some way.
 
@@ -70,7 +70,7 @@ guarantee any resource produces a pass.
 
 This is early. Being explicit so a score isn't over-read:
 
-- **The question bank holds 96 questions** — 3 official samples from the guide, 5
+- **The question bank holds 103 questions** — 3 official samples from the guide, 12
   hand-authored, and 88 generated. Every one of the 30 objectives has at least 3, so
   the adaptive engine can give you a balanced run across the whole blueprint.
 - **Covered by count is not the same as covered in substance.** Clearing the
@@ -92,13 +92,22 @@ This is early. Being explicit so a score isn't over-read:
   survived by deliberate choice rather than sacrifice coverage. Expect to meet the
   same underlying point more than once, particularly around keeping Project
   knowledge current and verifying a suspect figure against its source.
-- **Multiple-response items work, but their calibration is inferred.** "Select
-  two" items render, gate on a complete selection, and score by exact set match.
-  What is *not* documented is how the real exam shapes them: the guide states the
-  item type exists but publishes no worked example, so the five-option shape and
-  the roughly-one-in-six frequency come from one third-party practice set written
-  by someone who sat the exam. Treat that as the best available evidence, not as
-  fact from Anthropic.
+- **All three item formats are supported, and confirmed by a real sitting.**
+  Standard multiple-choice, "select two" multiple-response, and sequencing — put
+  five numbered steps in the correct order. Someone who sat the exam and scored
+  100% confirmed both the "select two" shape and that 4–5 of the 60 items are
+  sequencing.
+- **The bank under-carries multiple-response items.** It holds 2 of 103 (2%)
+  against roughly one in six on the real exam. The mechanic works and you will
+  meet it, but not nearly as often as on the day — so if "select two" feels
+  unfamiliar when you sit it, that is this gap, not you. They are hand-authored
+  because the architecture is exact, which is also why there are so few.
+- **Sequencing items have a shape worth knowing before exam day.** Of the five
+  candidate orderings, three can be eliminated on their first or last step alone,
+  leaving two that begin and end identically — and the whole question is which of
+  those two orders the middle correctly. That technique is judgment J10 in the
+  study guide, with a drill in exercise 2B. The bank carries 7 of them, about 7%
+  against the ~8% a real form runs.
 - **Multiple-response scoring is all-or-nothing here.** The guide does not say
   whether the real exam awards partial credit. Exact-set-match is the
   conservative choice — it can understate a score but never flatter it.

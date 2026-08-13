@@ -136,7 +136,7 @@ font-size:14.5px;color:var(--ink-light)}
 </div></details>
 <div class="tags"><span class="tag">J1</span><span class="tag">J7</span></div>
 </div>
-<div class="note"><strong>Scoring yourself.</strong> Nine defects. Seven or more found, and your evaluation instinct is in reasonable shape. Below five, reread the nine judgments in the study guide and come back &mdash; this is the heaviest domain on the exam and the one most worth the second pass. Count a defect found only if you named what was wrong, not just that something felt off.</div>
+<div class="note"><strong>Scoring yourself.</strong> Nine defects. Seven or more found, and your evaluation instinct is in reasonable shape. Below five, reread the ten judgments in the study guide and come back &mdash; this is the heaviest domain on the exam and the one most worth the second pass. Count a defect found only if you named what was wrong, not just that something felt off.</div>
 <h2>4 &middot; Workflow redesign and governance triage</h2>
 <div class="meta">D4 &mdash; Workflow Integration (16%) and D6 &mdash; Governance, Risk and Responsible Use (15%) &middot; part A self-assessed, part B scored against an answer key</div>
 <h3>Part A &mdash; redesign a workflow you actually own</h3>
@@ -196,6 +196,29 @@ font-size:14.5px;color:var(--ink-light)}
 <li><strong>Vary the task type.</strong> Run the same subject as a brainstorm (breadth, deliberately varied options) and as an analysis (criteria stated up front). Notice that the prompt shape differs, not just the wording.</li>
 </ol>
 <div class="card"><h4>Done when</h4><ul class="done"><li>Your before/after log shows which single change produced the largest jump.</li><li>You can look at a weak output and name what the prompt failed to specify.</li><li>You reached for a specific critique rather than “make it better”.</li></ul></div>
+<h3>2B &middot; Sequencing drill</h3>
+<div class="meta">D1.2 &middot; scored against an answer key</div>
+<p>Four or five items on the real exam give you five numbered steps and five candidate orderings. They have a consistent shape, and knowing it turns a slow read of five sequences into one comparison: <strong>three of the five can be discarded on their first or last step alone</strong>, leaving two that begin and end identically. That pair is the whole question.</p>
+<p>So for each item below: read only the first and last step of each ordering, strike the three that start or finish wrongly, then decide between the two that remain. The middle almost always turns on a dependency &mdash; something that cannot happen until something else has.</p>
+<div class="card">
+<h4>Drill 1</h4>
+<div class="src"><ol><li>Write custom instructions describing the report's sections</li><li>Run the report once and read what comes back</li><li>Create the Project</li><li>Add the source spreadsheets as knowledge</li><li>Refine the instructions to fix what the run got wrong</li></ol></div>
+<div class="out"><strong>A.</strong> 1 → 3 → 4 → 2 → 5 &nbsp;&nbsp; <strong>B.</strong> 3 → 4 → 1 → 5 → 2 &nbsp;&nbsp; <strong>C.</strong> 3 → 4 → 2 → 1 → 5 &nbsp;&nbsp; <strong>D.</strong> 4 → 3 → 1 → 2 → 5 &nbsp;&nbsp; <strong>E.</strong> 3 → 4 → 1 → 2 → 5</div>
+<details><summary>Show the answer key</summary><div class="inner"><div class="defect"><div class="label">Eliminate on first and last</div><div>A starts with step 1 and D with step 4, but neither the instructions nor the knowledge can exist before the Project does. B ends on step 2, running the report, when the last thing you do is refine.</div></div><div class="defect"><div class="label">The contest</div><div>C and E both run 3 … 5. C runs the report before the instructions exist, so the run tests nothing and cannot tell you what to refine. E is the answer.</div></div><p><strong>Answer: E</strong></p></div></details>
+</div>
+<div class="card">
+<h4>Drill 2</h4>
+<div class="src"><ol><li>Identify which specific claims are checkable</li><li>Send the briefing</li><li>Locate the authoritative source for each claim</li><li>Compare each claim against its source</li><li>Correct or remove the claims that fail</li></ol></div>
+<div class="out"><strong>A.</strong> 2 → 1 → 3 → 4 → 5 &nbsp;&nbsp; <strong>B.</strong> 1 → 4 → 3 → 5 → 2 &nbsp;&nbsp; <strong>C.</strong> 3 → 1 → 4 → 5 → 2 &nbsp;&nbsp; <strong>D.</strong> 1 → 3 → 4 → 2 → 5 &nbsp;&nbsp; <strong>E.</strong> 1 → 3 → 4 → 5 → 2</div>
+<details><summary>Show the answer key</summary><div class="inner"><div class="defect"><div class="label">Eliminate on first and last</div><div>A sends first, which defeats the exercise. C hunts for sources before deciding what needs checking. D ends on step 5, correcting, after it has already sent.</div></div><div class="defect"><div class="label">The contest</div><div>B and E both run 1 … 2. B compares each claim against a source before locating the source — not something you can do in that order. E is the answer.</div></div><p><strong>Answer: E</strong></p></div></details>
+</div>
+<div class="card">
+<h4>Drill 3</h4>
+<div class="src"><ol><li>Map the current process step by step</li><li>Roll the change out to the team</li><li>Identify which steps Claude could take on</li><li>Run one cycle yourself with the change in place</li><li>Agree which steps must stay a human decision</li></ol></div>
+<div class="out"><strong>A.</strong> 3 → 1 → 5 → 4 → 2 &nbsp;&nbsp; <strong>B.</strong> 1 → 3 → 4 → 5 → 2 &nbsp;&nbsp; <strong>C.</strong> 2 → 1 → 3 → 5 → 4 &nbsp;&nbsp; <strong>D.</strong> 1 → 3 → 5 → 2 → 4 &nbsp;&nbsp; <strong>E.</strong> 1 → 3 → 5 → 4 → 2</div>
+<details><summary>Show the answer key</summary><div class="inner"><div class="defect"><div class="label">Eliminate on first and last</div><div>A judges which steps Claude could take before they are written down. C rolls out first. D ends on step 4, piloting, after the team already has it.</div></div><div class="defect"><div class="label">The contest</div><div>B and E both run 1 … 2. B pilots before agreeing what stays human, so the pilot can quietly automate a decision nobody meant to give away. E is the answer.</div></div><p><strong>Answer: E</strong></p></div></details>
+</div>
+<div class="note"><strong>What to take from it.</strong> If you found yourself reading all five orderings in full, you are doing the slow version. The first-and-last pass costs seconds and removes three options; everything after that is one dependency question. Practise until the elimination is automatic, because on the day the saving is four or five items' worth of time.</div>
 <h2>After each exercise</h2>
 <p>Two questions, written down. They are worth more than the exercise.</p>
 <div class="card"><h4>Where did you hesitate?</h4><p>The places you guessed, reached for the docs, or needed a second attempt are exactly where the exam's distractors are aimed. Name them precisely enough to recognise them again.</p><h4>Which wrong answers can you now reason away?</h4><p>Not recognise &mdash; reason away. Being able to say <em>why</em> the tempting option is wrong is the difference between having seen a question before and understanding it.</p></div>

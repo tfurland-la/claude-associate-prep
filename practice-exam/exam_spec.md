@@ -88,11 +88,17 @@ single-answer included, so no rendering, commit or scoring path branches on item
 type; `adaptive.js`'s `A.item` owns the shape rules and accepts either a bare
 option key or a list.
 
-| | Single-answer | Multiple-response |
-|---|---|---|
-| Options | 4 (A–D) | 5 (A–E) |
-| `correct` | `"B"` or `["B"]` | `["B", "D"]` |
-| `selectCount` | absent or 1 | number of correct keys |
+| | Standard | Multiple-response | Sequencing |
+|---|---|---|---|
+| Options | 4 (A–D) | 5 (A–E) | 5 (A–E) |
+| `correct` | `"B"` or `["B"]` | `["B", "D"]` | `"B"` — one ordering |
+| `selectCount` | absent or 1 | number of correct keys | absent or 1 |
+| `itemType` | absent or `"standard"` | absent or `"standard"` | `"sequencing"` |
+
+Option count follows the **item type**, not the answer count. That distinction was
+forced by sequencing: it is single-answer with five options, a shape the original
+validation rejected outright because it derived the option count from the number
+of correct keys.
 
 `validate_question` enforces the pairing, so a five-option item with one answer,
 or a two-answer item with four options, cannot reach the bank.
@@ -102,12 +108,26 @@ the real exam awards partial credit, and exact-match can understate a score but
 never flatter it. `A.item.isCorrect` is the single place to change if a sitting
 shows otherwise.
 
-**The five-option shape is calibration, not documentation.** The guide states the
-item type exists but publishes no worked example — all three of its sample
-questions are single-answer. The five-option shape and the roughly-one-in-six
-frequency come from a single third-party CCAO-F practice set written by someone
-who sat the exam. Best available evidence; not fact from Anthropic. Recalibrate
-after a real sitting.
+**Confirmed by a real sitting.** The five-option multiple-response shape and its
+roughly-one-in-six frequency were originally inferred from a third-party practice
+set. Someone who sat the exam and scored 100% has since confirmed both, so this is
+no longer an inference to hedge.
+
+**Sequencing items and their distractor architecture** come from that same
+account: 4–5 of the 60 items give five numbered steps and five candidate
+orderings, and *the correct answer is always one of two orderings sharing the same
+first and last step*, with the contest being the middle. That is precise enough to
+enforce rather than merely describe, so `_validate_sequencing_shape` requires:
+five options; every option a permutation of steps 1–5; exactly two sharing first
+and last; and the key being one of that pair. An item failing it is either
+trivially guessable or unfairly hard.
+
+Sequencing items are **hand-authored**, and the generation prompt forbids
+producing them — the architecture is exact and generation has repeatedly produced
+structural defects on the much looser standard shape. The bank carries 7 (about
+7%), sized so the natural draw rate approximates the ~8% a real form runs, rather
+than adding a sequencing quota that would have to be satisfied alongside the
+domain quota.
 
 ---
 
