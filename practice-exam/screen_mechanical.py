@@ -167,7 +167,15 @@ def main():
 
     multi = [q for q in pending if len(exam_lib.correct_keys(q)) > 1]
     print(f"multiple-response  : {len(multi)} of {len(pending)} "
-          f"({len(multi)/max(1,len(pending)):.0%}) — prompt generates single-answer only\n")
+          f"({len(multi)/max(1,len(pending)):.0%}) — prompt generates single-answer only")
+
+    # Sequencing share. The malformed-shape case needs no check here: the content
+    # validity pass above already calls validate_question, which enforces the whole
+    # distractor architecture, so a bad ordering surfaces as INVALID SCHEMA. What a
+    # count adds is calibration — a real form carries 4-5 of 60, about 8%.
+    seq = [q for q in pending if q.get("itemType") == "sequencing"]
+    print(f"sequencing         : {len(seq)} of {len(pending)} "
+          f"({len(seq)/max(1,len(pending)):.0%}) — the real exam runs about 8%\n")
 
     if not findings:
         print("MECHANICAL SCREEN CLEAN — nothing for a script to object to.")

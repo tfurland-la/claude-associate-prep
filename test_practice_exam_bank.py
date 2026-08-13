@@ -399,3 +399,139 @@ def test_exercises_forbid_outsourcing_the_judgment():
     defects or classify the triage items, so the page must say so explicitly."""
     text = (PRACTICE_EXAM_DIR.parent / "exercises.html").read_text(encoding="utf-8")
     assert "Do not ask it to find the planted defects" in text
+
+
+# ── Sequencing items ───────────────────────────────────────────────────────
+# A sequencing item asks the candidate to put five numbered steps in order. It is
+# structurally a single-answer multiple-choice question whose five options are five
+# candidate orderings — so it needs 5 options with 1 correct answer, a shape the
+# original validation rejected because it coupled option count to answer count.
+#
+# The distractor architecture is reported first-hand from a real sitting: of the
+# five orderings, exactly two share the same first and last step, and the contest
+# is which of that pair orders the middle correctly. The other three are
+# eliminable on first or last alone. That is a checkable contract, so validation
+# enforces it rather than trusting the author.
+
+
+def make_sequencing_question():
+    """Steps 1-5. Correct order is 3,1,4,2,5. Options C and E share first=3,
+    last=5 — they are the real contest; A, B and D differ on first or last."""
+    q = make_valid_question()
+    q["taskStatement"], q["domain"] = "D1.2", "D1"
+    q["itemType"] = "sequencing"
+    q["scenario"] = (
+        "A team is setting up a Claude Project for their weekly report. The steps, "
+        "in no particular order: (1) write custom instructions describing the "
+        "format, (2) run the task once and check the output, (3) create the "
+        "Project, (4) add the source spreadsheets as knowledge, (5) refine the "
+        "instructions based on what the first run got wrong."
+    )
+    q["question"] = "Which sequence puts the five steps in the correct order?"
+    q["options"] = {
+        "A": "1 → 3 → 4 → 2 → 5",
+        "B": "3 → 4 → 1 → 5 → 2",
+        "C": "3 → 4 → 1 → 2 → 5",
+        "D": "4 → 3 → 1 → 2 → 5",
+        "E": "3 → 1 → 4 → 2 → 5",
+    }
+    q["correct"] = "E"
+    q["explanations"] = {k: f"Explanation for option {k}." for k in "ABCDE"}
+    q["id"] = exam_lib.question_id(q)
+    return q
+
+
+def test_validate_accepts_a_well_formed_sequencing_question():
+    exam_lib.validate_question(make_sequencing_question())
+
+
+def test_sequencing_needs_five_options():
+    q = make_sequencing_question()
+    del q["options"]["E"], q["explanations"]["E"]
+    q["correct"] = "C"
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="five"):
+        exam_lib.validate_question(q)
+
+
+def test_sequencing_options_must_be_permutations_of_the_same_steps():
+    q = make_sequencing_question()
+    q["options"]["B"] = "3 → 4 → 1 → 5 → 6"  # 6 is not one of the five steps
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="permutation"):
+        exam_lib.validate_question(q)
+
+
+def test_sequencing_needs_exactly_two_options_sharing_first_and_last():
+    """Three sharing first+last means three survive the elimination pass, which
+    is not the shape the real exam uses."""
+    q = make_sequencing_question()
+    q["options"]["B"] = "3 → 1 → 2 → 4 → 5"  # now B, C and E all start 3 end 5
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="first and last"):
+        exam_lib.validate_question(q)
+
+
+def test_sequencing_correct_answer_must_be_in_the_contested_pair():
+    """If the key is eliminable on first or last, the item is trivially wrong."""
+    q = make_sequencing_question()
+    q["correct"] = "A"  # A starts with 1, so it is eliminated in the first pass
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="contested pair"):
+        exam_lib.validate_question(q)
+
+
+def test_sequencing_is_single_answer_only():
+    q = make_sequencing_question()
+    q["correct"] = ["C", "E"]
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="single"):
+        exam_lib.validate_question(q)
+
+
+def test_a_standard_single_answer_item_still_needs_exactly_four_options():
+    """Relaxing the option count for sequencing must not relax it generally."""
+    q = make_valid_question()
+    q["options"]["E"] = "A fifth option on a standard item."
+    q["explanations"]["E"] = "Incorrect."
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="A, B, C, D"):
+        exam_lib.validate_question(q)
+
+
+def test_unknown_item_type_is_rejected():
+    q = make_sequencing_question()
+    q["itemType"] = "matching"
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="itemType"):
+        exam_lib.validate_question(q)
+
+
+def test_no_answer_position_tell_in_the_bank(bank):
+    """A position a candidate can bet on is worth free marks without knowledge.
+
+    This exists because hand-authored questions bypass normalize_pending.py by
+    definition — they never enter the pending file — and the first seven
+    hand-authored sequencing items all landed on E. Generated batches are
+    permuted before merge; hand-authored ones need `normalize_pending.py --bank`.
+    """
+    from collections import Counter
+
+    positions = Counter(k for q in bank for k in exam_lib.correct_keys(q))
+    total = sum(positions.values())
+    worst_key, worst_n = positions.most_common(1)[0]
+    assert worst_n / total < 0.40, (
+        f"answer position {worst_key} holds {worst_n / total:.0%} of correct answers "
+        f"({dict(positions)}); run normalize_pending.py --bank"
+    )
+
+
+def test_sequencing_answers_are_not_all_on_one_option(bank):
+    """The specific failure that happened: every sequencing key on the same letter."""
+    seq = [q for q in bank if q.get("itemType") == "sequencing"]
+    if len(seq) < 3:
+        pytest.skip(f"only {len(seq)} sequencing questions; a spread is not meaningful yet")
+    keys = {q["correct"] for q in seq}
+    assert len(keys) > 1, (
+        f"all {len(seq)} sequencing questions key to {keys.pop()} — a free-marks tell"
+    )

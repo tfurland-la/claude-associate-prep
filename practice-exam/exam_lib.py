@@ -9,6 +9,7 @@ only reader, so the file layout is a private contract of this module.
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -94,21 +95,26 @@ TASK_STATEMENTS = {
     "D7.3": "Optimize workflows for efficiency and effectiveness",
 }
 
-# Single-answer items carry four options; multiple-response items carry five.
-# validate_question enforces the pairing, so a five-option item with one answer —
-# or a two-answer item with four options — cannot reach the bank.
-#
-# The five-option shape for multi items is calibration, not a published fact: the
-# guide states the item type exists but shows no worked example. It follows the
-# one observed CCAO-F practice set, which is a third party's inference drawn from
-# sitting the exam. Treat it as the best available evidence, not as documented.
+# Option count follows the ITEM TYPE, not the answer count:
+#   standard        4 options (A-D), one correct
+#   multiple-response  5 options (A-E), two or more correct
+#   sequencing      5 options (A-E), one correct — five candidate orderings
+# validate_question enforces the pairing, so a mismatched item cannot reach the
+# bank. Both five-option shapes are confirmed by a first-hand account after a real
+# sitting: "select two" items appear at roughly one in six, and 4-5 of the 60 items
+# are sequencing.
 OPTION_KEYS = ("A", "B", "C", "D")
 MULTI_OPTION_KEYS = ("A", "B", "C", "D", "E")
 PROVENANCE_SOURCES = ("official-sample", "seed-generated", "refill", "hand-authored")
 
+# "sequencing" asks the candidate to put five numbered steps in order. It is
+# structurally single-answer with five options, a shape the old option/answer
+# coupling rejected outright.
+ITEM_TYPES = ("standard", "sequencing")
+
 # Optional per-question fields: present on some items, absent on others, so they
 # are excluded from the required set but allowed by the unexpected-field check.
-OPTIONAL_FIELDS = {"selectCount"}
+OPTIONAL_FIELDS = {"selectCount", "itemType"}
 PROVENANCE_FIELDS = {"source", "model", "generatedAt", "reviewed"}
 CONTENT_FIELDS = {
     "taskStatement",
@@ -119,6 +125,60 @@ CONTENT_FIELDS = {
     "correct",
     "explanations",
 }
+
+
+def parse_ordering(text):
+    """The step numbers in an ordering option, in the order written.
+
+    Options read like "3 → 1 → 4 → 2 → 5"; only the integers matter, so the
+    separator is free (arrow, comma, dash) and prose around it is ignored.
+    """
+    return tuple(int(n) for n in re.findall(r"\d+", text))
+
+
+def _validate_sequencing_shape(options, correct_key):
+    """Enforce the distractor architecture reported from a real sitting.
+
+    Of the five orderings, exactly two share the same first and last step — those
+    are the real contest, and the answer is one of them. The other three are
+    eliminable on first or last alone. Enforcing this matters because an item
+    that fails it is either trivially guessable (the key is the only one with a
+    plausible first step) or unfairly hard (three survive the elimination pass),
+    and neither trains the judgment the exam actually asks for.
+    """
+    orderings = {key: parse_ordering(text) for key, text in options.items()}
+
+    lengths = {len(o) for o in orderings.values()}
+    if lengths != {5}:
+        raise ValueError(
+            f"each sequencing option must list five steps; got lengths {sorted(lengths)}")
+
+    step_sets = {frozenset(o) for o in orderings.values()}
+    if len(step_sets) != 1:
+        raise ValueError(
+            "every sequencing option must be a permutation of the same five steps; "
+            f"found {len(step_sets)} different step sets")
+    steps = next(iter(step_sets))
+    for key, order in orderings.items():
+        if len(set(order)) != 5:
+            raise ValueError(f"option {key} repeats a step: {order}")
+    if steps != set(range(1, 6)):
+        raise ValueError(f"sequencing steps must be numbered 1-5, got {sorted(steps)}")
+
+    endpoints = {}
+    for key, order in orderings.items():
+        endpoints.setdefault((order[0], order[-1]), []).append(key)
+    contested = [keys for keys in endpoints.values() if len(keys) > 1]
+    if len(contested) != 1 or len(contested[0]) != 2:
+        shape = sorted(len(k) for k in endpoints.values())
+        raise ValueError(
+            "exactly two options must share the same first and last step "
+            f"(the contested pair); endpoint grouping was {shape}")
+
+    if correct_key not in contested[0]:
+        raise ValueError(
+            f"the correct answer must be one of the contested pair {contested[0]}; "
+            f"{correct_key} is eliminable on its first or last step alone")
 
 
 def canonical_content(question):
@@ -179,14 +239,28 @@ def validate_question(question, *, require_provenance=True):
     if not correct_keys:
         raise ValueError("correct must name at least one option")
 
-    expected_keys = MULTI_OPTION_KEYS if len(correct_keys) > 1 else OPTION_KEYS
+    item_type = question.get("itemType", "standard")
+    if item_type not in ITEM_TYPES:
+        raise ValueError(f"itemType must be one of {ITEM_TYPES}, got {item_type!r}")
+
+    # Option count follows the item type, not the answer count. A sequencing item is
+    # single-answer with five options (five candidate orderings); a multiple-response
+    # item is many-answer with five; a standard item is single-answer with four.
+    if item_type == "sequencing":
+        if len(correct_keys) != 1:
+            raise ValueError("a sequencing item is single-answer; got "
+                             f"{len(correct_keys)} correct keys")
+        expected_keys = MULTI_OPTION_KEYS  # five orderings, A-E
+    else:
+        expected_keys = MULTI_OPTION_KEYS if len(correct_keys) > 1 else OPTION_KEYS
+
     for block_name in ("options", "explanations"):
         block = question[block_name]
         if not isinstance(block, dict) or tuple(sorted(block)) != expected_keys:
-            raise ValueError(
-                f"{block_name} must have exactly the keys {', '.join(expected_keys)} "
-                f"for a {len(correct_keys)}-answer item"
-            )
+            noun = ("five options" if item_type == "sequencing"
+                    else f"exactly the keys {', '.join(expected_keys)} "
+                         f"for a {len(correct_keys)}-answer item")
+            raise ValueError(f"{block_name} must have {noun}")
         for key, value in block.items():
             if not isinstance(value, str) or not value.strip():
                 raise ValueError(f"{block_name}.{key} must be a non-empty string")
@@ -194,6 +268,9 @@ def validate_question(question, *, require_provenance=True):
     for key in correct_keys:
         if key not in expected_keys:
             raise ValueError(f"correct key {key!r} is not one of {expected_keys}")
+
+    if item_type == "sequencing":
+        _validate_sequencing_shape(question["options"], correct_keys[0])
 
     # selectCount is optional and purely a rendering aid ("Select 2"), so when it
     # is present it must agree with the answer key or the stem lies to the reader.

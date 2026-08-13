@@ -14,6 +14,16 @@ Seeded, so a rerun on the same file gives the same result and a review is not
 invalidated by re-running the tool.
 
     python3 practice-exam/normalize_pending.py [--seed N]
+    python3 practice-exam/normalize_pending.py --bank   # hand-authored items only
+
+Hand-authored questions never pass through the pending file, so they skip this
+step by definition — and it shows. The first seven hand-authored sequencing items
+all had their answer at E, a 100% tell worth seven free marks to anyone who
+noticed. --bank permutes the committed hand-authored items to close that gap.
+It changes their ids (the id hashes the option block), which orphans the
+"already seen" record for those questions in anyone's saved progress. That is a
+deliberate trade: a stale seen-flag costs a repeated question, a position tell
+costs the exam its validity.
 """
 
 import argparse
@@ -46,10 +56,41 @@ def permute(question, rng):
     return question
 
 
+def normalize_bank(seed):
+    """Permute the committed hand-authored questions. Generated ones were already
+    permuted before merge, so re-permuting them would churn ids for nothing."""
+    bank = exam_lib.load_bank()
+    targets = [q for q in bank if q["provenance"]["source"] == "hand-authored"]
+    if not targets:
+        print("no hand-authored questions in the bank")
+        return 0
+    before = Counter(k for q in targets for k in exam_lib.correct_keys(q))
+    rng = random.Random(seed)
+    for q in targets:
+        permute(q, rng)
+        exam_lib.validate_question(q)  # re-checks the sequencing architecture too
+    after = Counter(k for q in targets for k in exam_lib.correct_keys(q))
+    assert len({q["id"] for q in bank}) == len(bank), "permutation collided two ids"
+    exam_lib.BANK_PATH.write_text(exam_lib.render_bank(bank), encoding="utf-8")
+    fmt = lambda c: "  ".join(f"{k}={c.get(k,0)}" for k in "ABCDE" if c.get(k))  # noqa: E731
+    print(f"permuted {len(targets)} hand-authored questions (seed {seed})")
+    print(f"  before: {fmt(before)}")
+    print(f"  after : {fmt(after)}")
+    whole = Counter(k for q in bank for k in exam_lib.correct_keys(q))
+    print(f"  whole bank now: {fmt(whole)} "
+          f"(worst {max(whole.values())/sum(whole.values()):.0%})")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--seed", type=int, default=20260729)
+    ap.add_argument("--bank", action="store_true",
+                    help="permute committed hand-authored questions instead of pending")
     args = ap.parse_args()
+
+    if args.bank:
+        return normalize_bank(args.seed)
 
     if not PENDING_PATH.exists():
         print("no pending file")

@@ -48,12 +48,16 @@ For each assigned question:
    explanations. Flag stub/placeholder content. Flag near-duplicates of other
    questions in the file (same premise, option skeleton, or correct-answer
    rationale).
-4. **AUDIENCE** — flag any question that requires developer knowledge. This
+4. **ITEM FORMAT** — flag any candidate that is a sequencing question (asking for
+   five steps in order) or expects more than one selection. Both formats are
+   supported, but they are hand-authored: their distractor architecture is exact
+   and a generated attempt will usually violate it. Reject rather than repair.
+5. **AUDIENCE** — flag any question that requires developer knowledge. This
    credential is explicitly not for people who build against APIs or design
    agentic systems, so a question turning on the Agent SDK, MCP servers, tool
    schemas, CI/CD, JSON-schema validation, or reading code is out of scope no
    matter how well written. The judgment tested must be business judgment.
-5. **PATTERN CURRENCY** — does the marked-correct answer rely on a mechanism
+6. **PATTERN CURRENCY** — does the marked-correct answer rely on a mechanism
    not present in the exam guide's task-statement knowledge/skills inventory?
    A real-but-superseded pattern presented as the recommended answer is the
    failure mode here (e.g., `CLAUDE.local.md`, which functions but is

@@ -623,6 +623,14 @@ function isMultiSelect(question) {
   return itemSelectCount(question) > 1;
 }
 
+// A sequencing item asks for five numbered steps in order. It looks like a
+// multiple-response item (five options) but behaves like a standard one (one
+// correct answer), so it must not be confused with either: isMulti is false and
+// selectCount is 1, which is what the submit gate and scoring already key off.
+function isSequencing(question) {
+  return !!question && question.itemType === "sequencing";
+}
+
 function isAnswerCorrect(question, answer) {
   const expected = correctKeys(question);
   const given = Array.isArray(answer) ? [...answer].sort() : answer == null ? [] : [answer];
@@ -640,6 +648,7 @@ const ITEM = {
   optionKeys: itemOptionKeys,
   selectCount: itemSelectCount,
   isMulti: isMultiSelect,
+  isSequencing,
   isCorrect: isAnswerCorrect,
   answerLabel,
 };

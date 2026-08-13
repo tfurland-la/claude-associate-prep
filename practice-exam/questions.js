@@ -85,23 +85,23 @@ window.CCAOF_BANK = [
     "scenario": "An operations lead is setting up a Claude Project so their team can draft consistent supplier-onboarding summaries. Today each person pastes the onboarding policy into a fresh chat, and the summaries come back in different shapes depending on who asked.",
     "question": "Which two changes to the Project most directly fix the inconsistency?",
     "options": {
-      "A": "Upload the onboarding policy as a knowledge source in the Project, so every conversation draws on the same document.",
-      "B": "Write Project instructions that state the required summary sections and their order.",
-      "C": "Ask each team member to keep their own chat open for as long as possible so context carries over.",
-      "D": "Tell the team to paste the policy at the start of every message rather than only the first.",
-      "E": "Switch the Project to a more capable model so the summaries come out longer."
+      "B": "Upload the onboarding policy as a knowledge source in the Project, so every conversation draws on the same document.",
+      "C": "Write Project instructions that state the required summary sections and their order.",
+      "A": "Ask each team member to keep their own chat open for as long as possible so context carries over.",
+      "E": "Tell the team to paste the policy at the start of every message rather than only the first.",
+      "D": "Switch the Project to a more capable model so the summaries come out longer."
     },
     "correct": [
-      "A",
-      "B"
+      "B",
+      "C"
     ],
     "selectCount": 2,
     "explanations": {
-      "A": "Correct. A knowledge source attached to the Project gives every conversation the same policy text, removing the variation that comes from each person pasting their own copy.",
-      "B": "Correct. Project instructions are where a required output shape belongs, so the structure no longer depends on how each person happens to phrase the request.",
-      "C": "Incorrect. Long-running chats are fragile and personal to one user; they cannot make output consistent across a team.",
-      "D": "Incorrect. This is more of the behaviour causing the problem, and it wastes context on text the Project could hold once.",
-      "E": "Incorrect. Model capability is not the constraint here; length is not consistency, and the inconsistency is a configuration gap."
+      "B": "Correct. A knowledge source attached to the Project gives every conversation the same policy text, removing the variation that comes from each person pasting their own copy.",
+      "C": "Correct. Project instructions are where a required output shape belongs, so the structure no longer depends on how each person happens to phrase the request.",
+      "A": "Incorrect. Long-running chats are fragile and personal to one user; they cannot make output consistent across a team.",
+      "E": "Incorrect. This is more of the behaviour causing the problem, and it wastes context on text the Project could hold once.",
+      "D": "Incorrect. Model capability is not the constraint here; length is not consistency, and the inconsistency is a configuration gap."
     },
     "provenance": {
       "source": "hand-authored",
@@ -109,7 +109,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D5.1-d78516a0"
+    "id": "D5.1-793156fd"
   },
   {
     "taskStatement": "D2.4",
@@ -117,23 +117,23 @@ window.CCAOF_BANK = [
     "scenario": "A communications specialist used Claude to draft an all-staff announcement about a change to the benefits package. The draft reads well, names specific enrolment dates, and quotes a figure for the new employer contribution.",
     "question": "Which two of these warrant human verification before the announcement goes out?",
     "options": {
-      "A": "The specific enrolment dates in the draft.",
-      "B": "The figure quoted for the employer contribution.",
-      "C": "The greeting and sign-off wording.",
-      "D": "The paragraph ordering of the announcement.",
-      "E": "The reading level of the final paragraph."
+      "C": "The specific enrolment dates in the draft.",
+      "D": "The figure quoted for the employer contribution.",
+      "E": "The greeting and sign-off wording.",
+      "A": "The paragraph ordering of the announcement.",
+      "B": "The reading level of the final paragraph."
     },
     "correct": [
-      "A",
-      "B"
+      "C",
+      "D"
     ],
     "selectCount": 2,
     "explanations": {
-      "A": "Correct. Dates are exactly the kind of specific-looking detail a model can fabricate, and a wrong enrolment date in an all-staff message causes real harm.",
-      "B": "Correct. A benefits figure is a verifiable factual claim with financial consequences, so it must be checked against the authoritative source rather than trusted because it reads plausibly.",
-      "C": "Incorrect. Greeting and sign-off are matters of tone. Getting them wrong is embarrassing, not misleading, and they carry no factual claim to verify.",
-      "D": "Incorrect. Paragraph ordering is an editorial preference the author can judge directly; nothing about it can be factually false.",
-      "E": "Incorrect. Reading level is a style judgement, and the author is better placed than a verifier to decide it."
+      "C": "Correct. Dates are exactly the kind of specific-looking detail a model can fabricate, and a wrong enrolment date in an all-staff message causes real harm.",
+      "D": "Correct. A benefits figure is a verifiable factual claim with financial consequences, so it must be checked against the authoritative source rather than trusted because it reads plausibly.",
+      "E": "Incorrect. Greeting and sign-off are matters of tone. Getting them wrong is embarrassing, not misleading, and they carry no factual claim to verify.",
+      "A": "Incorrect. Paragraph ordering is an editorial preference the author can judge directly; nothing about it can be factually false.",
+      "B": "Incorrect. Reading level is a style judgement, and the author is better placed than a verifier to decide it."
     },
     "provenance": {
       "source": "hand-authored",
@@ -141,7 +141,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D2.4-c0ef40dc"
+    "id": "D2.4-035e319c"
   },
   {
     "taskStatement": "D1.1",
@@ -2437,17 +2437,17 @@ window.CCAOF_BANK = [
     "scenario": "A programme manager keeps her team's onboarding checklist in a Google Doc that two colleagues revise most weeks. She wants a Claude Project her team can ask about onboarding steps, and she wants answers to reflect the checklist as it stands that day.",
     "question": "How should she bring the checklist into the Project?",
     "options": {
-      "A": "Paste the checklist text into the Project's custom instructions, and update that text whenever a colleague revises the Doc.",
-      "B": "Add the Google Doc through the Drive connector, since Google Docs added to a project sync from Drive and reflect later edits.",
-      "C": "Export the checklist to PDF and upload that, then repeat the export each week so the Project keeps a recent copy of it.",
-      "D": "Ask her colleagues to stop editing the shared Doc and send her their changes, so one authoritative version exists to add."
+      "B": "Paste the checklist text into the Project's custom instructions, and update that text whenever a colleague revises the Doc.",
+      "D": "Add the Google Doc through the Drive connector, since Google Docs added to a project sync from Drive and reflect later edits.",
+      "A": "Export the checklist to PDF and upload that, then repeat the export each week so the Project keeps a recent copy of it.",
+      "C": "Ask her colleagues to stop editing the shared Doc and send her their changes, so one authoritative version exists to add."
     },
-    "correct": "B",
+    "correct": "D",
     "explanations": {
-      "A": "Incorrect. Custom instructions are for how Claude should behave, not for holding a document's contents, and this still leaves her hand-copying every revision.",
-      "B": "Correct. Google Docs added to a project sync from Google Drive, so the Project reflects later edits without her re-adding anything — which is what she asked for.",
-      "C": "Incorrect. A weekly export is a manual copy she must remember to repeat, and the answers go stale between exports rather than matching the checklist that day.",
-      "D": "Incorrect. This solves a collaboration problem she does not have, and asking colleagues to change how they work is a heavy answer to a configuration question."
+      "B": "Incorrect. Custom instructions are for how Claude should behave, not for holding a document's contents, and this still leaves her hand-copying every revision.",
+      "D": "Correct. Google Docs added to a project sync from Google Drive, so the Project reflects later edits without her re-adding anything — which is what she asked for.",
+      "A": "Incorrect. A weekly export is a manual copy she must remember to repeat, and the answers go stale between exports rather than matching the checklist that day.",
+      "C": "Incorrect. This solves a collaboration problem she does not have, and asking colleagues to change how they work is a heavy answer to a configuration question."
     },
     "provenance": {
       "source": "hand-authored",
@@ -2455,7 +2455,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D5.2-acf62a07"
+    "id": "D5.2-16d764db"
   },
   {
     "taskStatement": "D5.2",
@@ -2464,15 +2464,15 @@ window.CCAOF_BANK = [
     "question": "Which connector setup fits what she needs to reach?",
     "options": {
       "A": "Connect Drive only, and accept that the negotiated exceptions will not be available to the Project at all.",
-      "B": "Connect Gmail only, on the basis that the email threads are the more authoritative record of what was agreed.",
-      "C": "Connect both Drive and Gmail, since the agreements and the exceptions live in two different places she needs.",
+      "C": "Connect Gmail only, on the basis that the email threads are the more authoritative record of what was agreed.",
+      "B": "Connect both Drive and Gmail, since the agreements and the exceptions live in two different places she needs.",
       "D": "Connect neither, and instead paste the relevant agreements and email threads into each conversation as it comes up."
     },
-    "correct": "C",
+    "correct": "B",
     "explanations": {
       "A": "Incorrect. It reaches the agreements but silently drops the exceptions, which is the part most likely to be asked about.",
-      "B": "Incorrect. The exceptions are in email, but the underlying agreements are not, so the Project would answer from half the picture.",
-      "C": "Correct. The material she needs is split across documents and email, so the Project needs both connectors to cover the questions she expects.",
+      "C": "Incorrect. The exceptions are in email, but the underlying agreements are not, so the Project would answer from half the picture.",
+      "B": "Correct. The material she needs is split across documents and email, so the Project needs both connectors to cover the questions she expects.",
       "D": "Incorrect. Pasting works once but has to be repeated every conversation, which is the manual effort a Project's knowledge sources exist to remove."
     },
     "provenance": {
@@ -2481,7 +2481,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D5.2-69e17c26"
+    "id": "D5.2-c6c53233"
   },
   {
     "taskStatement": "D5.2",
@@ -2489,17 +2489,17 @@ window.CCAOF_BANK = [
     "scenario": "A Claude Project set up two years ago for a service-desk team now holds nineteen uploaded files. Several are superseded process notes, two are drafts that were never adopted, and the team has begun complaining that answers cite guidance nobody follows.",
     "question": "What is the most appropriate first step?",
     "options": {
-      "A": "Remove the superseded notes and unadopted drafts from the Project's knowledge, so what remains is guidance the team actually follows.",
+      "C": "Remove the superseded notes and unadopted drafts from the Project's knowledge, so what remains is guidance the team actually follows.",
       "B": "Leave the files in place and add a custom instruction telling Claude to prefer the newest document whenever two of them disagree.",
-      "C": "Leave the files in place and ask the team to say in each question which of the nineteen documents they want the answer drawn from.",
-      "D": "Create a second Project for current guidance only, and tell the team to use the old Project when they need historical process notes."
+      "D": "Leave the files in place and ask the team to say in each question which of the nineteen documents they want the answer drawn from.",
+      "A": "Create a second Project for current guidance only, and tell the team to use the old Project when they need historical process notes."
     },
-    "correct": "A",
+    "correct": "C",
     "explanations": {
-      "A": "Correct. Managing uploaded knowledge includes removing what is no longer current; the answers are poor because the knowledge base contains guidance the team has abandoned.",
+      "C": "Correct. Managing uploaded knowledge includes removing what is no longer current; the answers are poor because the knowledge base contains guidance the team has abandoned.",
       "B": "Incorrect. It leaves the bad guidance in place and relies on an instruction to sort out a problem better fixed by curating the source material.",
-      "C": "Incorrect. It pushes the curation work onto every person asking a question, and expecting them to know nineteen documents defeats the point.",
-      "D": "Incorrect. A second Project duplicates maintenance and leaves the stale one available; nothing here suggests the historical notes need keeping at all."
+      "D": "Incorrect. It pushes the curation work onto every person asking a question, and expecting them to know nineteen documents defeats the point.",
+      "A": "Incorrect. A second Project duplicates maintenance and leaves the stale one available; nothing here suggests the historical notes need keeping at all."
     },
     "provenance": {
       "source": "hand-authored",
@@ -2507,6 +2507,209 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D5.2-67ca0ca0"
+    "id": "D5.2-5ff8f38d"
+  },
+  {
+    "taskStatement": "D1.2",
+    "domain": "D1",
+    "scenario": "An operations lead wants a Claude Project that drafts her team's weekly supplier report. She has five things to do, listed here in no particular order: (1) write custom instructions describing the report's sections and tone, (2) run the report once and read what comes back, (3) create the Project, (4) add the source spreadsheets as knowledge sources, (5) refine the instructions to fix what the first run got wrong.",
+    "options": {
+      "E": "1 → 3 → 4 → 2 → 5",
+      "C": "3 → 4 → 1 → 5 → 2",
+      "A": "3 → 4 → 2 → 1 → 5",
+      "B": "4 → 3 → 1 → 2 → 5",
+      "D": "3 → 4 → 1 → 2 → 5"
+    },
+    "correct": "D",
+    "explanations": {
+      "E": "Incorrect. Writing the instructions first means writing them with nowhere to put them; the Project has to exist before it can be configured.",
+      "C": "Incorrect. This refines the instructions before the report has ever been run, so there is nothing yet to refine them against.",
+      "A": "Incorrect — and this is the one worth thinking about, since it starts and ends in the same place as the answer. It runs the report before the instructions exist, so the first run tests nothing and cannot tell you what to fix.",
+      "B": "Incorrect. Knowledge sources are added to a Project, so the Project has to be created first.",
+      "D": "Correct. Create the Project, give it the material, tell it what to produce, run it once, then refine on the evidence of that run. Configuration precedes the test; the test informs the refinement."
+    },
+    "itemType": "sequencing",
+    "question": "Which sequence puts the five steps in the correct order?",
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D1.2-6d4764e3"
+  },
+  {
+    "taskStatement": "D2.3",
+    "domain": "D2",
+    "scenario": "A communications specialist has a Claude-drafted briefing that quotes several figures, and it goes to the board tomorrow. In no particular order: (1) identify which specific claims are checkable, (2) send the briefing, (3) locate the authoritative source for each of those claims, (4) compare each claim against its source, (5) correct or remove the claims that do not hold up.",
+    "options": {
+      "A": "2 → 1 → 3 → 4 → 5",
+      "C": "1 → 4 → 3 → 5 → 2",
+      "B": "3 → 1 → 4 → 5 → 2",
+      "D": "1 → 3 → 4 → 2 → 5",
+      "E": "1 → 3 → 4 → 5 → 2"
+    },
+    "correct": "E",
+    "explanations": {
+      "A": "Incorrect. Sending first makes the whole exercise pointless; the board already has the unverified figures.",
+      "C": "Incorrect — the near miss. It compares each claim against a source before locating the source, which is not something you can actually do in that order.",
+      "B": "Incorrect. Hunting for sources before deciding which claims need checking means gathering material you may not need and missing claims you do.",
+      "D": "Incorrect. This sends the briefing and only then corrects it, which leaves the board holding the version with the bad figures.",
+      "E": "Correct. Decide what is checkable, find the authority, compare, fix what fails, and only then send. Verification finishes before distribution, not after."
+    },
+    "itemType": "sequencing",
+    "question": "Which sequence puts the five steps in the correct order?",
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D2.3-e20b4c78"
+  },
+  {
+    "taskStatement": "D4.3",
+    "domain": "D4",
+    "scenario": "A project manager wants Claude's help designing a new intake process. In no particular order: (1) describe the problem and the constraints, (2) pick the approach that fits and refine it in conversation, (3) ask Claude for two or three different approaches, (4) answer the clarifying questions Claude asks, (5) write the chosen design up for the team.",
+    "options": {
+      "A": "3 → 1 → 4 → 2 → 5",
+      "D": "1 → 3 → 4 → 2 → 5",
+      "B": "4 → 1 → 3 → 2 → 5",
+      "E": "1 → 4 → 3 → 5 → 2",
+      "C": "1 → 4 → 3 → 2 → 5"
+    },
+    "correct": "C",
+    "explanations": {
+      "A": "Incorrect. Asking for approaches before describing the problem gets you approaches to a problem Claude has had to guess at.",
+      "D": "Incorrect — the close one. It asks for approaches and only then answers the clarifying questions, so the options were generated before the missing context arrived. Let the questions be answered first and the options come back sharper.",
+      "B": "Incorrect. There are no clarifying questions to answer until the problem has been described.",
+      "E": "Incorrect. This writes up the design before refining it, so the team gets the unrefined version.",
+      "C": "Correct. Describe the problem, answer what Claude still needs to know, then get options, refine the one that fits, and write it up. The clarifying exchange is what makes the options worth having."
+    },
+    "itemType": "sequencing",
+    "question": "Which sequence puts the five steps in the correct order?",
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D4.3-a9c62adf"
+  },
+  {
+    "taskStatement": "D4.4",
+    "domain": "D4",
+    "scenario": "A team lead is introducing Claude into an existing monthly reporting process. In no particular order: (1) map the current process step by step, (2) roll the change out to the whole team, (3) identify which steps Claude could take on, (4) run one cycle herself with the change in place, (5) agree which steps must stay a human decision.",
+    "options": {
+      "C": "3 → 1 → 5 → 4 → 2",
+      "B": "1 → 3 → 4 → 5 → 2",
+      "D": "2 → 1 → 3 → 5 → 4",
+      "A": "1 → 3 → 5 → 2 → 4",
+      "E": "1 → 3 → 5 → 4 → 2"
+    },
+    "correct": "E",
+    "explanations": {
+      "C": "Incorrect. You cannot judge which steps Claude could take on before the steps have been written down.",
+      "B": "Incorrect — the one to reason about. It pilots the change before agreeing what must stay human, so the pilot may quietly automate a decision the team would not have given away. Settle the boundary first, then test inside it.",
+      "D": "Incorrect. Rolling out to everyone before understanding the process is the failure this whole sequence exists to avoid.",
+      "A": "Incorrect. This rolls out to the team before anyone has run a single cycle.",
+      "E": "Correct. Map it, see where Claude fits, agree what stays human, pilot it yourself, then roll out. The boundary is set before the pilot, and the pilot precedes the team."
+    },
+    "itemType": "sequencing",
+    "question": "Which sequence puts the five steps in the correct order?",
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D4.4-b467c6b2"
+  },
+  {
+    "taskStatement": "D5.1",
+    "domain": "D5",
+    "scenario": "An HR specialist is setting up a shared Project for policy questions. In no particular order: (1) create the Project, (2) confirm the team can reach it, (3) decide which of the circulating policy documents are authoritative, (4) add those documents as knowledge sources, (5) write instructions telling Claude how to use them.",
+    "options": {
+      "E": "1 → 3 → 4 → 5 → 2",
+      "A": "3 → 1 → 5 → 4 → 2",
+      "C": "4 → 3 → 1 → 5 → 2",
+      "B": "3 → 1 → 4 → 2 → 5",
+      "D": "3 → 1 → 4 → 5 → 2"
+    },
+    "correct": "D",
+    "explanations": {
+      "E": "Incorrect. Creating the Project before deciding which documents are authoritative risks building it around whichever version happened to be to hand.",
+      "A": "Incorrect — the real contest. It writes instructions referring to the knowledge sources before those sources have been added, so the instructions point at material that is not there.",
+      "C": "Incorrect. Documents are added to a Project, so the Project must exist first.",
+      "B": "Incorrect. This confirms access before the instructions are written, so the team arrives at a half-configured Project.",
+      "D": "Correct. Establish what is authoritative, create the Project, add that material, write instructions that reference it, and only then let the team in."
+    },
+    "itemType": "sequencing",
+    "question": "Which sequence puts the five steps in the correct order?",
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D5.1-193ab91a"
+  },
+  {
+    "taskStatement": "D7.1",
+    "domain": "D7",
+    "scenario": "A Project's weekly summaries keep omitting open risks. In no particular order: (1) change the custom instruction and re-run, (2) read the summary that is actually wrong, (3) check whether the knowledge sources even contain the risk information, (4) compare the summary against what the instructions currently ask for, (5) confirm the new summary is right.",
+    "options": {
+      "B": "1 → 2 → 4 → 3 → 5",
+      "E": "2 → 3 → 4 → 1 → 5",
+      "A": "5 → 2 → 4 → 3 → 1",
+      "D": "2 → 4 → 3 → 5 → 1",
+      "C": "2 → 4 → 3 → 1 → 5"
+    },
+    "correct": "C",
+    "explanations": {
+      "B": "Incorrect. Changing the instruction first is fixing before diagnosing; if it works you will not know why, and if it does not you have added a variable.",
+      "E": "Incorrect — the near miss. It checks the knowledge sources before checking what the instructions actually ask for. Read the instruction first: it is the cheaper check, and an instruction that never asked for risks explains the symptom on its own.",
+      "A": "Incorrect. There is nothing to confirm before anything has been changed.",
+      "D": "Incorrect. This confirms the new summary is right before making the change that would produce it.",
+      "C": "Correct. Read the bad output, check it against the instruction, then check the knowledge, then change one thing and confirm. Diagnosis runs cheapest-first and finishes before the fix."
+    },
+    "itemType": "sequencing",
+    "question": "Which sequence puts the five steps in the correct order?",
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D7.1-69ba6806"
+  },
+  {
+    "taskStatement": "D7.3",
+    "domain": "D7",
+    "scenario": "A marketing manager wants to cut the time her monthly campaign wrap-up takes. In no particular order: (1) time the current process, (2) move the standing context into a Project, (3) identify the steps that repeat every month, (4) time it again after the change, (5) decide which of the repeating steps are worth handing over.",
+    "options": {
+      "A": "3 → 1 → 5 → 2 → 4",
+      "B": "1 → 3 → 2 → 5 → 4",
+      "E": "2 → 1 → 3 → 5 → 4",
+      "D": "1 → 3 → 5 → 4 → 2",
+      "C": "1 → 3 → 5 → 2 → 4"
+    },
+    "correct": "C",
+    "explanations": {
+      "A": "Incorrect. Without the baseline timing first, there is nothing to compare the re-measurement against.",
+      "B": "Incorrect — the one that needs thought. It moves the standing context into a Project before deciding which repeating steps are worth handing over, so effort goes into whatever was easiest to move rather than whatever costs the most time.",
+      "E": "Incorrect. Making the change first leaves no baseline, which is the whole point of measuring.",
+      "D": "Incorrect. This re-times the process before the change has been made, so both measurements describe the old process.",
+      "C": "Correct. Measure, find what repeats, decide what is worth changing, change it, measure again. The baseline comes first and the decision precedes the work."
+    },
+    "itemType": "sequencing",
+    "question": "Which sequence puts the five steps in the correct order?",
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D7.3-5304000a"
   }
 ];

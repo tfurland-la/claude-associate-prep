@@ -41,9 +41,11 @@ Requirements:
 - Provide exactly one correct answer and three plausible distractors. The
   distractors must represent the kinds of mistakes a candidate with incomplete
   knowledge would make.
-  (The real exam also has multiple-response items. Support for them is not built
-  yet, so generate single-answer items only — do not emit an item that expects
-  more than one selection.)
+  (The real exam also has multiple-response items ("select two") and sequencing
+  items (put five numbered steps in order). Both are supported by the engine but
+  are hand-authored, because their distractor architecture is exact and easy to
+  get subtly wrong. Generate standard single-answer items only — do not emit an
+  item expecting more than one selection, and do not emit an ordering question.)
 - **Keep the options close in length — within roughly 25% of each other.** A
   correct answer noticeably longer than the distractors is a giveaway a candidate
   exploits without knowing the subject: the fully-hedged, most-qualified option is

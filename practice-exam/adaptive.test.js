@@ -860,3 +860,22 @@ test("item.optionKeys reports the options an item actually offers", () => {
   assert.deepEqual(A.item.optionKeys({ options: { A: "a", B: "b", C: "c", D: "d", E: "e" } }),
     ["A", "B", "C", "D", "E"]);
 });
+
+test("item.isSequencing distinguishes ordering items from the rest", () => {
+  assert.equal(A.item.isSequencing({ itemType: "sequencing", correct: "E" }), true);
+  assert.equal(A.item.isSequencing({ correct: "B" }), false);
+  assert.equal(A.item.isSequencing({ correct: ["B", "D"] }), false);
+  assert.equal(A.item.isSequencing({}), false);
+});
+
+test("a sequencing item is single-select, so the submit gate wants one choice", () => {
+  // It has five options like a multiple-response item, but only one is correct —
+  // so anything keying off isMulti or selectCount must treat it as single.
+  const q = { itemType: "sequencing", correct: "E",
+              options: { A: "1", B: "2", C: "3", D: "4", E: "5" } };
+  assert.equal(A.item.isMulti(q), false);
+  assert.equal(A.item.selectCount(q), 1);
+  assert.deepEqual(A.item.optionKeys(q), ["A", "B", "C", "D", "E"]);
+  assert.equal(A.item.isCorrect(q, "E"), true);
+  assert.equal(A.item.isCorrect(q, "C"), false);
+});
