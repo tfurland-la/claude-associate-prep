@@ -131,7 +131,25 @@ This is early. Being explicit so a score isn't over-read:
 
 ## Growing the question bank (author side)
 
-This part does need Python and an authenticated Claude Code CLI. Set up once:
+Everything above runs on the 122 questions committed to this repo. This section is
+about the **dynamic practice exam app** — the same exam in a desktop window, which
+writes *new* questions on demand against your own Claude Code login instead of
+drawing only from the committed bank. Nobody needs this to study; it exists for
+whoever is growing the bank.
+
+Two prerequisites, in this order.
+
+**1. Claude Code, installed and logged in.** Follow the official
+[Claude Code quickstart][cc-quickstart] — it covers installing the CLI, starting a
+session with the `claude` command, and logging in on first use. The fuller install
+reference, including Windows and WSL, is the [setup guide][cc-setup]. You need a
+Claude subscription (Pro, Max, Team or Enterprise) or a Claude Console account.
+This repo never handles an API key itself — generation shells out to `claude -p`,
+which rides whatever authentication Claude Code already has. Once you are logged
+in, `claude` should start a session from this directory, and `/login` inside a
+running session switches accounts.
+
+**2. Python, once:**
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install pytest pywebview
@@ -145,9 +163,10 @@ system Python:
 .venv/bin/python practice-exam/exam_app.py
 ```
 
-That opens the exam in a desktop window and generates fresh questions through
-your own Claude Code login — no API key. To add questions to the committed bank,
-run the `/exam-refill` skill in Claude Code, which walks the pipeline below.
+That opens the dynamic app in a desktop window and generates fresh questions
+through your Claude Code login. Those generated questions are yours alone and are
+not written to the bank. To add questions to the committed bank, run the
+`/exam-refill` skill in Claude Code, which walks the pipeline below.
 
 ### The pipeline
 
@@ -187,6 +206,8 @@ what has actually cleared the review gate are all in
 [`practice-exam/exam_spec.md`](practice-exam/exam_spec.md). Read the review-gate
 section before treating a question as vetted.
 
+[cc-quickstart]: https://code.claude.com/docs/en/quickstart
+[cc-setup]: https://code.claude.com/docs/en/setup
 [course]: https://tfurland-la.github.io/claude-associate-prep/associate_course.html
 [exercises]: https://tfurland-la.github.io/claude-associate-prep/exercises.html
 [exam]: https://tfurland-la.github.io/claude-associate-prep/practice-exam/exam.html
