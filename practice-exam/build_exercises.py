@@ -223,13 +223,13 @@ SEQUENCING_DRILL = [
             "Add the source spreadsheets as knowledge",
             "Refine the instructions to fix what the run got wrong",
         ],
-        "options": ["1 → 3 → 4 → 2 → 5", "3 → 4 → 1 → 5 → 2", "3 → 4 → 2 → 1 → 5",
-                    "4 → 3 → 1 → 2 → 5", "3 → 4 → 1 → 2 → 5"],
+        "options": ["1 → 3 → 4 → 2 → 5", "2 → 3 → 4 → 5 → 1", "3 → 4 → 2 → 1 → 5",
+                    "4 → 3 → 1 → 5 → 2", "3 → 4 → 1 → 2 → 5"],
         "answer": "E",
         "eliminate": "A starts with step 1 and D with step 4, but neither the "
                      "instructions nor the knowledge can exist before the Project "
-                     "does. B ends on step 2, running the report, when the last "
-                     "thing you do is refine.",
+                     "does. B starts by running the report, before there is a "
+                     "Project to run it in.",
         "contest": "C and E both run 3 … 5. C runs the report before the "
                    "instructions exist, so the run tests nothing and cannot tell "
                    "you what to refine. E is the answer.",
@@ -243,11 +243,11 @@ SEQUENCING_DRILL = [
             "Correct or remove the claims that fail",
         ],
         "options": ["2 → 1 → 3 → 4 → 5", "1 → 4 → 3 → 5 → 2", "3 → 1 → 4 → 5 → 2",
-                    "1 → 3 → 4 → 2 → 5", "1 → 3 → 4 → 5 → 2"],
+                    "4 → 1 → 3 → 2 → 5", "1 → 3 → 4 → 5 → 2"],
         "answer": "E",
         "eliminate": "A sends first, which defeats the exercise. C hunts for "
-                     "sources before deciding what needs checking. D ends on step "
-                     "5, correcting, after it has already sent.",
+                     "sources before deciding what needs checking. D starts by "
+                     "comparing claims to sources it has not located yet.",
         "contest": "B and E both run 1 … 2. B compares each claim against a source "
                    "before locating the source — not something you can do in that "
                    "order. E is the answer.",
@@ -261,11 +261,11 @@ SEQUENCING_DRILL = [
             "Agree which steps must stay a human decision",
         ],
         "options": ["3 → 1 → 5 → 4 → 2", "1 → 3 → 4 → 5 → 2", "2 → 1 → 3 → 5 → 4",
-                    "1 → 3 → 5 → 2 → 4", "1 → 3 → 5 → 4 → 2"],
+                    "4 → 1 → 3 → 2 → 5", "1 → 3 → 5 → 4 → 2"],
         "answer": "E",
         "eliminate": "A judges which steps Claude could take before they are "
-                     "written down. C rolls out first. D ends on step 4, piloting, "
-                     "after the team already has it.",
+                     "written down. C rolls out first. D starts by piloting a "
+                     "change to a process nobody has mapped.",
         "contest": "B and E both run 1 … 2. B pilots before agreeing what stays "
                    "human, so the pilot can quietly automate a decision nobody "
                    "meant to give away. E is the answer.",
@@ -436,16 +436,14 @@ def build():
     assert len({t[0] for t in TRIAGE_CATEGORIES}) == 4
     for item in SEQUENCING_DRILL:
         assert len(item["steps"]) == 5 and len(item["options"]) == 5
-        ends = {}
-        for i, o in enumerate(item["options"]):
-            nums = [int(c) for c in o if c.isdigit()]
-            assert sorted(nums) == [1, 2, 3, 4, 5], f"drill option {o} is not a permutation"
-            ends.setdefault((nums[0], nums[-1]), []).append(chr(65 + i))
-        pair = [ks for ks in ends.values() if len(ks) > 1]
-        assert len(pair) == 1 and len(pair[0]) == 2, (
-            f"a drill must have exactly one contested pair, got {list(ends.values())}")
-        assert item["answer"] in pair[0], (
-            f"drill answer {item['answer']} must be in the contested pair {pair[0]}")
+        # Defer to the bank's rule rather than restate it. The guard here used to
+        # check only for one contested pair, which a drill can satisfy while a
+        # third option still opens on the pair's own first step — exactly the
+        # defect found in all seven banked items. That rule also covers the
+        # permutation check and answer-in-the-pair check done separately before.
+        exam_lib.validate_sequencing_shape(
+            {chr(65 + i): opt for i, opt in enumerate(item["options"])},
+            item["answer"])
     for _, cat, _ in TRIAGE:
         assert cat in {c[0] for c in TRIAGE_CATEGORIES}, f"unknown triage category {cat}"
 

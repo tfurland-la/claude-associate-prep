@@ -416,7 +416,10 @@ def test_exercises_forbid_outsourcing_the_judgment():
 
 def make_sequencing_question():
     """Steps 1-5. Correct order is 3,1,4,2,5. Options C and E share first=3,
-    last=5 — they are the real contest; A, B and D differ on first or last."""
+    last=5 — they are the real contest. A, B and D open on 1, 2 and 4: three
+    distinct steps, none of them 3, so the pair's opening belongs to the pair
+    alone and eliminating on the first step removes all three at once. Only A
+    also closes on 5."""
     q = make_valid_question()
     q["taskStatement"], q["domain"] = "D1.2", "D1"
     q["itemType"] = "sequencing"
@@ -430,9 +433,9 @@ def make_sequencing_question():
     q["question"] = "Which sequence puts the five steps in the correct order?"
     q["options"] = {
         "A": "1 → 3 → 4 → 2 → 5",
-        "B": "3 → 4 → 1 → 5 → 2",
+        "B": "2 → 3 → 1 → 5 → 4",
         "C": "3 → 4 → 1 → 2 → 5",
-        "D": "4 → 3 → 1 → 2 → 5",
+        "D": "4 → 3 → 1 → 5 → 2",
         "E": "3 → 1 → 4 → 2 → 5",
     }
     q["correct"] = "E"
@@ -469,6 +472,38 @@ def test_sequencing_needs_exactly_two_options_sharing_first_and_last():
     q["options"]["B"] = "3 → 1 → 2 → 4 → 5"  # now B, C and E all start 3 end 5
     q["id"] = exam_lib.question_id(q)
     with pytest.raises(ValueError, match="first and last"):
+        exam_lib.validate_question(q)
+
+
+def test_sequencing_distractors_must_not_open_on_the_pair_first_step():
+    """The defect found by inspecting drawn items: "exactly two share first AND
+    last" is satisfiable while a third option still opens on the pair's first
+    step, because its last step differs. Eliminating on the opening then removes
+    two distractors instead of three, and the technique the study guide teaches
+    only half works."""
+    q = make_sequencing_question()
+    q["options"]["B"] = "3 → 2 → 1 → 5 → 4"  # opens on 3, same as the C/E pair
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="first step"):
+        exam_lib.validate_question(q)
+
+
+def test_sequencing_distractors_must_open_on_distinct_steps():
+    """Two distractors sharing an opening wastes one of the three eliminations."""
+    q = make_sequencing_question()
+    q["options"]["B"] = "4 → 2 → 1 → 5 → 3"  # opens on 4, same as D
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="first step"):
+        exam_lib.validate_question(q)
+
+
+def test_sequencing_allows_at_most_one_distractor_to_close_on_the_pair_last_step():
+    """A real form was observed with four of five options closing on the same
+    step, which leaves the ending carrying almost no signal."""
+    q = make_sequencing_question()
+    q["options"]["B"] = "2 → 3 → 1 → 4 → 5"  # closes on 5; A already does
+    q["id"] = exam_lib.question_id(q)
+    with pytest.raises(ValueError, match="last step"):
         exam_lib.validate_question(q)
 
 
@@ -535,3 +570,71 @@ def test_sequencing_answers_are_not_all_on_one_option(bank):
     assert len(keys) > 1, (
         f"all {len(seq)} sequencing questions key to {keys.pop()} — a free-marks tell"
     )
+
+
+# ── Artifact builders actually run ────────────────────────────────────────
+# The tests above assert only that the generated HTML exists and has content,
+# so a builder that raises on import or in its build-time guards stays invisible
+# to pytest. That is not hypothetical: a guard was once added to
+# build_exercises.py that raised NameError on every run, and the full suite
+# still passed. These tests run each builder and require the committed artifact
+# to be byte-identical afterwards, which catches both a broken builder and an
+# artifact left stale relative to the data it is generated from.
+
+@pytest.mark.parametrize("script,artifact", [
+    ("build_course.py", "associate_course.html"),
+    ("build_exercises.py", "exercises.html"),
+])
+def test_builder_runs_and_committed_artifact_is_current(script, artifact):
+    import subprocess
+    path = PRACTICE_EXAM_DIR.parent / artifact
+    before = path.read_bytes()
+    result = subprocess.run(
+        [sys.executable, str(PRACTICE_EXAM_DIR / script)],
+        capture_output=True, text=True,
+    )
+    after = path.read_bytes()
+    if after != before:
+        path.write_bytes(before)  # a test must not mutate the working tree
+    assert result.returncode == 0, f"{script} failed:\n{result.stderr}"
+    assert after == before, (
+        f"{artifact} is stale — {script} regenerates it differently. "
+        f"Run practice-exam/{script} and commit the result.")
+
+
+def test_multiple_response_items_carry_no_group_length_bias(bank):
+    """The correct pair must not be sortable out by length, in either direction.
+
+    The single-longest-option check does not see this shape: with two correct
+    options neither need be the outright longest while the pair still runs
+    consistently longer. Measured on the first hand-authored batch, the correct
+    pair WAS the two longest in 6 of 11 items — a candidate could have scored 55%
+    on those without reading a word. Correcting only that direction then pushed
+    seven items past parity into the mirror tell, so this asserts both ends.
+    """
+    multi = [q for q in bank if len(exam_lib.correct_keys(q)) > 1]
+    if len(multi) < 5:
+        pytest.skip(f"only {len(multi)} multiple-response items; a bias read is not meaningful")
+    biased = {
+        q["id"]: round(exam_lib.length_bias(q), 2)
+        for q in multi
+        if abs(exam_lib.length_bias(q) - 1) > 0.15
+        or exam_lib.correct_are_length_extreme(q)
+    }
+    assert not biased, (
+        "correct options are separable by length alone in: "
+        f"{biased} (1.0 is parity; lengthen the distractors, never trim the key)")
+
+
+def test_multiple_response_stems_do_not_hardcode_the_select_count(bank):
+    """exam.html appends "(Select N.)" itself, so a stem that also spells it out
+    renders as "(Select two.) (Select 2.)". Ten items shipped that way in one
+    batch before it was spotted in the browser."""
+    import re
+    offenders = [
+        q["taskStatement"] for q in bank
+        if len(exam_lib.correct_keys(q)) > 1
+        and re.search(r"\(select \w+\.?\)", q["question"], re.I)
+    ]
+    assert not offenders, (
+        f"stems restate the selection count the renderer adds: {offenders}")

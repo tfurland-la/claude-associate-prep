@@ -116,9 +116,20 @@ def main():
                     f"{tag}: correct option {longest} is {lengths[longest]} chars vs "
                     f"{second} for the next longest")
 
-        # 7. Answer-position skew is checked in aggregate below.
+        # 7. Group-length bias — the multiple-response version of the tell above.
+        #    With two correct options neither need be the outright longest while the
+        #    pair still runs consistently longer, so the single-longest check above
+        #    does not see it.
+        if len(exam_lib.correct_keys(q)) > 1:
+            ratio = exam_lib.length_bias(q)
+            if abs(ratio - 1) > 0.15 or exam_lib.correct_are_length_extreme(q):
+                findings["GROUP LENGTH BIAS"].append(
+                    f"{tag}: correct options average {ratio:.2f}x the distractors"
+                    + (" and sit at one length extreme" if exam_lib.correct_are_length_extreme(q) else ""))
 
-    # 8. Near-duplicates within the batch and against the committed bank.
+        # 8. Answer-position skew is checked in aggregate below.
+
+    # 9. Near-duplicates within the batch and against the committed bank.
     #
     #    KNOWN BLIND SPOT, measured: this compares scenario *text*, and text
     #    similarity does not find the duplication that actually matters. On the

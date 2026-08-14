@@ -29,12 +29,23 @@ JUDGMENTS = [
      "output reads fluently and confidently, and the wrong answer is to trust that "
      "fluency, or to ask Claude how confident it is. Self-reported confidence is not "
      "an accuracy signal."),
-    ("J2", "Claude drafts; a person decides",
+    ("J2", "Claude drafts; a person decides — but sign-off is not a data control",
      "Where an output affects someone's pay, employment, compliance exposure, or a "
      "customer relationship, a human owns the decision and the sign-off. Claude can do "
      "the organising, the drafting and a preliminary check. The exam repeatedly offers "
      "a plausible option that hands the judgment itself to Claude — that option is "
-     "wrong even when the analysis would be good."),
+     "wrong even when the analysis would be good. Now read the boundary precisely, "
+     "because this is where the judgment is most often mis-taken: sign-off governs the "
+     "decision, not the data. A named reviewer — a lawyer, a clinician, a manager — "
+     "changes nothing about what was already sent to Claude. A first-hand sitting "
+     "reports a 'select two' item whose five workflows all had sound process logic, "
+     "and the three wrong ones were wrong purely on their input: legal documents, "
+     "clinical symptom records, individual performance data. Each named a credible "
+     "reviewer, and each was still wrong. The two correct answers were ordinary "
+     "document synthesis and research, with no reviewer attached at all. So ask what "
+     "goes in before you ask who checks what comes out, and do not read an attached "
+     "reviewer as evidence a workflow is safe — on that item it was the tell for the "
+     "opposite."),
     ("J3", "De-identify before it goes in",
      "Strip, mask or aggregate regulated personal data before uploading it, rather "
      "than uploading it and instructing Claude not to retain it. An instruction is not "
@@ -79,7 +90,12 @@ JUDGMENTS = [
      "Roughly four or five of the sixty items give you five numbered steps and five "
      "candidate orderings. They share a shape: three of the five can be discarded on "
      "their first or last step alone, leaving two that begin and end identically. The "
-     "entire question is which of those two orders the middle correctly. So do not "
+     "entire question is which of those two orders the middle correctly. Put the most "
+     "useful version of that first: work out which step genuinely comes first, and you "
+     "are down to a straight 50/50, because exactly two options open on the correct "
+     "step and no more. The three wrong ones each open somewhere different, so no "
+     "opening step is ever shared between two distractors, and no more than one of "
+     "them borrows the pair's closing step. So do not "
      "read five orderings in full — read the first and last step of each, discard the "
      "three that start or finish wrongly, then spend your time on the one real "
      "comparison. The middle almost always turns on a dependency: something that "

@@ -2515,15 +2515,15 @@ window.CCAOF_BANK = [
     "scenario": "An operations lead wants a Claude Project that drafts her team's weekly supplier report. She has five things to do, listed here in no particular order: (1) write custom instructions describing the report's sections and tone, (2) run the report once and read what comes back, (3) create the Project, (4) add the source spreadsheets as knowledge sources, (5) refine the instructions to fix what the first run got wrong.",
     "options": {
       "E": "1 → 3 → 4 → 2 → 5",
-      "C": "3 → 4 → 1 → 5 → 2",
+      "C": "2 → 3 → 4 → 5 → 1",
       "A": "3 → 4 → 2 → 1 → 5",
-      "B": "4 → 3 → 1 → 2 → 5",
+      "B": "4 → 3 → 1 → 5 → 2",
       "D": "3 → 4 → 1 → 2 → 5"
     },
     "correct": "D",
     "explanations": {
       "E": "Incorrect. Writing the instructions first means writing them with nowhere to put them; the Project has to exist before it can be configured.",
-      "C": "Incorrect. This refines the instructions before the report has ever been run, so there is nothing yet to refine them against.",
+      "C": "Incorrect. This runs the report before the Project exists, so there is nothing configured for it to run against.",
       "A": "Incorrect — and this is the one worth thinking about, since it starts and ends in the same place as the answer. It runs the report before the instructions exist, so the first run tests nothing and cannot tell you what to fix.",
       "B": "Incorrect. Knowledge sources are added to a Project, so the Project has to be created first.",
       "D": "Correct. Create the Project, give it the material, tell it what to produce, run it once, then refine on the evidence of that run. Configuration precedes the test; the test informs the refinement."
@@ -2536,7 +2536,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D1.2-6d4764e3"
+    "id": "D1.2-f69fe5f3"
   },
   {
     "taskStatement": "D2.3",
@@ -2546,7 +2546,7 @@ window.CCAOF_BANK = [
       "A": "2 → 1 → 3 → 4 → 5",
       "C": "1 → 4 → 3 → 5 → 2",
       "B": "3 → 1 → 4 → 5 → 2",
-      "D": "1 → 3 → 4 → 2 → 5",
+      "D": "4 → 1 → 3 → 2 → 5",
       "E": "1 → 3 → 4 → 5 → 2"
     },
     "correct": "E",
@@ -2565,7 +2565,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D2.3-e20b4c78"
+    "id": "D2.3-597621a5"
   },
   {
     "taskStatement": "D4.3",
@@ -2574,8 +2574,8 @@ window.CCAOF_BANK = [
     "options": {
       "A": "3 → 1 → 4 → 2 → 5",
       "D": "1 → 3 → 4 → 2 → 5",
-      "B": "4 → 1 → 3 → 2 → 5",
-      "E": "1 → 4 → 3 → 5 → 2",
+      "B": "4 → 1 → 3 → 5 → 2",
+      "E": "5 → 1 → 3 → 4 → 2",
       "C": "1 → 4 → 3 → 2 → 5"
     },
     "correct": "C",
@@ -2583,7 +2583,7 @@ window.CCAOF_BANK = [
       "A": "Incorrect. Asking for approaches before describing the problem gets you approaches to a problem Claude has had to guess at.",
       "D": "Incorrect — the close one. It asks for approaches and only then answers the clarifying questions, so the options were generated before the missing context arrived. Let the questions be answered first and the options come back sharper.",
       "B": "Incorrect. There are no clarifying questions to answer until the problem has been described.",
-      "E": "Incorrect. This writes up the design before refining it, so the team gets the unrefined version.",
+      "E": "Incorrect. This writes the design up for the team first, before there is a chosen design to write up.",
       "C": "Correct. Describe the problem, answer what Claude still needs to know, then get options, refine the one that fits, and write it up. The clarifying exchange is what makes the options worth having."
     },
     "itemType": "sequencing",
@@ -2594,7 +2594,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D4.3-a9c62adf"
+    "id": "D4.3-6cd0def6"
   },
   {
     "taskStatement": "D4.4",
@@ -2604,7 +2604,7 @@ window.CCAOF_BANK = [
       "C": "3 → 1 → 5 → 4 → 2",
       "B": "1 → 3 → 4 → 5 → 2",
       "D": "2 → 1 → 3 → 5 → 4",
-      "A": "1 → 3 → 5 → 2 → 4",
+      "A": "4 → 1 → 3 → 2 → 5",
       "E": "1 → 3 → 5 → 4 → 2"
     },
     "correct": "E",
@@ -2612,7 +2612,7 @@ window.CCAOF_BANK = [
       "C": "Incorrect. You cannot judge which steps Claude could take on before the steps have been written down.",
       "B": "Incorrect — the one to reason about. It pilots the change before agreeing what must stay human, so the pilot may quietly automate a decision the team would not have given away. Settle the boundary first, then test inside it.",
       "D": "Incorrect. Rolling out to everyone before understanding the process is the failure this whole sequence exists to avoid.",
-      "A": "Incorrect. This rolls out to the team before anyone has run a single cycle.",
+      "A": "Incorrect. Running a cycle with the change in place before mapping the process means changing something nobody has described yet.",
       "E": "Correct. Map it, see where Claude fits, agree what stays human, pilot it yourself, then roll out. The boundary is set before the pilot, and the pilot precedes the team."
     },
     "itemType": "sequencing",
@@ -2623,17 +2623,17 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D4.4-b467c6b2"
+    "id": "D4.4-2fda7a65"
   },
   {
     "taskStatement": "D5.1",
     "domain": "D5",
     "scenario": "An HR specialist is setting up a shared Project for policy questions. In no particular order: (1) create the Project, (2) confirm the team can reach it, (3) decide which of the circulating policy documents are authoritative, (4) add those documents as knowledge sources, (5) write instructions telling Claude how to use them.",
     "options": {
-      "E": "1 → 3 → 4 → 5 → 2",
+      "E": "1 → 3 → 4 → 2 → 5",
       "A": "3 → 1 → 5 → 4 → 2",
       "C": "4 → 3 → 1 → 5 → 2",
-      "B": "3 → 1 → 4 → 2 → 5",
+      "B": "5 → 3 → 1 → 2 → 4",
       "D": "3 → 1 → 4 → 5 → 2"
     },
     "correct": "D",
@@ -2641,7 +2641,7 @@ window.CCAOF_BANK = [
       "E": "Incorrect. Creating the Project before deciding which documents are authoritative risks building it around whichever version happened to be to hand.",
       "A": "Incorrect — the real contest. It writes instructions referring to the knowledge sources before those sources have been added, so the instructions point at material that is not there.",
       "C": "Incorrect. Documents are added to a Project, so the Project must exist first.",
-      "B": "Incorrect. This confirms access before the instructions are written, so the team arrives at a half-configured Project.",
+      "B": "Incorrect. This writes the instructions before the Project exists or the documents are chosen, so they describe nothing yet.",
       "D": "Correct. Establish what is authoritative, create the Project, add that material, write instructions that reference it, and only then let the team in."
     },
     "itemType": "sequencing",
@@ -2652,7 +2652,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D5.1-193ab91a"
+    "id": "D5.1-8ea28401"
   },
   {
     "taskStatement": "D7.1",
@@ -2662,7 +2662,7 @@ window.CCAOF_BANK = [
       "B": "1 → 2 → 4 → 3 → 5",
       "E": "2 → 3 → 4 → 1 → 5",
       "A": "5 → 2 → 4 → 3 → 1",
-      "D": "2 → 4 → 3 → 5 → 1",
+      "D": "3 → 4 → 2 → 5 → 1",
       "C": "2 → 4 → 3 → 1 → 5"
     },
     "correct": "C",
@@ -2681,7 +2681,7 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D7.1-69ba6806"
+    "id": "D7.1-edcf7891"
   },
   {
     "taskStatement": "D7.3",
@@ -2690,8 +2690,8 @@ window.CCAOF_BANK = [
     "options": {
       "A": "3 → 1 → 5 → 2 → 4",
       "B": "1 → 3 → 2 → 5 → 4",
-      "E": "2 → 1 → 3 → 5 → 4",
-      "D": "1 → 3 → 5 → 4 → 2",
+      "E": "2 → 1 → 3 → 4 → 5",
+      "D": "4 → 1 → 3 → 5 → 2",
       "C": "1 → 3 → 5 → 2 → 4"
     },
     "correct": "C",
@@ -2710,6 +2710,614 @@ window.CCAOF_BANK = [
       "generatedAt": null,
       "reviewed": true
     },
-    "id": "D7.3-5304000a"
+    "id": "D7.3-77326d11"
+  },
+  {
+    "taskStatement": "D1.1",
+    "domain": "D1",
+    "scenario": "A marketing manager asks Claude for “a short post about our new reporting feature” and gets something fluent, generic and unusable. She has the launch notes, knows the post is for existing customers on LinkedIn, and needs it under 120 words.",
+    "question": "Which two additions to the prompt would most improve the next draft?",
+    "options": {
+      "A": "Name the audience and the channel, since existing customers on LinkedIn need a different register from prospects.",
+      "B": "State the 120-word limit, because length shapes what the draft can include and what it must leave out.",
+      "C": "Tell Claude the first attempt read as generic and ask it to be more creative next time.",
+      "D": "Ask for several versions of the same request and pick whichever lands closest to what you wanted.",
+      "E": "Switch to the most capable model available, on the basis that the weak output reflects the model rather than the prompt."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Audience and channel are context Claude cannot infer, and they change the register, the assumed knowledge and the call to action.",
+      "B": "Correct. A hard constraint tells the draft what to cut; without it the model has no basis for choosing what matters most.",
+      "C": "Incorrect. “Be more creative” names a feeling about the output rather than anything the model can act on.",
+      "D": "Incorrect. More versions of an underspecified prompt gives you several drafts with the same missing context.",
+      "E": "Incorrect. The output was generic because the prompt was, and a stronger model still cannot guess the audience or the limit."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D1.1-85196ae4"
+  },
+  {
+    "taskStatement": "D1.3",
+    "domain": "D1",
+    "scenario": "A first draft of a customer apology email came back polite but vague: it never names the outage, never says how long it lasted, and closes with a generic thank-you rather than the goodwill credit that was agreed.",
+    "question": "Which two pieces of feedback will actually improve the revision?",
+    "options": {
+      "A": "Tell Claude the outage and its duration must be stated explicitly in the opening paragraph.",
+      "B": "Tell Claude the closing must offer the agreed goodwill credit rather than a generic thank-you.",
+      "C": "Tell Claude the draft feels a bit flat and ask it to have another go at the whole thing.",
+      "D": "Start a new conversation with the same prompt, since the first attempt has anchored the tone.",
+      "E": "Ask Claude to rate how well the draft met the brief before deciding what to change."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. It names the specific omission and where the fix belongs, which is what makes a revision instruction actionable.",
+      "B": "Correct. Same shape: the missing element is named, and so is what should replace the weak closing.",
+      "C": "Incorrect. “Flat” describes your reaction, not the gap, so the revision is another guess.",
+      "D": "Incorrect. Starting over discards the draft that is most of the way there, and repeats the prompt that produced it.",
+      "E": "Incorrect. A self-assessment is not evidence, and you can already see exactly what is missing."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D1.3-28bcf35c"
+  },
+  {
+    "taskStatement": "D1.4",
+    "domain": "D1",
+    "scenario": "A product lead needs two things this week: a wide set of naming candidates for a new internal tool, and a decision memo weighing three vendors against cost, integration effort and support.",
+    "question": "Which two moves fit the task types correctly?",
+    "options": {
+      "A": "For the naming work, ask explicitly for many varied candidates including deliberately unusual ones.",
+      "B": "For the vendor memo, state the three criteria up front and ask for the comparison against them.",
+      "C": "For the naming work, ask for the single strongest name so the output is decisive.",
+      "D": "For the vendor memo, ask an open question and let the considerations emerge as the discussion goes.",
+      "E": "Run both as a single request, since they concern the same product and share most of the background material."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Brainstorming wants breadth, and asking for range including odd options is what produces it.",
+      "B": "Correct. Analysis wants the criteria stated before the work, so the comparison is structured rather than improvised.",
+      "C": "Incorrect. Asking for one name collapses the divergent task into a decision the exercise was meant to inform.",
+      "D": "Incorrect. Letting the criteria emerge produces a discussion you then have to reorganise against the criteria you already had.",
+      "E": "Incorrect. Shared background does not make these one task; they want opposite shapes, and bundling gets both done shallowly."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D1.4-d9e1d94a"
+  },
+  {
+    "taskStatement": "D2.1",
+    "domain": "D2",
+    "scenario": "Claude has summarised four supplier review documents into a one-page brief for a procurement meeting. Everything the brief says appears to be accurate.",
+    "question": "Which two checks test whether the brief is complete, rather than merely accurate?",
+    "options": {
+      "A": "Skim each of the four source documents for risks or actions the brief does not mention.",
+      "B": "Check whether any supplier appears in the sources but is missing from the brief entirely.",
+      "C": "Re-read the brief on its own for contradictions between the figures it quotes.",
+      "D": "Confirm each figure in the brief matches the figure in the source document it came from.",
+      "E": "Ask Claude whether it left anything out, and treat a confident answer as evidence the work is complete."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Omission can only be found by going back to the sources; nothing in the output signals what is not there.",
+      "B": "Correct. A whole source under-represented is the largest form of incompleteness and the easiest to miss.",
+      "C": "Incorrect. This is a consistency check, useful but a different failure from omission.",
+      "D": "Incorrect. This tests accuracy of what was included, which the scenario already grants.",
+      "E": "Incorrect. A model cannot reliably report what it failed to notice; asking produces reassurance rather than evidence."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D2.1-1fcd27d4"
+  },
+  {
+    "taskStatement": "D2.2",
+    "domain": "D2",
+    "scenario": "A summary of a regulator's consultation paper reads confidently and cites “paragraph 3.14”, describes the consultation as “widely welcomed by the sector”, and puts the response deadline at 14 October. Only the paper itself was provided.",
+    "question": "Which two of these should you treat as likely fabrications?",
+    "options": {
+      "A": "The paragraph reference, because a precise citation is the classic invented detail.",
+      "B": "The characterisation of sector reaction, because the paper alone cannot support a claim about how others responded.",
+      "C": "Check the quoted figures against the source, since a number is the thing a reader is most likely to repeat elsewhere.",
+      "D": "The response deadline, because deadlines are always the least reliable part of a summary.",
+      "E": "The summary's structure, because a tidy structure suggests the content was invented to fit it."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. A specific-looking reference that you cannot see in the source is the most common hallucination shape.",
+      "B": "Correct. It is a claim about material outside the source entirely, so nothing provided could have supported it.",
+      "C": "Incorrect. Fluency accompanies both true and false output, so it distinguishes nothing on its own.",
+      "D": "Incorrect. The deadline is worth verifying, but it is the kind of fact the paper would actually state; treating a whole category as unreliable is not a diagnosis.",
+      "E": "Incorrect. Structure is a formatting choice and carries no signal about whether the content is grounded."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D2.2-6e53e950"
+  },
+  {
+    "taskStatement": "D2.5",
+    "domain": "D2",
+    "scenario": "A detailed technical incident write-up needs to go to two audiences: the engineering team who will act on it, and the customers affected by the outage.",
+    "question": "Which two instructions will get you a usable customer version?",
+    "options": {
+      "A": "State the audience explicitly, so the draft assumes no internal knowledge of the systems involved.",
+      "B": "Say what the customer version is for — reassurance and what happens next — rather than a full account of cause.",
+      "C": "Ask Claude to simplify the language throughout, since the vocabulary is the obstacle.",
+      "D": "Ask for a substantially shorter version, since customers will not read a long document however good it is.",
+      "E": "Send the engineering version and offer to answer any questions, since the underlying facts are the same for both readers."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Naming the audience is what lets the draft drop assumed internal knowledge rather than merely shortening sentences.",
+      "B": "Correct. The two versions have different purposes, and stating the purpose changes what belongs in the document at all.",
+      "C": "Incorrect. Simpler wording of engineering-facing content still tells customers things they did not ask and omits what they need.",
+      "D": "Incorrect. Length is a symptom; a short document aimed at the wrong reader is still aimed at the wrong reader.",
+      "E": "Incorrect. The facts may be the same but the relevance is not, and an internal write-up often contains detail you would not choose to publish."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D2.5-f6b088c1"
+  },
+  {
+    "taskStatement": "D2.6",
+    "domain": "D2",
+    "scenario": "Over one conversation an analyst produces four things: a two-line answer to “what is our current churn rate”, a comparison table of five competitors that the team will revise over the next fortnight, a one-line confirmation of a meeting date, and a draft policy document that will go through several rounds of edits.",
+    "question": "Which two of these belong in an artifact?",
+    "options": {
+      "A": "The competitor comparison table, since it is substantial standalone content the team will revise.",
+      "B": "The draft policy document, since it will be edited repeatedly and needs to exist as one object.",
+      "C": "The churn-rate answer, since a figure the leadership team relies on matters most.",
+      "D": "The meeting-date confirmation, since anything factual is worth keeping somewhere more durable.",
+      "E": "All four of them, since keeping everything as artifacts makes the whole conversation easier to search later."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Substantial, standalone, and destined for revision is exactly what an artifact is for.",
+      "B": "Correct. Same test: a document going through rounds of edits benefits from living as a single revisable object.",
+      "C": "Incorrect. A two-line answer read once belongs inline; importance is not the criterion, reuse is.",
+      "D": "Incorrect. A one-line confirmation has nothing to revise and no life outside the conversation.",
+      "E": "Incorrect. Putting everything in artifacts makes the genuinely substantial ones harder to find, not easier."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D2.6-12756c6c"
+  },
+  {
+    "taskStatement": "D3.1",
+    "domain": "D3",
+    "scenario": "A consultant has four tasks: summarise a policy document she has already uploaded, find out what three competitors currently charge, draft a recurring weekly update her team all produce the same way, and check the present state of an evolving regulation.",
+    "question": "Which two of these call for research mode?",
+    "options": {
+      "A": "Finding what the three competitors currently charge, since that is current external information.",
+      "B": "Checking the present state of the evolving regulation, since it needs current sources with citations to check.",
+      "C": "Summarising the uploaded policy document, since a summary is itself a kind of research.",
+      "D": "Drafting the recurring weekly update, since consistency benefits from an external reference point.",
+      "E": "All four of them, since research mode produces better-sourced output whatever the underlying task happens to be here."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Pricing changes and lives outside anything she has uploaded, so it needs a live search with sources she can verify.",
+      "B": "Correct. “Present state” of something evolving is the clearest case for current external sources plus citations.",
+      "C": "Incorrect. The document is already in hand; searching externally would answer a question she has not asked.",
+      "D": "Incorrect. A recurring internal format is a Project concern — standing instructions and knowledge — not an external search.",
+      "E": "Incorrect. Searching externally for material you already hold adds latency and invites sources less authoritative than your own document."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D3.1-65a1f7dc"
+  },
+  {
+    "taskStatement": "D3.3",
+    "domain": "D3",
+    "scenario": "A team lead has a week containing: 400 short support replies to categorise by theme, a board paper reconciling conflicting figures from three departments into a recommendation, a batch of meeting notes to tidy, and a decision on which of two restructures to propose.",
+    "question": "Which two tasks justify reaching for the most capable model?",
+    "options": {
+      "A": "The board paper, because reconciling conflicting sources into a recommendation is multi-factor reasoning.",
+      "B": "The restructure decision, because the value is in the depth of the analysis rather than the speed of it.",
+      "C": "Categorising the 400 support replies, because the volume means an error rate compounds.",
+      "D": "Tidying up the meeting notes, because the result is read by other people and ought to be polished.",
+      "E": "All four of them, because the strongest available model is never actually the wrong choice for a piece of work like this."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Conflicting inputs and a judgement to reach is precisely the work that rewards deeper reasoning.",
+      "B": "Correct. A consequential decision where the analysis is the product is worth the cost and the latency.",
+      "C": "Incorrect. High volume and straightforward is the textbook case for the fast, low-cost model; volume argues against the expensive one.",
+      "D": "Incorrect. Tidying notes is mechanical, and polish is not the same as reasoning depth.",
+      "E": "Incorrect. The exam treats defaulting to the top model as a real error, because it spends cost and latency budget with nothing to show."
+    },
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D3.3-3b23acff"
+  },
+  {
+    "taskStatement": "D6.1",
+    "scenario": "An operations lead at a professional services firm is choosing which workflows to move onto Claude. The firm has no de-identification step: whatever a colleague pastes into a prompt goes across as written, and policy forbids sending client-confidential, clinical or individual employee records to an external tool.",
+    "question": "Which two of these workflows are appropriate as described?",
+    "options": {
+      "A": "Analysing signed client contracts for unusual clauses, with a lawyer reviewing each finding.",
+      "B": "Summarising published sector regulations into a briefing note for the whole practice group.",
+      "C": "Condensing each employee's performance-review notes into action points for their manager to check.",
+      "D": "Comparing three publicly available vendor whitepapers into a research summary for a client report.",
+      "E": "Summarising a named employee's documented symptoms for the occupational-health nurse to review."
+    },
+    "correct": [
+      "B",
+      "D"
+    ],
+    "explanations": {
+      "A": "Incorrect. The lawyer's review governs what the firm does with the findings; it does nothing about the contracts themselves having already been sent. The prohibited step happens at the input, before any reviewer sees anything.",
+      "B": "Correct. Published regulations are already public, so nothing confidential enters the prompt and the output is an ordinary synthesis task.",
+      "C": "Incorrect. Individual performance data is exactly what the policy excludes, and a manager checking the action points afterwards does not unsend it.",
+      "D": "Correct. Publicly available whitepapers carry nothing the firm is barred from sending, and comparison into a summary is well inside what Claude is for.",
+      "E": "Incorrect. Clinical information about an identified person is the most sensitive category here. That a nurse reviews the summary changes the handling of the output, not the disclosure."
+    },
+    "domain": "D6",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D6.1-cc8a72f3"
+  },
+  {
+    "taskStatement": "D6.2",
+    "scenario": "An HR business partner wants Claude's help finding themes in 200 free-text exit-interview comments. Some comments name individuals and describe specific incidents.",
+    "question": "Which two steps should she take before uploading?",
+    "options": {
+      "A": "Upload the file as it stands and instruct Claude not to store or repeat any names it encounters.",
+      "B": "Remove or mask the names and any detail that identifies a specific person or incident.",
+      "C": "Check what her organisation's AI policy says about employee data before anything is uploaded.",
+      "D": "Split the comments across several shorter chats so no single conversation holds all of them.",
+      "E": "Skip the exercise, since free-text employee feedback can never be analysed with an external tool."
+    },
+    "correct": [
+      "B",
+      "C"
+    ],
+    "explanations": {
+      "A": "Incorrect. An instruction in a prompt is a request, not a control — the data has already been sent by the time Claude reads it.",
+      "B": "Correct. De-identifying first is what lets the analysis proceed: themes across 200 comments survive the removal of names, because the theme is not the person.",
+      "C": "Correct. The governing policy decides what is permitted here, and checking it is what separates a defensible decision from a lucky one.",
+      "D": "Incorrect. Splitting the same content across chats sends all of it regardless; the total disclosure is unchanged.",
+      "E": "Incorrect. The exam consistently penalises abandoning a task that anonymising would let proceed within policy."
+    },
+    "domain": "D6",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D6.2-e7cb738c"
+  },
+  {
+    "taskStatement": "D6.4",
+    "scenario": "A corporate trainer uses Claude to draft course material, then publishes it to staff under the training team's name.",
+    "question": "Which two obligations apply here?",
+    "options": {
+      "A": "Verify the factual claims and any cited sources before the material goes out.",
+      "B": "Add a disclaimer saying the content is AI-generated and may therefore contain errors.",
+      "C": "Follow whatever the organisation's policy says about disclosing AI assistance in published material.",
+      "D": "Avoid Claude for anything staff will be assessed on, since assessed content must be human-written.",
+      "E": "Keep a copy of every prompt used, so the material can be regenerated identically later."
+    },
+    "correct": [
+      "A",
+      "C"
+    ],
+    "explanations": {
+      "A": "Correct. Publishing under the team's name transfers ownership of the claims to the team, which makes verification theirs to do.",
+      "B": "Incorrect. A disclaimer shifts blame rather than removing the error, and no such blanket requirement exists — what governs is the organisation's own disclosure policy.",
+      "C": "Correct. Disclosure obligations are set by organisational policy, and the trainer's job is to follow the one that applies.",
+      "D": "Incorrect. Nothing bars drafting assessed material with Claude; the requirement is that a person verifies and owns it.",
+      "E": "Incorrect. Claude's outputs are not reproducible from a stored prompt, so this buys nothing."
+    },
+    "domain": "D6",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D6.4-70d18581"
+  },
+  {
+    "taskStatement": "D4.1",
+    "scenario": "A project manager has been asked to work out where Claude could help in her team's monthly reporting cycle, which currently takes four working days.",
+    "question": "Which two are the most useful first moves?",
+    "options": {
+      "A": "Write down the cycle step by step and note how long each step actually takes.",
+      "B": "Identify which steps are repetitive drafting or summarising rather than judgment calls.",
+      "C": "Begin with the step the team complains about most, since that is where the value is.",
+      "D": "Ask Claude to redesign the reporting cycle from a description of the current one.",
+      "E": "Move the whole cycle into a Project straight away and refine once it is running."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. You cannot tell what Claude should take on, or later show that it helped, without knowing what the steps are and what they cost now.",
+      "B": "Correct. Repetitive drafting and summarising is precisely the work Claude absorbs well, and separating it from judgment work is what makes the target list.",
+      "C": "Incorrect. The most-complained-about step is often a judgment call or a dependency on another team, neither of which Claude removes.",
+      "D": "Incorrect. A redesign built on a description Claude has not verified inherits every gap in that description.",
+      "E": "Incorrect. Moving an unexamined process wholesale reproduces its inefficiencies inside a Project."
+    },
+    "domain": "D4",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D4.1-81388ae2"
+  },
+  {
+    "taskStatement": "D4.2",
+    "scenario": "An operations lead is preparing a recommendation on reducing packaging waste and wants Claude's help with the research behind it.",
+    "question": "Which two uses fit what Claude is good for here?",
+    "options": {
+      "A": "Gathering and summarising current published approaches other firms have taken.",
+      "B": "Deciding which approach the company should adopt and committing to it in the paper.",
+      "C": "Structuring the recommendation and stress-testing the argument for weak points.",
+      "D": "Supplying the company's own waste tonnages from the last four quarters.",
+      "E": "Confirming the final numbers are right so the finance review can be skipped."
+    },
+    "correct": [
+      "A",
+      "C"
+    ],
+    "explanations": {
+      "A": "Correct. Synthesising published external material into a usable summary is a core research use, and research mode can cite what it draws on.",
+      "B": "Incorrect. The recommendation is the operations lead's to make and own; Claude can lay out the options and the trade-offs behind it.",
+      "C": "Correct. Organising an argument and probing it for weak points is drafting and analysis, which is squarely what Claude does well.",
+      "D": "Incorrect. Claude has no access to the company's internal figures unless they are provided to it, and inventing them is the failure to guard against.",
+      "E": "Incorrect. A confident restatement is not verification, and it is no basis for removing a review step."
+    },
+    "domain": "D4",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D4.2-1c66bc1a"
+  },
+  {
+    "taskStatement": "D4.5",
+    "scenario": "After a successful pilot, an operations lead has to brief the leadership team on rolling Claude out more widely.",
+    "question": "Which two points does an honest briefing have to include?",
+    "options": {
+      "A": "That outputs need checking, especially specific figures and citations.",
+      "B": "That the time saved in the pilot is a reasonable guide but not a guarantee at scale.",
+      "C": "That accuracy improves steadily as the tool learns the organisation's own way of working.",
+      "D": "That the pilot's results will hold for any team that adopts the same setup.",
+      "E": "That the main remaining risk is staff not adopting it quickly enough."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Stating the verification burden up front is what makes the briefing honest, and it is the limitation leadership most needs to plan around.",
+      "B": "Correct. A pilot measures one team on one set of tasks, so presenting its numbers as an expectation rather than a promise is the accurate framing.",
+      "C": "Incorrect. Claude does not learn the organisation's ways by itself over time; that improvement comes from someone maintaining instructions and knowledge sources.",
+      "D": "Incorrect. Different teams have different tasks and inputs, which is exactly why a pilot's results do not transfer automatically.",
+      "E": "Incorrect. This reframes a limitations briefing as an adoption pitch, which is what leadership is being asked to scrutinise."
+    },
+    "domain": "D4",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D4.5-8e657c23"
+  },
+  {
+    "taskStatement": "D5.2",
+    "scenario": "A team's Claude Project answers questions about internal processes. Its knowledge holds a mix of uploaded documents and a connected shared drive folder, and answers have started citing superseded guidance.",
+    "question": "Which two actions address the cause?",
+    "options": {
+      "A": "Remove the uploaded copies that have been replaced by newer versions.",
+      "B": "Confirm the connected folder still points at where the current documents live.",
+      "C": "Add an instruction telling Claude to prefer the most recent document it finds.",
+      "D": "Re-upload every document so the Project holds the newest copy of each.",
+      "E": "Start a fresh Project, since knowledge cannot be pruned once it is added."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. A superseded upload stays in the knowledge base until someone removes it, and while it is there it remains available to cite.",
+      "B": "Correct. A connector that points at a moved or renamed folder keeps serving whatever it can still reach, which is how stale material survives a tidy-up.",
+      "C": "Incorrect. An instruction cannot reliably establish which document is current, and it leaves the outdated material in place.",
+      "D": "Incorrect. Re-uploading adds newer copies alongside the old ones, which worsens the ambiguity rather than resolving it.",
+      "E": "Incorrect. Knowledge sources can be removed from a Project, so discarding the whole configuration is unnecessary."
+    },
+    "domain": "D5",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D5.2-4fe42db9"
+  },
+  {
+    "taskStatement": "D5.4",
+    "scenario": "A Project that drafts customer replies was set up eight months ago. The refund window has since changed from 30 days to 14, and the tone guide has been rewritten.",
+    "question": "Which two updates keep the Project correct?",
+    "options": {
+      "A": "Replace the old tone guide in the knowledge sources with the rewritten one.",
+      "B": "Amend the custom instructions wherever they state the refund window.",
+      "C": "Append a note to the instructions saying some knowledge may be out of date.",
+      "D": "Tell colleagues to correct the refund window by hand in each draft.",
+      "E": "Rely on Claude to apply the newer guidance, as it is the more recent document."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Replacing the superseded guide is what stops it being drawn on; leaving it alongside the new one keeps both in play.",
+      "B": "Correct. A figure written into the custom instructions is applied as configuration, so it stays wrong until the instructions are edited.",
+      "C": "Incorrect. Warning that something may be stale does not identify which part is stale, and the drafts stay wrong.",
+      "D": "Incorrect. This moves a configuration error onto every colleague on every draft, which is where it will eventually be missed.",
+      "E": "Incorrect. Claude has no reliable way to know which of two documents supersedes the other unless the stale one is removed."
+    },
+    "domain": "D5",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D5.4-6b1703ad"
+  },
+  {
+    "taskStatement": "D7.1",
+    "scenario": "A Project that summarises weekly team updates keeps producing summaries that omit blockers, even though the raw updates clearly list them.",
+    "question": "Which two are the right first checks?",
+    "options": {
+      "A": "Read the custom instructions to see whether they ever ask for blockers.",
+      "B": "Compare a raw update against its summary to see exactly what was dropped.",
+      "C": "Switch to the most capable model, since the summaries are missing content.",
+      "D": "Raise the volume of updates so there is more for Claude to work from.",
+      "E": "Restate the request in a longer prompt each week until blockers appear."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. A summary that consistently omits one category usually reflects instructions that never asked for it, which is the cheapest thing to check.",
+      "B": "Correct. Comparing input against output tells you whether the blockers are being dropped, softened or merged, and each points somewhere different.",
+      "C": "Incorrect. Reaching for a different model before diagnosing leaves the actual cause in place and hides it behind a change.",
+      "D": "Incorrect. More input of the same kind reproduces the same omission at greater length.",
+      "E": "Incorrect. Re-prompting by hand each week treats the symptom and abandons the configuration that caused it."
+    },
+    "domain": "D7",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D7.1-9f15e842"
+  },
+  {
+    "taskStatement": "D7.2",
+    "scenario": "A marketing manager has revised a Project's instructions to fix drafts that were coming out too formal. The next few drafts are better.",
+    "question": "Which two conclusions are justified?",
+    "options": {
+      "A": "The change is worth keeping for now, on the evidence of the drafts since.",
+      "B": "A few good drafts are a small sample, so it is worth watching a while longer.",
+      "C": "Tone is now solved and the instructions will not need revisiting for this Project.",
+      "D": "The same instruction wording will fix tone in the team's other Projects.",
+      "E": "Any remaining formality must be coming from the source documents instead."
+    },
+    "correct": [
+      "A",
+      "B"
+    ],
+    "explanations": {
+      "A": "Correct. Acting on the evidence you have while remaining open to revising is what iterating on a configuration looks like.",
+      "B": "Correct. Several drafts is genuinely thin evidence, and saying so is the difference between a provisional read and an overclaim.",
+      "C": "Incorrect. Instructions need revisiting whenever the audience, the material or the house style moves, none of which this change froze.",
+      "D": "Incorrect. Another Project has different instructions and different knowledge, so the same wording need not have the same effect.",
+      "E": "Incorrect. This jumps to a cause without checking it, which is the diagnostic error the troubleshooting objectives keep testing."
+    },
+    "domain": "D7",
+    "selectCount": 2,
+    "provenance": {
+      "source": "hand-authored",
+      "model": null,
+      "generatedAt": null,
+      "reviewed": true
+    },
+    "id": "D7.2-2697a555"
   }
 ];

@@ -136,7 +136,7 @@ def parse_ordering(text):
     return tuple(int(n) for n in re.findall(r"\d+", text))
 
 
-def _validate_sequencing_shape(options, correct_key):
+def validate_sequencing_shape(options, correct_key):
     """Enforce the distractor architecture reported from a real sitting.
 
     Of the five orderings, exactly two share the same first and last step — those
@@ -179,6 +179,71 @@ def _validate_sequencing_shape(options, correct_key):
         raise ValueError(
             f"the correct answer must be one of the contested pair {contested[0]}; "
             f"{correct_key} is eliminable on its first or last step alone")
+
+    # The rules above are necessary but not sufficient, which drawn items proved:
+    # a third option may still open on the pair's first step provided it closes
+    # differently, and every one of the first seven authored items did exactly
+    # that. Then "eliminate on the opening" clears two distractors rather than
+    # three, and one form ran four of five options closing on the same step. So
+    # pin both ends: the pair's opening belongs to the pair alone, each distractor
+    # opens somewhere different, and only one may borrow the pair's ending.
+    pair_first, pair_last = orderings[correct_key][0], orderings[correct_key][-1]
+    others = [key for key in sorted(orderings) if key not in contested[0]]
+
+    opening = {}
+    for key in others:
+        opening.setdefault(orderings[key][0], []).append(key)
+    if pair_first in opening:
+        raise ValueError(
+            f"option(s) {opening[pair_first]} open on step {pair_first}, the same "
+            f"first step as the contested pair {contested[0]} — eliminating on the "
+            "first step must remove all three distractors, not two")
+    repeated = {step: keys for step, keys in opening.items() if len(keys) > 1}
+    if repeated:
+        raise ValueError(
+            f"distractors must each open on a different first step; {repeated} "
+            "share one, which wastes an elimination")
+
+    sharing_last = [key for key in others if orderings[key][-1] == pair_last]
+    if len(sharing_last) > 1:
+        raise ValueError(
+            f"at most one distractor may close on step {pair_last}, the contested "
+            f"pair's last step; {sharing_last} all do, leaving the last step with "
+            "almost no signal")
+
+
+def length_bias(question):
+    """Mean length of the correct options over mean length of the distractors.
+
+    1.0 is no bias. The single-longest-option check misses the multiple-response
+    shape entirely: with two correct options neither need be the outright longest
+    while the pair still runs consistently longer, which lets a candidate pick the
+    two longest and score without reading. Measured on the first hand-authored
+    batch, the correct pair WAS the two longest in 6 of 11 items.
+
+    The cause is structural rather than careless: a correct option is usually the
+    qualified one ("do X, because Y") while a distractor is a single flat claim.
+    The fix is to give the distractors the same shape, never to trim the key.
+    """
+    keys = set(correct_keys(question))
+    options = question["options"]
+    correct = [len(v) for k, v in options.items() if k in keys]
+    distractors = [len(v) for k, v in options.items() if k not in keys]
+    if not correct or not distractors:
+        return 1.0
+    return (sum(correct) / len(correct)) / (sum(distractors) / len(distractors))
+
+
+def correct_are_length_extreme(question):
+    """True when the correct options are exactly the longest OR exactly the shortest
+    — either way a test-wise candidate can sort by length and skip the reading."""
+    keys = set(correct_keys(question))
+    by_length = sorted(question["options"], key=lambda k: len(question["options"][k]))
+    n = len(keys)
+    # Both ends matter. Correcting only the "longest" case pushed the first batch
+    # straight through parity into the mirror tell: pick-the-two-shortest went from
+    # scoring 4 of 11 to 7 of 11, worse than the bias being fixed.
+    return set(by_length[-n:]) == keys or set(by_length[:n]) == keys
 
 
 def canonical_content(question):
@@ -270,7 +335,7 @@ def validate_question(question, *, require_provenance=True):
             raise ValueError(f"correct key {key!r} is not one of {expected_keys}")
 
     if item_type == "sequencing":
-        _validate_sequencing_shape(question["options"], correct_keys[0])
+        validate_sequencing_shape(question["options"], correct_keys[0])
 
     # selectCount is optional and purely a rendering aid ("Select 2"), so when it
     # is present it must agree with the answer key or the stem lies to the reader.

@@ -70,7 +70,7 @@ guarantee any resource produces a pass.
 
 This is early. Being explicit so a score isn't over-read:
 
-- **The question bank holds 103 questions** — 3 official samples from the guide, 12
+- **The question bank holds 122 questions** — 3 official samples from the guide, 31
   hand-authored, and 88 generated. Every one of the 30 objectives has at least 3, so
   the adaptive engine can give you a balanced run across the whole blueprint.
 - **Covered by count is not the same as covered in substance.** Clearing the
@@ -97,17 +97,31 @@ This is early. Being explicit so a score isn't over-read:
   five numbered steps in the correct order. Someone who sat the exam and scored
   100% confirmed both the "select two" shape and that 4–5 of the 60 items are
   sequencing.
-- **The bank under-carries multiple-response items.** It holds 2 of 103 (2%)
-  against roughly one in six on the real exam. The mechanic works and you will
-  meet it, but not nearly as often as on the day — so if "select two" feels
-  unfamiliar when you sit it, that is this gap, not you. They are hand-authored
-  because the architecture is exact, which is also why there are so few.
+- **Multiple-response items now sit at the real rate.** The bank holds 21 of 122
+  (17%), matching the roughly one in six observed on a real form, spread across 21
+  different objectives. They are all hand-authored, because a generator produced
+  structural tells faster than they could be screened out.
+- **One of them is built around a trap worth knowing.** A first-hand sitting
+  reported a "select two" item asking which workflows were an appropriate use of
+  Claude, where all five had sound process logic and the three wrong ones were
+  wrong purely on their input data — legal documents, clinical records, individual
+  performance data. Each of those three named a plausible human reviewer; the two
+  correct answers named none. A reviewer governs what happens to the output, and
+  does nothing about what was already sent. Read the data before the workflow, and
+  do not treat an attached reviewer as evidence that a workflow is safe.
 - **Sequencing items have a shape worth knowing before exam day.** Of the five
   candidate orderings, three can be eliminated on their first or last step alone,
   leaving two that begin and end identically — and the whole question is which of
   those two orders the middle correctly. That technique is judgment J10 in the
-  study guide, with a drill in exercise 2B. The bank carries 7 of them, about 7%
+  study guide, with a drill in exercise 2B. The bank carries 7 of them, about 6%
   against the ~8% a real form runs.
+
+  The shape is tighter than "two share a first and last step", and the extra
+  constraints are what make the technique pay: work out the correct opening step
+  and you are down to a straight 50/50, because exactly two options open on it.
+  The three wrong orderings each open on a different step from one another, and at
+  most one borrows the pair's closing step. All seven banked items are validated
+  against that contract on every load, so a malformed one cannot be committed.
 - **Multiple-response scoring is all-or-nothing here.** The guide does not say
   whether the real exam awards partial credit. Exact-set-match is the
   conservative choice — it can understate a score but never flatter it.
