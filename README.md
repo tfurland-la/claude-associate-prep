@@ -17,13 +17,13 @@ install or clone. Send a colleague that link and they can start immediately.
 
 Three things to open:
 
-**[`associate_course.html`](associate_course.html)** — the study guide. All 7 domains
+**[`associate_course.html`][course]** — the study guide. All 7 domains
 and 30 objectives in blueprint order, with the ten judgments the exam keeps coming
 back to set out first. Tick objectives off as you go; ticks save in your browser.
 Read the ten judgments before the domains — most questions are one of them wearing
 a different job title.
 
-**[`exercises.html`](exercises.html)** — four hands-on exercises covering all seven
+**[`exercises.html`][exercises]** — four hands-on exercises covering all seven
 domains, with three answer-keyed parts rather than rubrics: an output-evaluation
 gauntlet with nine planted defects, a ten-item governance triage, and a sequencing
 drill. Between them that's about a third of the exam you can mark yourself on
@@ -187,5 +187,7 @@ what has actually cleared the review gate are all in
 [`practice-exam/exam_spec.md`](practice-exam/exam_spec.md). Read the review-gate
 section before treating a question as vetted.
 
-[exam]: practice-exam/exam.html
+[course]: https://tfurland-la.github.io/claude-associate-prep/associate_course.html
+[exercises]: https://tfurland-la.github.io/claude-associate-prep/exercises.html
+[exam]: https://tfurland-la.github.io/claude-associate-prep/practice-exam/exam.html
 [academy]: https://anthropic-partners.skilljar.com/page/partner-certifications
